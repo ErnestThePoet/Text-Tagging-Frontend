@@ -1,0 +1,105 @@
+@keyframes screen-in{
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes title-in{
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.divMainWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: {
+        image: url("/bkg.png");
+        size: cover;
+        position: center;
+        repeat: no-repeat;
+        attachment: fixed;
+    }
+    
+    animation-duration: 1s;
+    animation-name: screen-in;
+}
+
+.main{
+    width: 80vw;
+    height: 70vh;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    >section:nth-child(1){
+        width: 50%;
+
+        color: white;
+        font-size: 50px;
+        font-weight: bold;
+
+        line-height: 100px;
+
+        text-align: center;
+
+        animation-duration: 1s;
+        animation-name: title-in;
+    }
+
+    >section:nth-child(2) {
+        width: 40%;
+        height: fit-content;
+
+        padding: 15px;
+
+        font-size: 25px;
+        font-weight: bold;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        background-color: white;
+        border-radius: 25px;
+
+        box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.50);
+    }
+
+    button[type=submit]{
+        width: 100%;
+        height: 3em;
+    }
+}
+
+.formLogin{
+    width: 80%;
+}
+
+.spanLoginTitle{
+    margin: 15px 0;
+}
