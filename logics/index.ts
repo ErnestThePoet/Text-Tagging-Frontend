@@ -14,6 +14,7 @@ export const tryAutoLogin = () => {
                     userData.setAccount(res.data.userData.account);
                     userData.setName(res.data.userData.name);
                     userData.setLevel(res.data.userData.level);
+                    userData.setAccessId(res.data.accessId);
             }
         })
     }
@@ -41,6 +42,7 @@ export const login = (ctx: Home) => {
             userData.setAccount(res.data.userData.account);
             userData.setName(res.data.userData.name);
             userData.setLevel(res.data.userData.level);
+            userData.setAccessId(res.data.accessId);
 
             if (remember) {
                 localStorage.setItem("sessionId", res.data.sessionId);

@@ -9,6 +9,8 @@ class UserData{
     name: string = "";
     level: number = -1;
 
+    accessId: string = "";
+
     setAccount(account: string) {
         this.account = account;
     }
@@ -21,8 +23,13 @@ class UserData{
         this.level = level;
     }
 
-    get isAdmin():boolean {
-        return this.level === 1;
+    setAccessId(accessId: string) {
+        this.accessId = accessId;
+    }
+
+    get isLoggedInAndAdmin():boolean {
+        return this.accessId !== ""
+            && this.level === 1;
     }
 }
 
