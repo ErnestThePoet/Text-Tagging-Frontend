@@ -5,11 +5,17 @@ class UserData{
         makeAutoObservable(this);
     }
 
+    isLoggedIn: boolean = false;
+
     account: string = "";
     name: string = "";
     level: number = -1;
 
     accessId: string = "";
+
+    setIsLoggedIn(isLoggedIn: boolean) {
+        this.isLoggedIn = isLoggedIn;
+    }
 
     setAccount(account: string) {
         this.account = account;
@@ -27,9 +33,8 @@ class UserData{
         this.accessId = accessId;
     }
 
-    get isLoggedInAndAdmin():boolean {
-        return this.accessId !== ""
-            && this.level === 1;
+    get isAdmin():boolean {
+        return this.isLoggedIn && this.level === 1;
     }
 }
 

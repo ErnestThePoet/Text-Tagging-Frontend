@@ -1,34 +1,25 @@
 import React from 'react';
 import Head from 'next/head';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { observer } from 'mobx-react-lite';
+import LoginForm from '../components/index/login-form';
+import TaskPicker from '../components/index/task-picker';
+import userData from '../states/user-data';
 import * as L from "../logics/index";
 import styles from '../styles/index.module.scss';
 
-export default class Home extends React.Component<{}, {
-  isLoggingIn:boolean,
-  loginResult:{success:boolean,msg:string}
-}>{
-  constructor(props: {}){
+export default class Home extends React.Component{
+  constructor(props: {}) {
     super(props);
-
-    this.state = {
-      isLoggingIn: false,
-      loginResult: {
-        success: false,
-        msg: ""
-      }
-    };
   }
 
-  componentDidMount=()=>{
+  componentDidMount = () => {
     L.tryAutoLogin();
   }
 
-  render=()=> (
+  thisComponent = observer(() => (
     <div className={styles.divMainWrapper}>
       <Head>
-        <title>登录 - 文本价值观标注系统</title>
+        <title>文本价值观标注系统</title>
         <meta name="description" content="HITNLP文本价值观标注系统" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -36,89 +27,36 @@ export default class Home extends React.Component<{}, {
       <main className={styles.main}>
         <section>
           HITNLP
-          <br/>
+          <br />
           文本价值观标注系统
         </section>
 
-        <section>
-          <span className={styles.spanLoginTitle}>
-            登录标注系统
-          </span>
-          <Form
-            name="normal_login"
-            className={styles.formLogin}
-            initialValues={{ remember: true }}
-            onFinish={() => L.login(this)}
-          >
-            <Form.Item
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "请输入登录账号"
-                },
-                {
-                  min: 3,
-                  message:"登录账号长度在3-10之间"
-                },
-                {
-                  max: 10,
-                  message: "登录账号长度在3-10之间"
-                },
-                {
-                  pattern: /^[\da-zA-Z_-]+$/,
-                  message:"登录名只能包含字母/数字/下划线和'-'"
-                }
-              ]}
-            >
-              <Input prefix={<UserOutlined className="site-form-item-icon" />}
-                id="in-login-account"
-                placeholder="请输入登录账号"/>
-            </Form.Item>
+        {
+          userData.isLoggedIn
+            ?
+            <section className={styles.sectionSelectTask}>
+              <span className={styles.spanSelectTaskTitle}>
+                {`欢迎您，${userData.name}~`}
+                <br/>
+                请选择标注任务以开始：
+              </span>
 
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "请输入密码"
-                },
-                {
-                  min: 5,
-                  message: "密码长度在5-15之间"
-                },
-                {
-                  max: 15,
-                  message: "登录账号长度在5-15之间"
-                },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                id="in-login-password"
-                placeholder="请输入登录密码"
-              />
-            </Form.Item>
+              <TaskPicker/>
+            </section>
+            :
+            <section className={styles.sectionLogin}>
+              <span className={styles.spanLoginTitle}>
+                登录标注系统
+              </span>
 
-            <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox id="cb-remember">7日内自动登录</Checkbox>
-              </Form.Item>
-            </Form.Item>
-
-            <Form.Item
-              validateStatus="error"
-              help={this.state.loginResult.msg}
-            >
-              <Button type="primary" htmlType="submit"
-              disabled={this.state.isLoggingIn}>
-                登录系统
-              </Button>
-            </Form.Item>
-          </Form>
-        </section>
+              <LoginForm/>
+            </section>
+        }
       </main>
     </div>
-  )
+  ));
+
+  render = () => (
+    <this.thisComponent />
+  );
 }

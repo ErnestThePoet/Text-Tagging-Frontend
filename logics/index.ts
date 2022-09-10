@@ -1,6 +1,7 @@
 import axios from "axios";
+import Router from "next/router";
 import APIS from "../modules/apis";
-import Home from "../pages";
+import LoginForm from "../components/index/login-form";
 import userData from "../states/user-data";
 import { pbkdf2Hash } from "../modules/utils/hash";
 
@@ -15,12 +16,13 @@ export const tryAutoLogin = () => {
                     userData.setName(res.data.userData.name);
                     userData.setLevel(res.data.userData.level);
                     userData.setAccessId(res.data.accessId);
+                    userData.setIsLoggedIn(true);
             }
         })
     }
 }
 
-export const login = (ctx: Home) => {
+export const login = (ctx: LoginForm) => {
     const account
         = (<HTMLInputElement>document.getElementById("in-login-account")).value;
     
@@ -43,6 +45,7 @@ export const login = (ctx: Home) => {
             userData.setName(res.data.userData.name);
             userData.setLevel(res.data.userData.level);
             userData.setAccessId(res.data.accessId);
+            userData.setIsLoggedIn(true);
 
             if (remember) {
                 localStorage.setItem("sessionId", res.data.sessionId);
@@ -67,4 +70,8 @@ export const login = (ctx: Home) => {
         .finally(() => ctx.setState({
             isLoggingIn: false
         }));
+}
+
+export const enterSystem = () => {
+    Router.push("/workspace");
 }
