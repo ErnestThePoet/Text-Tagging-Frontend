@@ -36,7 +36,7 @@ export default class Home extends React.Component{
             ?
             <section className={styles.sectionSelectTask}>
               <span className={styles.spanSelectTaskTitle}>
-                {`欢迎您，${userData.name}~`}
+                <b>{`欢迎您，${userData.name}~`}</b>
                 <br/>
                 请选择标注任务以开始：
               </span>

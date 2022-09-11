@@ -1,12 +1,14 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import * as L from "../logics/workspace";
-import { checkIsLoggedIn } from "../logics/router-checks";
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import * as L from "../../logics/workspace/workspace-nav";
+import { checkIsLoggedIn } from "../../logics/router-checks";
+import { DownOutlined,QuestionCircleOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu } from 'antd';
-import styles from "../styles/workspace.module.scss";
+import { Dropdown, Space, Layout, Menu } from 'antd';
+import WorkspaceNav from "../../components/workspace/workspace-nav";
+import styles from "../../styles/workspace.module.scss";
+import userData from "../../states/user-data";
 
 const { Header, Content, Sider } = Layout;
 
@@ -19,21 +21,10 @@ export default class WorkspacePage extends React.Component{
         checkIsLoggedIn();
     }
 
-    topNavItems: MenuProps['items'] = ['文本标注', '添加文本', '文本查询'].map((x,i) => ({
-        key:i,
-        label: x,
-    }));
-
     thisComponent = observer(() => (
         <div className={styles.divMainWrapper}>
             <Layout>
-                <Header className={styles.header}>
-                    <i className={classNames(styles.iIcon,"fa-solid fa-book")}></i>
-                    <Menu theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={['2']}
-                        items={this.topNavItems} />
-                </Header>
+                <WorkspaceNav/>
                 <Layout>
                     <Sider width={200} className={styles.sider}>
                         <Menu
@@ -41,7 +32,7 @@ export default class WorkspacePage extends React.Component{
                             defaultSelectedKeys={['1']}
                             defaultOpenKeys={['sub1']}
                             style={{ height: '100%', borderRight: 0 }}
-                            items={this.topNavItems}
+                            items={[]}
                         />
                     </Sider>
                     <Layout style={{ padding: '0 24px 24px' }}>

@@ -81,7 +81,6 @@
     height: fit-content;
 
     font-size: 25px;
-    font-weight: bold;
 
     background-color: white;
     border-radius: 25px;
@@ -121,6 +120,8 @@
 
 .sectionLogin{
     @extend .section;
+
+    font-weight: bold;
 
     padding: 15px;
 

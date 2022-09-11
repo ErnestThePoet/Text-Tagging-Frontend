@@ -73,5 +73,5 @@ export const login = (ctx: LoginForm) => {
 }
 
 export const enterSystem = () => {
-    Router.push("/workspace");
+    Router.push("/workspace/tagging");
 }
