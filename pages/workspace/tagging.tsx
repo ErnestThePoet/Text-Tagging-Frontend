@@ -24,7 +24,7 @@ export default class WorkspaceTaggingPage extends React.Component{
     thisComponent = observer(() => (
         <div className={styles.divMainWrapper}>
             <Layout>
-                <WorkspaceNav/>
+                <WorkspaceNav defaultSelectedKey="0"/>
                 <Layout>
                     <Sider width={200} className={styles.sider}>
                         <Menu

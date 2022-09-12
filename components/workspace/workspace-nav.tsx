@@ -10,8 +10,12 @@ import userData from "../../states/user-data";
 
 const { Header } = Layout;
 
-export default class WorkspaceNav extends React.Component{
-    constructor(props: {}) {
+interface WorkspaceNavProps{
+    defaultSelectedKey: string;
+}
+
+export default class WorkspaceNav extends React.Component<WorkspaceNavProps>{
+    constructor(props: WorkspaceNavProps) {
         super(props);
     }
 
@@ -48,7 +52,7 @@ export default class WorkspaceNav extends React.Component{
             <i className={classNames(styles.iIcon, "fa-solid fa-book")}></i>
             <Menu theme="dark"
                 mode="horizontal"
-                defaultSelectedKeys={["0"]}
+                defaultSelectedKeys={[this.props.defaultSelectedKey]}
                 onClick={e=>L.onNavMenuItemClick(e.key)}
                 items={userData.isAdmin
                     ? this.navItemsAdmin
@@ -58,7 +62,19 @@ export default class WorkspaceNav extends React.Component{
                 overlay={this.accountMenu}>
                 <a onClick={e => e.preventDefault()}>
                     <Space>
-                        {userData.name}
+                        <span className={styles.spanAccountName}>
+                            <span>
+                                {userData.name}
+                            </span>
+                            
+                            {
+                                userData.isAdmin &&
+                                <span>
+                                    (管理员)
+                                </span>
+                            }
+                        </span>
+                        
                         <DownOutlined />
                     </Space>
                 </a>
