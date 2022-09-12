@@ -6,7 +6,7 @@ import userData from "../states/user-data";
 import { pbkdf2Hash } from "../modules/utils/hash";
 
 export const tryAutoLogin = () => {
-    let sessionId = localStorage.getItem("sessionId");
+    const sessionId = localStorage.getItem("sessionId");
 
     if (sessionId !== null&&sessionId.length>25) {
         axios.postForm(APIS.autoLogin, { sessionId })

@@ -80,7 +80,7 @@ export default class LoginForm extends React.Component<{}, {
             </Form.Item>
 
             <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
+                <Form.Item name="remember" noStyle>
                     <Checkbox id="cb-remember">7日内自动登录</Checkbox>
                 </Form.Item>
             </Form.Item>

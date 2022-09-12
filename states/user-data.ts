@@ -33,6 +33,14 @@ class UserData{
         this.accessId = accessId;
     }
 
+    clear() {
+        this.isLoggedIn = false;
+        this.account = "";
+        this.name = "";
+        this.level = -1;
+        this.accessId = "";
+    }
+
     get isAdmin():boolean {
         return this.isLoggedIn && this.level === 1;
     }

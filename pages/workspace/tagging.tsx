@@ -12,7 +12,7 @@ import userData from "../../states/user-data";
 
 const { Header, Content, Sider } = Layout;
 
-export default class WorkspacePage extends React.Component{
+export default class WorkspaceTaggingPage extends React.Component{
     constructor(props: {}) {
         super(props);
     }
