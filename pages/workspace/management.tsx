@@ -1,18 +1,27 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { checkIsAdmin } from "../../logics/router-checks";
-import { UserOutlined, DatabaseOutlined } from '@ant-design/icons';
+import { UserOutlined, DatabaseOutlined, BarChartOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { getMenuItem } from "../../modules/utils/menu-item";
 import type { MenuItem } from "../../modules/utils/menu-item";
 import WorkspaceNav from "../../components/workspace/workspace-nav";
+import DatasetStatContent from "../../components/workspace/management/dataset-stat-content";
 import styles from "../../styles/workspace.module.scss";
 
 const { Content, Sider } = Layout;
 
-export default class WorkspaceManagementPage extends React.Component {
+export default class WorkspaceManagementPage extends React.Component<
+    {},
+    {
+        selectedMenuKey: string;
+    }
+> {
     constructor(props: {}) {
         super(props);
+        this.state = {
+            selectedMenuKey: "0"
+        };
     }
 
     componentDidMount(): void {
@@ -20,8 +29,9 @@ export default class WorkspaceManagementPage extends React.Component {
     }
 
     menuItems: MenuItem[] = [
-        getMenuItem("数据集管理", "0", <DatabaseOutlined />),
-        getMenuItem("用户管理", "1", <UserOutlined />)];
+        getMenuItem("标注进度统计", "0", <BarChartOutlined />),
+        getMenuItem("数据集管理", "1", <DatabaseOutlined />),
+        getMenuItem("用户管理", "2", <UserOutlined />)];
 
     thisComponent = observer(() => (
         <div className={styles.divMainWrapper}>
@@ -30,6 +40,7 @@ export default class WorkspaceManagementPage extends React.Component {
                 <Layout>
                     <Sider className={styles.sider}>
                         <Menu
+                            onClick={e=>this.setState({selectedMenuKey:e.key})}
                             className={styles.menuSider}
                             mode="inline"
                             defaultSelectedKeys={["0"]}
@@ -41,9 +52,8 @@ export default class WorkspaceManagementPage extends React.Component {
                         <Content
                             className={styles.content}>
                             {
-                                new Array(100).fill(null).map((x, i) => (
-                                    <div key={i}>Je suis Ernest!</div>
-                                ))
+                                this.state.selectedMenuKey === "0" &&
+                                <DatasetStatContent />
                             }
                         </Content>
                     </Layout>

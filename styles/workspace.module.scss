@@ -55,3 +55,26 @@
         color: #ccc;
     }
 }
+
+.divDatasetContent{
+    >div[class=total-progress-wrapper]{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        >div[class=total-progress]{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            >label:nth-child(1){
+                font-weight: bold;
+            }
+
+            >label:nth-child(2){
+                margin: 10px 0;
+            }
+        }
+    }
+}

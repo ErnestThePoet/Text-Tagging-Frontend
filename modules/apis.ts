@@ -7,10 +7,14 @@ if (DEBUG) {
 }
 
 const APIS = {
-    login:"account/login",
-    autoLogin:"account/auto_login",
-    logout:"account/logout",
-    changePw:"account/change_pw",
+    // User general
+    login:"user/login",
+    autoLogin:"user/auto_login",
+    logout:"user/logout",
+    changePw: "user/change_pw",
+    
+    // Task dataset
+    getDatasetStat:"dataset/get_stat"
 }
 
 for (let i in APIS) {
