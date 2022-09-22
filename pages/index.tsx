@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { observer } from 'mobx-react-lite';
 import LoginForm from '../components/index/login-form';
@@ -7,16 +7,12 @@ import userData from '../states/user-data';
 import * as L from "../logics/index";
 import styles from '../styles/index.module.scss';
 
-export default class Home extends React.Component{
-  constructor(props: {}) {
-    super(props);
-  }
-
-  componentDidMount = () => {
+const Home: React.FC = observer(() => {
+  useEffect(() => {
     L.tryAutoLogin();
-  }
+  }, []);
 
-  thisComponent = observer(() => (
+  return (
     <div className={styles.divMainWrapper}>
       <Head>
         <title>文本价值观标注系统</title>
@@ -37,11 +33,11 @@ export default class Home extends React.Component{
             <section className={styles.sectionSelectTask}>
               <span className={styles.spanSelectTaskTitle}>
                 <b>{`欢迎您，${userData.name}~`}</b>
-                <br/>
+                <br />
                 请选择标注任务以开始：
               </span>
 
-              <TaskPicker/>
+              <TaskPicker />
             </section>
             :
             <section className={styles.sectionLogin}>
@@ -49,14 +45,12 @@ export default class Home extends React.Component{
                 登录标注系统
               </span>
 
-              <LoginForm/>
+              <LoginForm />
             </section>
         }
       </main>
     </div>
-  ));
-
-  render = () => (
-    <this.thisComponent />
   );
-}
+});
+
+export default Home;

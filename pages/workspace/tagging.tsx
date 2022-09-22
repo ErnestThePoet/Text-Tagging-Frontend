@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import * as L from "../../logics/workspace/workspace-nav";
@@ -12,19 +12,15 @@ import userData from "../../states/user-data";
 
 const { Header, Content, Sider } = Layout;
 
-export default class WorkspaceTaggingPage extends React.Component{
-    constructor(props: {}) {
-        super(props);
-    }
-    
-    componentDidMount(): void {
+const WorkspaceTaggingPage: React.FC = observer(() => {
+    useEffect(() => {
         checkIsLoggedIn();
-    }
-
-    thisComponent = observer(() => (
+    }, []);
+    
+    return (
         <div className={styles.divMainWrapper}>
             <Layout>
-                <WorkspaceNav defaultSelectedKey="0"/>
+                <WorkspaceNav defaultSelectedKey="0" />
                 <Layout>
                     <Sider width={200} className={styles.sider}>
                         <Menu
@@ -51,9 +47,7 @@ export default class WorkspaceTaggingPage extends React.Component{
                 </Layout>
             </Layout>
         </div>
-    ));
-
-    render = () => (
-        <this.thisComponent />
     );
-}
+});
+
+export default WorkspaceTaggingPage;

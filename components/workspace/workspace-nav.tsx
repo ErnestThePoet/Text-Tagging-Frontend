@@ -14,75 +14,69 @@ interface WorkspaceNavProps{
     defaultSelectedKey: string;
 }
 
-export default class WorkspaceNav extends React.Component<WorkspaceNavProps>{
-    constructor(props: WorkspaceNavProps) {
-        super(props);
-    }
+const navItemsNormal: MenuProps['items']
+    = ['文本标注', '添加文本', '文本查询'].map((x, i) => ({
+    key: i,
+    label: x
+}));
 
-    navItemsNormal: MenuProps['items'] = ['文本标注', '添加文本', '文本查询'].map((x, i) => ({
-        key: i,
-        label: x
-    }));
+const navItemsAdmin: MenuProps['items']
+    = ['文本标注', '添加文本', '文本查询', "系统管理"].map((x, i) => ({
+    key: i,
+    label: x
+}));
 
-    navItemsAdmin: MenuProps['items'] = ['文本标注', '添加文本', '文本查询',"系统管理"].map((x, i) => ({
-        key: i,
-        label: x
-    }));
+const accountMenu = (
+    <Menu
+        onClick={e => L.onAccountMenuItemClick(e.key)}
+        items={[
+            {
+                key: '0',
+                label: "使用指南",
+                icon: <QuestionCircleOutlined />
+            },
+            {
+                key: '1',
+                danger: true,
+                label: '退出登录'
+            }
+        ]}
+    />
+);
 
-    accountMenu = (
-        <Menu
-            onClick={e => L.onAccountMenuItemClick(e.key)}
-            items={[
-                {
-                    key: '0',
-                    label: "使用指南",
-                    icon: <QuestionCircleOutlined />
-                },
-                {
-                    key: '1',
-                    danger: true,
-                    label: '退出登录'
-                }
-            ]}
-        />
-    );
+const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props:WorkspaceNavProps) => (
+    <Header className={styles.header}>
+        <i className={classNames(styles.iIcon, "fa-solid fa-book")}></i>
+        <Menu theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={[props.defaultSelectedKey]}
+            onClick={e => L.onNavMenuItemClick(e.key)}
+            items={userData.isAdmin
+                ? navItemsAdmin
+                : navItemsNormal} />
 
-    thisComponent = observer(() => (
-        <Header className={styles.header}>
-            <i className={classNames(styles.iIcon, "fa-solid fa-book")}></i>
-            <Menu theme="dark"
-                mode="horizontal"
-                defaultSelectedKeys={[this.props.defaultSelectedKey]}
-                onClick={e=>L.onNavMenuItemClick(e.key)}
-                items={userData.isAdmin
-                    ? this.navItemsAdmin
-                    : this.navItemsNormal} />
-
-            <Dropdown className={styles.dropdownAccount}
-                overlay={this.accountMenu}>
-                <a onClick={e => e.preventDefault()}>
-                    <Space>
-                        <span className={styles.spanAccountName}>
-                            <span>
-                                {userData.name}
-                            </span>
-                            
-                            {
-                                userData.isAdmin &&
-                                <span>
-                                    (管理员)
-                                </span>
-                            }
+        <Dropdown className={styles.dropdownAccount}
+            overlay={accountMenu}>
+            <a onClick={e => e.preventDefault()}>
+                <Space>
+                    <span className={styles.spanAccountName}>
+                        <span>
+                            {userData.name}
                         </span>
+                            
+                        {
+                            userData.isAdmin &&
+                            <span>
+                                (管理员)
+                            </span>
+                        }
+                    </span>
                         
-                        <DownOutlined />
-                    </Space>
-                </a>
-            </Dropdown>
-        </Header>
-    ));
+                    <DownOutlined />
+                </Space>
+            </a>
+        </Dropdown>
+    </Header>
+));
 
-    render = () => (
-        <this.thisComponent />
-    );
-}
+export default WorkspaceNav;

@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 import axios from "axios";
 import userData from "./user-data";
 import APIS from "../modules/apis";
-import ui from "./ui";
 import { message } from "antd";
 
 export interface SingleDatasetStat{
@@ -47,12 +46,12 @@ class TaskData{
         this.taskId = taskId;
     }
 
-    updateDatasetStat() {
+    updateDatasetStat(onStart:()=>void,onFinish:()=>void) {
         if (!userData.isAdmin) {
             return;
         }
 
-        ui.setManagementLoadings({ datasetStat: true });
+        onStart();
 
         axios.postForm(APIS.getDatasetStat, {
             accessId: userData.accessId,
@@ -70,7 +69,7 @@ class TaskData{
         }).catch(reason => {
             message.error("获取数据库信息失败：" + reason);
             console.log(reason);
-        }).finally(() => ui.setManagementLoadings({ datasetStat: false }));
+        }).finally(onFinish);
     }
 }
 
