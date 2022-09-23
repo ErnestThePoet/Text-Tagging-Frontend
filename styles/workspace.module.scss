@@ -57,6 +57,22 @@
 }
 
 .divDatasetContent{
+    [class~=reload-icon] {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 18px;
+    }
+    
+    [class~=action-wrapper]{
+        margin-bottom: 10px;
+    }
+
+    [class~=upload-wrapper]{
+        display: flex;
+        gap: 8px;
+    }
+
     >div[class=total-progress-wrapper]{
         display: flex;
         justify-content: space-evenly;
@@ -77,11 +93,4 @@
             }
         }
     }
-}
-
-.iconReload{
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 18px;
 }

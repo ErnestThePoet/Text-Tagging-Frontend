@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from "react";
 import { Key } from "react";
 import { observer } from "mobx-react-lite";
-import { Progress, Divider, Empty, Table, Spin, Space } from "antd";
-import type { ColumnsType, TableProps } from 'antd/es/table';
+import { Progress, Divider, Empty, Table, Spin, Space, Button, Upload } from "antd";
+import type { ColumnsType } from 'antd/es/table';
 import { ReloadOutlined } from '@ant-design/icons';
 import type { SingleDatasetStat } from "../../../states/task-data";
 import { stringCompare } from "../../../modules/utils/cmp";
@@ -52,6 +52,8 @@ const columns: ColumnsType<SingleDatasetStat> = [
     },
 ];
 
+
+
 const DatasetContent: React.FC = observer(() => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
@@ -63,7 +65,7 @@ const DatasetContent: React.FC = observer(() => {
     return (
         <Spin spinning={loading}>
             <div className={styles.divDatasetContent}>
-                <ReloadOutlined className={styles.iconReload}
+                <ReloadOutlined className="reload-icon"
                     onClick={() => L.updateDatasetStat(setLoading)} />
                 {
                     taskData.datasetStat.stats.length <= 0
@@ -92,8 +94,24 @@ const DatasetContent: React.FC = observer(() => {
 
                             <Divider />
 
-                            <Space>
+                            <Space className="action-wrapper">
                                 {`已选${selectedRowKeys.length}个数据集`}
+
+                                {/* TODO: logics */}
+                                <Button disabled={selectedRowKeys.length === 0}>
+                                    导出所选
+                                </Button>
+                                <Button danger disabled={selectedRowKeys.length === 0}>
+                                    删除所选
+                                </Button>
+
+                                <Upload {...L.uploadProps}
+                                    maxCount={1}
+                                    className="upload-wrapper">
+                                    <Button type="primary">
+                                        导入数据集
+                                    </Button>
+                                </Upload>
                             </Space>
 
                             <Table columns={columns}

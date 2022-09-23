@@ -3,6 +3,7 @@ import axios from "axios";
 import userData from "./user-data";
 import APIS from "../modules/apis";
 import { message } from "antd";
+import type { TaskId } from "../modules/tasks";
 
 export interface SingleDatasetStat{
     fileName: string;
@@ -26,7 +27,7 @@ class TaskData{
         makeAutoObservable(this);
     }
 
-    taskId: number = 1;
+    taskId: TaskId = 1;
 
     datasetStat: DatasetStat = {
         tagItemCount: 0,
@@ -42,7 +43,7 @@ class TaskData{
         }]
     };
 
-    setTaskId(taskId: number) {
+    setTaskId(taskId: TaskId) {
         this.taskId = taskId;
     }
 
