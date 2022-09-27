@@ -14,7 +14,8 @@ const APIS = {
     changePw: "user/change_pw",
     
     // Task dataset
-    getDatasetStat:"dataset/get_stat"
+    getDatasetStat: "dataset/get_stat",
+    importDataset:"dataset/import"
 }
 
 for (let i in APIS) {

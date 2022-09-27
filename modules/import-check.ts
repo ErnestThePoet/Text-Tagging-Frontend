@@ -7,7 +7,7 @@ import { TAG_ITEM_VALIDATIONS } from "./tasks";
 
 // 类型检查
 export function checkImportDataset(
-    taskId: TaskId, importTexts: any[]): CheckResult{
+    taskId: TaskId, importTexts: object): CheckResult{
     if (!Array.isArray(importTexts)) {
         return {
             ok: false,

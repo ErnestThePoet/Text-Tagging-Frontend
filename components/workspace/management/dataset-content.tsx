@@ -106,8 +106,9 @@ const DatasetContent: React.FC = observer(() => {
                                 </Button>
 
                                 <Upload {...L.uploadProps}
+                                    accept="application/json"
                                     maxCount={1}
-                                    className="upload-wrapper">
+                                    showUploadList={false}>
                                     <Button type="primary">
                                         导入数据集
                                     </Button>

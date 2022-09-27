@@ -24,7 +24,7 @@ const createSingleChoiceValueCheck:
             if (!choices.includes(x)) {
                 return {
                     ok: false,
-                    msg: `不是${choices}之一`
+                    msg: `不是[${choices}]之一`
                 }
             }
 
@@ -50,10 +50,17 @@ const createMultipleChoiceValueCheck:
             maxCount?: number;
         }) => (
         (x: any) => {
-            if (!Array.isArray(x) ||x.some(u=>!choices.includes(u))) {
+            if (!Array.isArray(x)) {
                 return {
                     ok: false,
-                    msg: `不是全部由${choices}中的选项组成`
+                    msg: "不是数组类型"
+                }
+            }
+
+            if (x.some(u => !choices.includes(u))) {
+                return {
+                    ok: false,
+                    msg: `不是全部由[${choices}]中的选项组成`
                 }
             }
 
