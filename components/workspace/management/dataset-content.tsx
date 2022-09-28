@@ -39,7 +39,7 @@ const columns: ColumnsType<SingleDatasetStat> = [
         dataIndex: "taggedTextProgress",
         sorter: (a, b) => a.taggedTextProgress - b.taggedTextProgress,
         render: (x) => (
-            <Progress percent={100 * x} size="small" />
+            <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(0)}%`} />
         )
     },
     {
@@ -47,7 +47,7 @@ const columns: ColumnsType<SingleDatasetStat> = [
         dataIndex: "totalTagItemProgress",
         sorter: (a, b) => a.totalTagItemProgress - b.totalTagItemProgress,
         render: (x) => (
-            <Progress percent={100 * x} size="small" />
+            <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(0)}%`} />
         )
     },
 ];
@@ -68,9 +68,20 @@ const DatasetContent: React.FC = observer(() => {
                 <ReloadOutlined className="reload-icon"
                     onClick={() => L.updateDatasetStat(setLoading)} />
                 {
-                    taskData.datasetStat.stats.length <= 0
+                    taskData.datasetStat.stats.length <= 1
                         ?
-                        <Empty description="此标注任务还没有数据集" />
+                        <>
+                            <Empty description="此标注任务还没有数据集">
+                                <Upload {...L.uploadProps}
+                                    accept="application/json"
+                                    maxCount={1}
+                                    showUploadList={false}>
+                                    <Button type="primary">
+                                        导入第一个数据集
+                                    </Button>
+                                </Upload>
+                            </Empty>
+                        </>
                         :
                         <>
                             <div className="total-progress-wrapper">
@@ -79,7 +90,8 @@ const DatasetContent: React.FC = observer(() => {
                                     <label>{`${taskData.datasetStat.stats[0].taggedTextCount}/`
                                         + `${taskData.datasetStat.stats[0].totalTextCount}`}</label>
                                     <Progress type="circle"
-                                        percent={taskData.datasetStat.stats[0].taggedTextProgress * 100} />
+                                        percent={taskData.datasetStat.stats[0].taggedTextProgress * 100}
+                                        format={ x=>`${x?.toFixed(0)}%` } />
                                 </div>
 
                                 <div className="total-progress">
@@ -88,7 +100,8 @@ const DatasetContent: React.FC = observer(() => {
                                         + `${taskData.datasetStat.tagItemCount}×`
                                         + `${taskData.datasetStat.stats[0].totalTextCount})`}</label>
                                     <Progress type="circle"
-                                        percent={taskData.datasetStat.stats[0].totalTagItemProgress * 100} />
+                                        percent={taskData.datasetStat.stats[0].totalTagItemProgress * 100}
+                                        format={x => `${x?.toFixed(0)}%`}/>
                                 </div>
                             </div>
 
@@ -116,7 +129,7 @@ const DatasetContent: React.FC = observer(() => {
                             </Space>
 
                             <Table columns={columns}
-                                dataSource={taskData.datasetStat.stats
+                                dataSource={taskData.datasetStat.stats.slice(1)
                                     .map((x, i) => ({ ...x, key: i }))}
                                 rowSelection={{
                                     onChange: (newSelectedRowKeys: Key[]) => {

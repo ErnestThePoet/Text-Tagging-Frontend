@@ -41,6 +41,7 @@ export const uploadProps: UploadProps = {
                 fileName: (<File>options.file).name,
                 importTextsStr: reader.result
             }).then(() => {
+                taskData.updateDatasetStat(() => { }, () => { });
                 message.success(`恭喜！成功上传` +
                     `${(<File>options.file).name}中的${(<any[]>importObj).length}个文本`);
             }).catch(reason => {
