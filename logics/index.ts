@@ -1,9 +1,11 @@
 import axios from "axios";
 import Router from "next/router";
 import APIS from "../modules/apis";
-import LoginForm from "../components/index/login-form";
 import userData from "../states/user-data";
 import { pbkdf2Hash } from "../modules/utils/hash";
+import type { Task } from "../modules/types";
+import taskData from "../states/task-data";
+import { message } from "antd";
 
 export const tryAutoLogin = () => {
     const sessionId = localStorage.getItem("sessionId");
@@ -18,7 +20,7 @@ export const tryAutoLogin = () => {
                     userData.setAccessId(res.data.accessId);
                     userData.setIsLoggedIn(true);
                 }
-            })
+            });
     }
 }
 
@@ -69,6 +71,33 @@ export const login = (
         .finally(() => setIsLoggingIn(false));
 }
 
-export const enterSystem = () => {
+export const fetchTasks = (
+    setTasks: React.Dispatch<React.SetStateAction<Task[]>>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    
+    setLoading(true);
+    
+    axios.postForm(APIS.getTasks, {
+        accessId: userData.accessId
+    }).then(res => {
+        if (!res.data.success) {
+            message.error("获取任务列表失败:" + res.data.msg);
+        }
+        else {
+            setTasks(res.data.tasks);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        setLoading(false);
+    });
+}
+
+export const enterSystem = (tasks: Task[]) => {
+    if (!tasks.some(x => x.id == taskData.taskId)) {
+        message.warn("请选择一个标注任务");
+        return;
+    }
     Router.push("/workspace/tagging");
 }
