@@ -1,32 +1,22 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useState} from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import * as L from "../../logics/index";
 import styles from '../../styles/index.module.scss';
 
-export default class LoginForm extends React.Component<{}, {
-    isLoggingIn: boolean,
-    loginResult: { success: boolean, msg: string }
-}>{
-    constructor(props: {}) {
-        super(props);
+const LoginForm: React.FC = () => {
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [loginResult, setLoginResult] = useState({
+        success: false,
+        msg: ""
+    });
 
-        this.state = {
-            isLoggingIn: false,
-            loginResult: {
-                success: false,
-                msg: ""
-            }
-        };
-    }
-
-    thisComponent = observer(() => (
+    return (
         <Form
             name="normal_login"
             className={styles.formLogin}
             initialValues={{ remember: true }}
-            onFinish={() => L.login(this)}
+            onFinish={() => L.login(setIsLoggingIn,setLoginResult)}
         >
             <Form.Item
                 name="username"
@@ -87,18 +77,16 @@ export default class LoginForm extends React.Component<{}, {
 
             <Form.Item
                 validateStatus="error"
-                help={this.state.loginResult.msg}
+                help={loginResult.msg}
             >
                 <Button className={styles.btnLogin}
                     type="primary" htmlType="submit" block
-                    disabled={this.state.isLoggingIn}>
+                    disabled={isLoggingIn}>
                     登录系统
                 </Button>
             </Form.Item>
         </Form>
-    ));
-
-    render = () => (
-        <this.thisComponent />
-    );
+    )
 }
+
+export default LoginForm;

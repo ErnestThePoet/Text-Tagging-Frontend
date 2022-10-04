@@ -3,7 +3,7 @@ import axios from "axios";
 import userData from "./user-data";
 import APIS from "../modules/apis";
 import { message } from "antd";
-import type { TaskId } from "../modules/tasks";
+import type { TagItemMeta } from "../modules/types";
 
 export interface SingleDatasetStat{
     fileName: string;
@@ -17,7 +17,6 @@ export interface SingleDatasetStat{
 
 interface DatasetStat{
     tagItemCount: number;
-    targetTagsPerText: number;
 
     stats: SingleDatasetStat[];
 }
@@ -27,11 +26,19 @@ class TaskData{
         makeAutoObservable(this);
     }
 
-    taskId: TaskId = 1;
+    // 任务ID
+    taskId: number = -1;
+    // 任务名称
+    name: string = "";
+    // 任务中每个文本的目标标注数量
+    targetTagsPerText: number = 0;
+    // 标注项信息
+    tagItemMetas: TagItemMeta[] = [];
 
+    // 数据库统计信息
     datasetStat: DatasetStat = {
         tagItemCount: 0,
-        targetTagsPerText: 0,
+        
         stats: [{
             fileName: "",
             totalTextCount:0,
@@ -43,7 +50,7 @@ class TaskData{
         }]
     };
 
-    setTaskId(taskId: TaskId) {
+    setTaskId(taskId: number) {
         this.taskId = taskId;
     }
 
@@ -64,7 +71,6 @@ class TaskData{
             }
             else {
                 this.datasetStat.tagItemCount = res.data.tagItemCount;
-                this.datasetStat.targetTagsPerText = res.data.targetTagsPerText;
                 this.datasetStat.stats = res.data.stats;
             }
         }).catch(reason => {

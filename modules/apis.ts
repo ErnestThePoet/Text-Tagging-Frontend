@@ -12,6 +12,9 @@ const APIS = {
     autoLogin:"user/auto_login",
     logout:"user/logout",
     changePw: "user/change_pw",
+
+    // Task general
+    getTasks:"task/get_tasks",
     
     // Task dataset
     getDatasetStat: "dataset/get_stat",

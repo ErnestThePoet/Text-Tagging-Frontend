@@ -7,6 +7,7 @@ import { DownOutlined,QuestionCircleOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space, Layout, Menu } from 'antd';
 import WorkspaceNav from "../../components/workspace/workspace-nav";
+import TaggingContent from "../../components/workspace/tagging/tagging-content";
 import styles from "../../styles/workspace.module.scss";
 import userData from "../../states/user-data";
 
@@ -24,24 +25,16 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                 <Layout>
                     <Sider width={200} className={styles.sider}>
                         <Menu
+                            className={styles.menuSider}
                             mode="inline"
                             defaultSelectedKeys={['1']}
                             defaultOpenKeys={['sub1']}
-                            style={{ height: '100%', borderRight: 0 }}
                             items={[]}
                         />
                     </Sider>
-                    <Layout style={{ padding: '0 24px 24px' }}>
-                        
-                        <Content
-                            className={styles.content}
-                            style={{
-                                padding: 24,
-                                margin: 0,
-                                minHeight: 280,
-                            }}
-                        >
-                            Content
+                    <Layout className={styles.layoutContent}>
+                        <Content className={styles.content}>
+                            <TaggingContent/>
                         </Content>
                     </Layout>
                 </Layout>

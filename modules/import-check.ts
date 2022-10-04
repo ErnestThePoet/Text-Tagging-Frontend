@@ -1,4 +1,3 @@
-import type { TaskId } from "./tasks";
 import type { CheckResult } from "./types";
 import { TAG_ITEM_VALIDATIONS } from "./tasks";
 // 通用检查步骤：
@@ -7,7 +6,7 @@ import { TAG_ITEM_VALIDATIONS } from "./tasks";
 
 // 类型检查
 export function checkImportDataset(
-    taskId: TaskId, importTexts: object): CheckResult{
+    taskId: number, importTexts: object): CheckResult{
     if (!Array.isArray(importTexts)) {
         return {
             ok: false,

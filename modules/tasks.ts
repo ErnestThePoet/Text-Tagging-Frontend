@@ -1,9 +1,5 @@
 import type { CheckResult } from "./types";
 
-export type TaskId =
-    1 // 文本价值观标注任务
-
-
 type ValueCheckFn = (x: any) => CheckResult;
 
 interface TagItemValidation{
