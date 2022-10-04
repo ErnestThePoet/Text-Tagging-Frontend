@@ -18,7 +18,10 @@ const APIS = {
     
     // Task dataset
     getDatasetStat: "dataset/get_stat",
-    importDataset:"dataset/import"
+    importDataset: "dataset/import",
+    
+    // Tagging
+    getTextsToTag:"text/get_texts_to_tag"
 }
 
 for (let i in APIS) {
