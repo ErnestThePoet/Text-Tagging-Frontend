@@ -45,7 +45,7 @@ export class Text {
         return taggedItemCount === this.tag.tagItems.length;
     }
 
-    getTextPreview(length: number = 7):string {
+    getTextPreview(length: number = 9):string {
         if (this.text.length <= length) {
             return this.text;
         }

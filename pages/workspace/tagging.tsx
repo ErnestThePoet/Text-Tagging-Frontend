@@ -5,7 +5,7 @@ import * as L from "../../logics/workspace/tagging";
 import { checkIsLoggedIn } from "../../logics/router-checks";
 import {
     DownOutlined,
-    QuestionCircleOutlined,
+    CheckCircleTwoTone,
     ExclamationCircleOutlined,
     CheckOutlined,
     CloseOutlined
@@ -13,7 +13,7 @@ import {
 import { MenuProps, Spin } from 'antd';
 import { List, Space, Layout, Button, Modal, Input, Select,Switch } from 'antd';
 import WorkspaceNav from "../../components/workspace/workspace-nav";
-import SingleTaggingControl from "../../components/workspace/tagging/single-tagging-control";
+import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
 import styles from "../../styles/workspace.module.scss";
 import userData from "../../states/user-data";
 import taggingData from "../../states/tagging-data";
@@ -74,11 +74,14 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                     <aside className={styles.asideTextList}>
                         <List
                             className={styles.listTextList}
-                            dataSource={new Array(100).fill("123")}
-                            renderItem={x => (
+                            dataSource={taggingData.texts}
+                            renderItem={(x,i) => (
                                 <List.Item className={styles.listItemText}>
-                                    {x}
-                                    <DownOutlined />
+                                    {`【${i+1}】${x.getTextPreview()}`}
+                                    {
+                                        x.isTagged() &&
+                                        <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                    }
                                 </List.Item>
                             )}
                         />
@@ -86,6 +89,14 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                         <Space direction="vertical"
                             size={5}
                             className={styles.spaceAsideBottomButtonWrapper}>
+                            {
+                                taggingData.texts.length > 0 &&
+                                <label>{`${taggingData.taggedTextCount}`
+                                        + `/${taggingData.texts.length} `
+                                        + `(${Math.round(taggingData.taggedTextCount
+                                            / taggingData.texts.length)})`}</label>
+                            }
+
                             <Button block disabled={!taggingData.hasUnsavedChanges}
                                 onClick={() => L.saveTaggingProgress()}>
                                 保存标注进度
@@ -106,7 +117,11 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                     </aside>
                     <Layout className={styles.layoutContent}>
                         <Content className={styles.content}>
-
+                            {
+                                taggingData.texts.map((x, i) => (
+                                    <SingleTaggingBox text={x} key={i}/>
+                                ))
+                            }
                         </Content>
                     </Layout>
                 </Layout>

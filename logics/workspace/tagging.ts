@@ -35,7 +35,6 @@ export const getTextsToTag = (options:
             message.error(res.data.msg);
         }
         else {
-            console.log(res.data.texts)
             taggingData.setTexts(res.data.texts);
             setIsGetTextsDialogOpen(false);
             message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);

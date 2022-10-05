@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { Text } from "../modules/objects/text";
+import type { IText } from "../modules/objects/text";
 import userData from "./user-data";
 import { getCurrentDateTimeStr } from "../modules/utils/date-time";
 
@@ -12,8 +13,15 @@ class TaggingData{
 
     hasUnsavedChanges: boolean = false;
 
-    setTexts(texts: Array<Text>) {
-        this.texts = texts;
+    get taggedTextCount(): number{
+        return this.texts.filter(x => x.isTagged()).length;
+    }
+
+    setTexts(texts: Array<IText>) {
+        this.texts = [];
+        for (const i of texts) {
+            this.texts.push(new Text(i));
+        }
     }
 
     changeTag(textIndex: number, tagItemIndex: number, value: string[]) {
