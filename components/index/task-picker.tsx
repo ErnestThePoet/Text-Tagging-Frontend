@@ -16,7 +16,7 @@ const TaskPicker: React.FC = observer(() => {
 
     return (
         loading ?
-            <Spin spinning={loading} />
+            <Spin />
             :
             <Radio.Group className={styles.radGroupTasks}
                 onChange={e => taskData.setTaskId(e.target.value as number)}

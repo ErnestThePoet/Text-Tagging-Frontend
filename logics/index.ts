@@ -3,7 +3,7 @@ import Router from "next/router";
 import APIS from "../modules/apis";
 import userData from "../states/user-data";
 import { pbkdf2Hash } from "../modules/utils/hash";
-import type { Task } from "../modules/types";
+import type { Task } from "../modules/objects/task";
 import taskData from "../states/task-data";
 import { message } from "antd";
 
@@ -81,7 +81,7 @@ export const fetchTasks = (
         accessId: userData.accessId
     }).then(res => {
         if (!res.data.success) {
-            message.error("获取任务列表失败:" + res.data.msg);
+            message.error(res.data.msg);
         }
         else {
             setTasks(res.data.tasks);

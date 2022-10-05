@@ -3,7 +3,7 @@ import axios from "axios";
 import userData from "./user-data";
 import APIS from "../modules/apis";
 import { message } from "antd";
-import type { TagItemMeta } from "../modules/types";
+import type { TagItemMeta } from "../modules/objects/task";
 
 export interface SingleDatasetStat{
     fileName: string;
@@ -13,12 +13,6 @@ export interface SingleDatasetStat{
 
     taggedTextProgress: number;
     totalTagItemProgress: number;
-}
-
-interface DatasetStat{
-    tagItemCount: number;
-
-    stats: SingleDatasetStat[];
 }
 
 class TaskData{
@@ -36,19 +30,19 @@ class TaskData{
     tagItemMetas: TagItemMeta[] = [];
 
     // 数据库统计信息
-    datasetStat: DatasetStat = {
-        tagItemCount: 0,
-        
-        stats: [{
-            fileName: "",
-            totalTextCount:0,
-            totalTagItemCount: 0,
-            taggedTextCount: 0,
+    datasetStats: SingleDatasetStat[] = [{
+        fileName: "",
+        totalTextCount: 0,
+        totalTagItemCount: 0,
+        taggedTextCount: 0,
             
-            taggedTextProgress: 0,
-            totalTagItemProgress:0
-        }]
-    };
+        taggedTextProgress: 0,
+        totalTagItemProgress: 0
+    }];
+
+    get tagItemCount(): number{
+        return this.tagItemMetas.length;
+    }
 
     setTaskId(taskId: number) {
         this.taskId = taskId;
@@ -70,8 +64,7 @@ class TaskData{
                 console.log(res.data);
             }
             else {
-                this.datasetStat.tagItemCount = res.data.tagItemCount;
-                this.datasetStat.stats = res.data.stats;
+                this.datasetStats = res.data.stats;
             }
         }).catch(reason => {
             message.error("获取数据库信息失败：" + reason);
