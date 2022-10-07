@@ -1,7 +1,7 @@
 import type { TagItemTaggingValueCheckFn } from "../states/task-data";
 import type { TagItemMetaOption } from "./objects/task";
 
-// 生成单选（单个值，取值限定的标注项）标注项检查方法
+// 生成单选（单个值，取值限定的标注项）标注项检查方法，注意为空是合法的
 export const createSingleChoiceValueCheck:
     (choices: any[]) => TagItemTaggingValueCheckFn
     = (choices: any[]) => (
@@ -21,7 +21,7 @@ export const createSingleChoiceValueCheck:
         }
     );
 
-// 生成多选（多个值，取值限定的标注项）标注项检查方法
+// 生成多选（多个值，取值限定的标注项）标注项检查方法，注意为空是合法的
 export const createMultipleChoiceValueCheck:
     (choices: any[], options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (choices: any[], options?: TagItemMetaOption) => (
@@ -64,7 +64,7 @@ export const createMultipleChoiceValueCheck:
         }
     );
 
-// 生成单元素（单个值，取值不限定的标注项）标注项检查方法
+// 生成单元素（单个值，取值不限定的标注项）标注项检查方法，注意为空是合法的
 export const createSingleElementCheck:
     (options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (options?: TagItemMetaOption) => (
@@ -76,7 +76,7 @@ export const createSingleElementCheck:
         }
     );
 
-// 生成多元素标注项检查方法
+// 生成多元素标注项检查方法，注意为空是合法的
 export const createMultipleElementCheck:
     (options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (options?: TagItemMetaOption) => (

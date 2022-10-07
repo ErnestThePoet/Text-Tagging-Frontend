@@ -48,11 +48,15 @@
     user-select: none;
     padding-left: 20px;
     padding-right: 10px;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .spaceAsideBottomButtonWrapper{
     width: 90%;
     align-self: center;
+    text-align: center;
 }
 
 .btnGetTexts {

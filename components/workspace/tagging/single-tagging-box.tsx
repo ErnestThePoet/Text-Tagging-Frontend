@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Divider } from "antd";
-import { FormOutlined } from "@ant-design/icons"
+import { Divider, Tag } from "antd";
+import { EditTwoTone } from "@ant-design/icons"
 import { observer } from "mobx-react-lite";
 import SingleChoiceEditor from "./tag-item-editors/single-choice";
 import MultipleChoiceEditor from "./tag-item-editors/multiple-choice";
@@ -22,8 +22,9 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
             <div className={styles.divSingleTaggingBox}>
                 <div className="div-tagging-box-text">
                     <span className="span-edit-icon">
-                        <FormOutlined />
+                        <EditTwoTone />
                     </span>
+                    <Tag color="blue">{`${props.textIndex+1}/${taggingData.texts.length}`}</Tag>
                     {taggingData.texts[props.textIndex].text}
                 </div>
 

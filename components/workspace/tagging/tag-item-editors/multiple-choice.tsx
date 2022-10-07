@@ -15,12 +15,11 @@ const MultipleChoiceEditor: React.FC<TagItemEditorProps> = observer(
         });
 
         useEffect(() => {
-            L.validateAndChangeTag(
+            L.changeTagAndValidate(
                 setValidationResult,
                 props.textIndex,
                 props.tagItemIndex,
-                taggingData.texts[props.textIndex].tag.tagItems[props.tagItemIndex].value,
-                true);
+                taggingData.texts[props.textIndex].tag.tagItems[props.tagItemIndex].value);
         }, []);
 
         return (
@@ -32,7 +31,7 @@ const MultipleChoiceEditor: React.FC<TagItemEditorProps> = observer(
                 <div className={classNames(styles.divTagItemEditor,
                     { [styles.divTagItemEditorError]: validationResult.status === "ERROR" })}>
                     <label className="lbl-editor-title">{props.tagItemMeta.editorTitle}</label>
-                    <Checkbox.Group onChange={e => L.validateAndChangeTag(
+                    <Checkbox.Group onChange={e => L.changeTagAndValidate(
                         setValidationResult,
                         props.textIndex,
                         props.tagItemIndex,

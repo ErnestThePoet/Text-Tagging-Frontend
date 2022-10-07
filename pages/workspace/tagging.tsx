@@ -77,10 +77,13 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                             dataSource={taggingData.texts}
                             renderItem={(x,i) => (
                                 <List.Item className={styles.listItemText}>
-                                    <Tag color="blue">{ i+1}</Tag>
-                                    {`${x.getTextPreview()}`}
+                                    <span>
+                                        <Tag color="geekblue">{i + 1}</Tag>
+                                        {`${taggingData.getTextPreview(i)}`}
+                                    </span>
+                                    
                                     {
-                                        x.isTagged() &&
+                                        taggingData.isTextTagged(i) &&
                                         <CheckCircleTwoTone twoToneColor="#52c41a" />
                                     }
                                 </List.Item>
@@ -92,10 +95,11 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                             className={styles.spaceAsideBottomButtonWrapper}>
                             {
                                 taggingData.texts.length > 0 &&
-                                <label>{`${taggingData.taggedTextCount}`
+                                <label>{
+                                    `${taggingData.taggedTextCount}`
                                         + `/${taggingData.texts.length} `
                                         + `(${Math.round(taggingData.taggedTextCount
-                                            / taggingData.texts.length)})`}</label>
+                                            / taggingData.texts.length)}%)`}</label>
                             }
 
                             <Button block disabled={!taggingData.hasUnsavedChanges}

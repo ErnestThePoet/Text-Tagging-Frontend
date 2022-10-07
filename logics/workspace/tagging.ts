@@ -54,14 +54,13 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     }
 }
 
-export const validateAndChangeTag=(
+export const changeTagAndValidate=(
     setValidationResult: React.Dispatch<React.SetStateAction<ValidationResult>>,
-    textIndex: number, tagItemIndex: number, value: string[],validationOnly:boolean=false
+    textIndex: number, tagItemIndex: number, value: string[]
 ) => {
-    const validation = taskData.taggingValidations.find(
-        x => x.id === taggingData.texts[textIndex].tag.tagItems[tagItemIndex].id)!;
-    
-    const validationResult = validation.valueCheck(value);
+    taggingData.changeTag(textIndex, tagItemIndex, value);
+
+    const validationResult = taggingData.validateTagItem(textIndex, tagItemIndex);
 
     if (validationResult.ok) {
         setValidationResult({
@@ -74,9 +73,5 @@ export const validateAndChangeTag=(
             status: "ERROR",
             msg: validationResult.msg
         });
-    }
-
-    if (!validationOnly) {
-        taggingData.changeTag(textIndex, tagItemIndex, value);
     }
 }
