@@ -1,12 +1,64 @@
-import type { CheckResult } from "./types";
-import { TAG_ITEM_VALIDATIONS } from "./tasks";
+import taskData from "../states/task-data";
+import * as CHECK_FNS from "./import-check-fns";
+
+export interface CheckResult { ok: boolean; msg: string; }
+export type ValueCheckFn = (x: any) => CheckResult;
+
+interface TagItemValidation {
+    // 标注项数量
+    tagItemCount: number;
+    // 各标注项名称与取值检查方法
+    tagItemMetas: Array<{
+        name: string;
+        valueCheck: ValueCheckFn;
+    }>
+}
+
+const generateValidation = () => {
+    const validation: TagItemValidation = {
+        tagItemCount: taskData.tagItemMetas.length,
+        tagItemMetas: []
+    };
+
+    for (const i of taskData.tagItemMetas) {
+        let valueCheck: ValueCheckFn;
+        switch (i.type) {
+            case 0:
+                valueCheck = CHECK_FNS.createSingleChoiceValueCheck(
+                    i.choices!.map(x => x.external)
+                );
+                break;
+            case 1:
+                valueCheck = CHECK_FNS.createMultipleChoiceValueCheck(
+                    i.choices!.map(x => x.external)
+                );
+                break;
+            case 2:
+                valueCheck = CHECK_FNS.createSingleElementCheck(i.options);
+                break;
+            case 3:
+                valueCheck = CHECK_FNS.createMultipleElementCheck(i.options);
+                break;
+            default:
+                valueCheck = (x: any[]) => ({ ok: false, msg: "标注项类型不受支持" });
+                break;
+        }
+
+        validation.tagItemMetas.push({
+            name: i.name,
+            valueCheck
+        });
+    }
+
+    return validation;
+}
+
 // 通用检查步骤：
 // 1.检查元素类型
 // 2.检查元素取值或内部属性
 
 // 类型检查
-export function checkImportDataset(
-    taskId: number, importTexts: object): CheckResult{
+export function checkImportDataset(importTexts: any): CheckResult{
     if (!Array.isArray(importTexts)) {
         return {
             ok: false,
@@ -57,7 +109,7 @@ export function checkImportDataset(
             };
         }
 
-        const validation = TAG_ITEM_VALIDATIONS[taskId];
+        const validation = generateValidation();
 
         if (currentText.tag.length !== validation.tagItemCount) {
             return {
@@ -93,11 +145,11 @@ export function checkImportDataset(
         }
 
         for (const j of validation.tagItemMetas) {
-            const matchingTag = currentText.tag.find(x => x.itemName === j.itemName);
+            const matchingTag = currentText.tag.find(x => x.itemName === j.name);
             if (matchingTag === undefined) {
                 return {
                     ok: false,
-                    msg: `第${i}个文本没有包含标注项"${j.itemName}"`
+                    msg: `第${i}个文本没有包含标注项"${j.name}"`
                 };
             }
 
@@ -106,7 +158,7 @@ export function checkImportDataset(
             if (!valueCheckResult.ok) {
                 return {
                     ok: false,
-                    msg: `第${i}个文本的标注项"${j.itemName}"取值非法：${valueCheckResult.msg}`
+                    msg: `第${i}个文本的标注项"${j.name}"取值非法：${valueCheckResult.msg}`
                 };
             }
         }

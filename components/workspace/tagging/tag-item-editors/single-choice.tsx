@@ -4,6 +4,7 @@ import styles from "../../../styles/workspace.module.scss";
 
 type onChangeFn = (value: string) => void;
 interface SingleChoiceEditorProps {
+    key: string | number;
     tagItemName: string;
     value: string;
     choices: Array<{ value: string; label: string; }>;

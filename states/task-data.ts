@@ -48,6 +48,18 @@ class TaskData{
         this.taskId = taskId;
     }
 
+    setName(name: string) {
+        this.name = name;
+    }
+
+    setTargetTagsPerText(targetTagsPerText: number) {
+        this.targetTagsPerText = targetTagsPerText;
+    }
+
+    setTagItemMetas(tagItemMetas: TagItemMeta[]) {
+        this.tagItemMetas = tagItemMetas;
+    }
+
     updateDatasetStat(onStart:()=>void,onFinish:()=>void) {
         if (!userData.isAdmin) {
             return;
@@ -59,12 +71,11 @@ class TaskData{
             accessId: userData.accessId,
             taskId: this.taskId
         }).then(res => {
-            if (!res.data.success) {
-                message.error("获取数据库信息失败：" + res.data.msg);
-                console.log(res.data);
+            if (res.data.success) {
+                this.datasetStats = res.data.stats;
             }
             else {
-                this.datasetStats = res.data.stats;
+                message.error("获取数据库信息失败：" + res.data.msg);
             }
         }).catch(reason => {
             message.error("获取数据库信息失败：" + reason);

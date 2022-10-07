@@ -16,7 +16,7 @@ export interface Tag {
 
 export interface IText{
     id: number;
-    uId: string;
+    userId: string;
     text: string;
     tag: Tag;
 }
@@ -24,13 +24,13 @@ export interface IText{
 export class Text {
     constructor(text: IText) {
         this.id = text.id;
-        this.uId = text.uId;
+        this.userId = text.userId;
         this.text = text.text;
         this.tag = text.tag;
     }
 
     id: number=-1;
-    uId: string="";
+    userId: string="";
     text: string="";
     tag: Tag = { id: null, textId: -1, taggerName: "", tagTime: "", tagItems: [] };
     

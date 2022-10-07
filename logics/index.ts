@@ -80,24 +80,52 @@ export const fetchTasks = (
     axios.postForm(APIS.getTasks, {
         accessId: userData.accessId
     }).then(res => {
-        if (!res.data.success) {
-            message.error(res.data.msg);
+        if (res.data.success) {
+            let tagItemMetaDetails;
+            try {
+                tagItemMetaDetails = JSON.parse(res.data.tagItemMetaDetailsJsonStr);
+            }
+            catch (e) {
+                console.log(e);
+                message.error("标注项详情JSON数据解析失败");
+                return;
+            }
+            setTasks(mergeTaskTagItemMetas(res.data.tasks, tagItemMetaDetails));
+            setLoading(false);
         }
         else {
-            setTasks(res.data.tasks);
+            message.error(res.data.msg);
         }
     }).catch(reason => {
         console.log(reason);
         message.error(reason.message);
-    }).finally(() => {
-        setLoading(false);
     });
 }
 
-export const enterSystem = (tasks: Task[]) => {
-    if (!tasks.some(x => x.id == taskData.taskId)) {
+export const enterSystem = (tasks: Task[], selectedTaskIndex: number) => {
+    if (!(selectedTaskIndex in tasks)) {
         message.warn("请选择一个标注任务");
         return;
     }
+
+    const selectedTask = tasks[selectedTaskIndex];
+
+    // 将选择的标注任务信息注入系统
+    taskData.setTaskId(selectedTask.id);
+    taskData.setName(selectedTask.name);
+    taskData.setTargetTagsPerText(selectedTask.targetTagsPerText);
+    taskData.setTagItemMetas(selectedTask.tagItemMetas);
+
     Router.push("/workspace/tagging");
+}
+
+const mergeTaskTagItemMetas = (tasks: any[],tagItemMetaDetails:any) => {
+    for (const i of tasks) {
+        const tagItemMetaDetail = tagItemMetaDetails[i.id];
+        for (const j of i.tagItemMetas){
+            Object.assign(j, tagItemMetaDetail.tagItemMetas.find(x => x.name === j.name));
+        }
+    }
+    
+    return tasks;
 }

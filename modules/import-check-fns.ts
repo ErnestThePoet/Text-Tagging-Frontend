@@ -1,19 +1,8 @@
-import type { CheckResult } from "./types";
+import type { ValueCheckFn } from "./import-check";
+import type { TagItemMetaOption } from "./objects/task";
 
-type ValueCheckFn = (x: any) => CheckResult;
-
-interface TagItemValidation{
-    // 标注项数量
-    tagItemCount: number;
-    // 各标注项名称与取值检查方法
-    tagItemMetas: Array<{
-        itemName: string;
-        valueCheck: ValueCheckFn;
-    }>
-}
-
-// 生成单选标注项检查方法
-const createSingleChoiceValueCheck:
+// 生成单选（单个值，取值限定的标注项）标注项检查方法
+export const createSingleChoiceValueCheck:
     (choices: any[]) => ValueCheckFn
     = (choices: any[]) => (
         (x: any) => {
@@ -31,20 +20,10 @@ const createSingleChoiceValueCheck:
         }
     );
 
-// 生成多选标注项检查方法
-const createMultipleChoiceValueCheck:
-    (choices: any[],
-        options?:{
-            allowDuplicate?: boolean;
-            minCount ?: number;
-            maxCount ?: number;
-        }) => ValueCheckFn
-    = (choices: any[],
-        options?: {
-            allowDuplicate?: boolean;
-            minCount?: number;
-            maxCount?: number;
-        }) => (
+// 生成多选（多个值，取值限定的标注项）标注项检查方法
+export const createMultipleChoiceValueCheck:
+    (choices: any[], options?: TagItemMetaOption) => ValueCheckFn
+    = (choices: any[], options?: TagItemMetaOption) => (
         (x: any) => {
             if (!Array.isArray(x)) {
                 return {
@@ -91,18 +70,30 @@ const createMultipleChoiceValueCheck:
         }
     );
 
+// 生成单元素（单个值，取值不限定的标注项）标注项检查方法
+export const createSingleElementCheck:
+    (options?: TagItemMetaOption) => ValueCheckFn
+    = (options?: TagItemMetaOption) => (
+        (x: any) => {
+            if (options?.type !== undefined
+                && typeof (x) !== options.type[0]) {
+                return {
+                    ok: false,
+                    msg: "元素类型不是" + options.type[0]
+                }
+            }
+
+            return {
+                ok: true,
+                msg: ""
+            }
+        }
+    );
+
 // 生成多元素标注项检查方法
-const createMultipleElementCheck:
-    (options?: {
-            allowDuplicate?: boolean;
-            minCount?: number;
-            maxCount?: number;
-        }) => ValueCheckFn
-    = (options?: {
-            allowDuplicate?: boolean;
-            minCount?: number;
-            maxCount?: number;
-        }) => (
+export const createMultipleElementCheck:
+    (options?: TagItemMetaOption) => ValueCheckFn
+    = (options?: TagItemMetaOption) => (
         (x: any) => {
             if (!Array.isArray(x)) {
                 return {
@@ -135,35 +126,21 @@ const createMultipleElementCheck:
                 }
             }
 
+            if (options?.type !== undefined) {
+                if ((options.type.length === 1
+                    && x.some(u => typeof (u) !== options.type![0]))
+                    || (options.type.length > 1
+                        && x.some((u, i) => typeof (u) !== options.type![i]))) {
+                    return {
+                        ok: false,
+                        msg: "元素类型不符合要求"
+                    }
+                }
+            }
+
             return {
                 ok: true,
                 msg: ""
             }
         }
     );
-
-export const TAG_ITEM_VALIDATIONS: { [_: string]: TagItemValidation } = {
-    "1": {
-        tagItemCount: 4,
-        tagItemMetas: [
-            {
-                itemName: "分级",
-                valueCheck: createSingleChoiceValueCheck([-1, 0, 1, 2, 3, 4, 5])
-            },
-            {
-                itemName: "分类",
-                valueCheck: createSingleChoiceValueCheck(["", "是", "否"])
-            },
-            {
-                itemName: "维度",
-                valueCheck: createMultipleChoiceValueCheck(
-                    ["观点", "情感", "立场", "态度", "道德", "法律", "其它"],
-                    { maxCount: 7 })
-            },
-            {
-                itemName: "价值观词",
-                valueCheck: createMultipleElementCheck()
-            }
-        ]
-    }
-};

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Radio, Button, Spin } from 'antd';
-import taskData from '../../states/task-data';
 import * as L from "../../logics/index";
 import styles from '../../styles/index.module.scss';
-import type { Task } from '../../modules/types';
+import type { Task } from '../../modules/objects/task';
 
 const TaskPicker: React.FC = observer(() => {
     const [loading, setLoading] = useState(false);
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [selectedTaskIndex, setSelectedTaskIndex] = useState(-1);
 
     useEffect(() => {
         L.fetchTasks(setTasks, setLoading);
@@ -19,17 +19,17 @@ const TaskPicker: React.FC = observer(() => {
             <Spin />
             :
             <Radio.Group className={styles.radGroupTasks}
-                onChange={e => taskData.setTaskId(e.target.value as number)}
-                value={taskData.taskId}>
+                onChange={e => setSelectedTaskIndex(e.target.value as number)}
+                value={selectedTaskIndex}>
                 <div className={styles.divTaskList}>
                     {
                         tasks.map((x, i) => (
-                            <Radio.Button key={i} value={x.id}>{x.name}</Radio.Button>
+                            <Radio.Button key={i} value={i}>{x.name}</Radio.Button>
                         ))
                     }
                 </div>
                 <Button className={styles.btnEnterSystem} type="primary" block
-                    onClick={() => L.enterSystem(tasks)}>
+                    onClick={() => L.enterSystem(tasks,selectedTaskIndex)}>
                     进入系统
                 </Button>
             </Radio.Group>

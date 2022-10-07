@@ -31,13 +31,13 @@ export const getTextsToTag = (options:
         targetFile: options.targetFile,
         moreTagsFirst: options.moreTagsFirst
     }).then(res => {
-        if (!res.data.success) {
-            message.error(res.data.msg);
-        }
-        else {
+        if (res.data.success) {
             taggingData.setTexts(res.data.texts);
             setIsGetTextsDialogOpen(false);
             message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);
+        }
+        else {
+            message.error(res.data.msg);
         }
     }).catch(reason => {
         console.log(reason);

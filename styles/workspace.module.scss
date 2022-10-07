@@ -37,6 +37,12 @@
     @include slim-scroll-bar;
 }
 
+.sider {
+    background: #fff;
+    height: calc(100vh - $nav-height);
+    //width: $sider-width;
+}
+
 .listItemText{
     cursor: pointer;
     user-select: none;
