@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Key } from "react";
 import { observer } from "mobx-react-lite";
 import { Progress, Divider, Empty, Table, Spin, Space, Button, Upload } from "antd";
@@ -7,7 +7,6 @@ import { ReloadOutlined } from '@ant-design/icons';
 import type { SingleDatasetStat } from "../../../states/task-data";
 import { stringCompare } from "../../../modules/utils/cmp";
 import * as L from "../../../logics/workspace/management";
-import ui from "../../../states/ui";
 import styles from "../../../styles/workspace.module.scss";
 import taskData from "../../../states/task-data";
 
@@ -70,18 +69,16 @@ const DatasetContent: React.FC = observer(() => {
                 {
                     taskData.datasetStats.length <= 1
                         ?
-                        <>
-                            <Empty description="此标注任务还没有数据集">
-                                <Upload {...L.uploadProps}
-                                    accept="application/json"
-                                    maxCount={1}
-                                    showUploadList={false}>
-                                    <Button type="primary">
-                                        导入第一个数据集
-                                    </Button>
-                                </Upload>
-                            </Empty>
-                        </>
+                        <Empty description="此标注任务还没有数据集">
+                            <Upload {...L.uploadProps}
+                                accept="application/json"
+                                maxCount={1}
+                                showUploadList={false}>
+                                <Button type="primary">
+                                    导入第一个数据集
+                                </Button>
+                            </Upload>
+                        </Empty>
                         :
                         <>
                             <div className="total-progress-wrapper">
@@ -91,7 +88,7 @@ const DatasetContent: React.FC = observer(() => {
                                         + `${taskData.datasetStats[0].totalTextCount}`}</label>
                                     <Progress type="circle"
                                         percent={taskData.datasetStats[0].taggedTextProgress * 100}
-                                        format={ x=>`${x?.toFixed(0)}%` } />
+                                        format={x => `${x?.toFixed(0)}%`} />
                                 </div>
 
                                 <div className="total-progress">
@@ -101,7 +98,7 @@ const DatasetContent: React.FC = observer(() => {
                                         + `${taskData.datasetStats[0].totalTextCount})`}</label>
                                     <Progress type="circle"
                                         percent={taskData.datasetStats[0].totalTagItemProgress * 100}
-                                        format={x => `${x?.toFixed(0)}%`}/>
+                                        format={x => `${x?.toFixed(0)}%`} />
                                 </div>
                             </div>
 

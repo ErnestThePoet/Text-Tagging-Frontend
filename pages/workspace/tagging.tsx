@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import classNames from "classnames";
 import * as L from "../../logics/workspace/tagging";
 import { checkIsLoggedIn } from "../../logics/router-checks";
 import {
-    DownOutlined,
     CheckCircleTwoTone,
     ExclamationCircleOutlined,
     CheckOutlined,
     CloseOutlined
 } from '@ant-design/icons';
 import { Tag, Spin } from 'antd';
-import { List, Space, Layout, Button, Modal, Input, Select,Switch } from 'antd';
+import { List, Space, Layout, Button, Modal, Input, Select, Switch, Empty } from 'antd';
 import WorkspaceNav from "../../components/workspace/workspace-nav";
 import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
 import styles from "../../styles/workspace.module.scss";
-import userData from "../../states/user-data";
 import taggingData from "../../states/tagging-data";
 import taskData from "../../states/task-data";
 
@@ -122,6 +119,10 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                     </aside>
                     <Layout className={styles.layoutContent}>
                         <Content className={styles.content}>
+                            {
+                                taggingData.texts.length === 0 &&
+                                <Empty description="快去获取一批待标注文本吧"/>
+                            }
                             {
                                 taggingData.texts.map((_, i) => (
                                     <SingleTaggingBox textIndex={i} key={i}/>
