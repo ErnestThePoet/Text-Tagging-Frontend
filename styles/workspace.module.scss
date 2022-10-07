@@ -48,9 +48,6 @@
     user-select: none;
     padding-left: 20px;
     padding-right: 10px;
-
-    display: flex;
-    justify-content: space-between;
 }
 
 .spaceAsideBottomButtonWrapper{
@@ -160,9 +157,51 @@
             cursor: pointer;
         }
     }
+
+    >div[class=div-tagging-box-tag-items-wrapper]{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+
+.divTagItemEditorWrapper{
+    position: relative;
+
+    >label[class=lbl-error-msg] {
+        color: #ff4d4f;
+        position: absolute;
+        top: -23px;
+    }
 }
 
 .divTagItemEditor{
+    padding: 10px 20px;
     max-height: 250px;
     overflow-y: auto;
+
+    border: 1px solid #f0f0f0;
+    border-radius: 2px;
+
+    display: flex;
+    flex-direction: column;
+
+    transition-duration: 500ms;
+
+    >label[class=lbl-editor-title]{
+        font-weight: bold;
+        font-size: 16px;
+        align-self: center;
+        margin-bottom: 10px;
+    }
+}
+
+.lblErrorMsg{
+    color: #ff4d4f;
+        
+}
+
+.divTagItemEditorError{
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
 }

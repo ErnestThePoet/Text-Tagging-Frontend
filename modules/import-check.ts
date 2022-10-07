@@ -1,57 +1,5 @@
+import type { CheckResult } from "../states/task-data";
 import taskData from "../states/task-data";
-import * as CHECK_FNS from "./import-check-fns";
-
-export interface CheckResult { ok: boolean; msg: string; }
-export type ValueCheckFn = (x: any) => CheckResult;
-
-interface TagItemValidation {
-    // 标注项数量
-    tagItemCount: number;
-    // 各标注项名称与取值检查方法
-    tagItemMetas: Array<{
-        name: string;
-        valueCheck: ValueCheckFn;
-    }>
-}
-
-const generateValidation = () => {
-    const validation: TagItemValidation = {
-        tagItemCount: taskData.tagItemMetas.length,
-        tagItemMetas: []
-    };
-
-    for (const i of taskData.tagItemMetas) {
-        let valueCheck: ValueCheckFn;
-        switch (i.type) {
-            case 0:
-                valueCheck = CHECK_FNS.createSingleChoiceValueCheck(
-                    i.choices!.map(x => x.external)
-                );
-                break;
-            case 1:
-                valueCheck = CHECK_FNS.createMultipleChoiceValueCheck(
-                    i.choices!.map(x => x.external)
-                );
-                break;
-            case 2:
-                valueCheck = CHECK_FNS.createSingleElementCheck(i.options);
-                break;
-            case 3:
-                valueCheck = CHECK_FNS.createMultipleElementCheck(i.options);
-                break;
-            default:
-                valueCheck = (x: any[]) => ({ ok: false, msg: "标注项类型不受支持" });
-                break;
-        }
-
-        validation.tagItemMetas.push({
-            name: i.name,
-            valueCheck
-        });
-    }
-
-    return validation;
-}
 
 // 通用检查步骤：
 // 1.检查元素类型
@@ -109,7 +57,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             };
         }
 
-        const validation = generateValidation();
+        const validation = taskData.importValidation;
 
         if (currentText.tag.length !== validation.tagItemCount) {
             return {

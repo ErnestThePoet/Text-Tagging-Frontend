@@ -4,6 +4,8 @@ import userData from "./user-data";
 import APIS from "../modules/apis";
 import { message } from "antd";
 import type { TagItemMeta } from "../modules/objects/task";
+import * as IMPORT_CHECK_FNS from "../modules/import-check-fns";
+import * as TAGGING_CHECK_FNS from "../modules/tagging-check-fns";
 
 export interface SingleDatasetStat{
     fileName: string;
@@ -13,6 +15,103 @@ export interface SingleDatasetStat{
 
     taggedTextProgress: number;
     totalTagItemProgress: number;
+}
+
+export interface CheckResult { ok: boolean; msg: string; }
+
+export type TagItemImportValueCheckFn = (x: any) => CheckResult;
+export type TagItemTaggingValueCheckFn = (x: string[]) => CheckResult;
+
+interface SingleTagItemTaggingValidation{
+    id: number;
+    valueCheck: TagItemTaggingValueCheckFn;
+}
+
+export interface TagItemImportValidation {
+    // 标注项数量
+    tagItemCount: number;
+    // 各标注项名称与取值检查方法
+    tagItemMetas: Array<{
+        name: string;
+        valueCheck: TagItemImportValueCheckFn;
+    }>
+}
+
+const getTagItemTaggingValidations = (tagItemMetas: TagItemMeta[]) => {
+    const validation: SingleTagItemTaggingValidation[] = [];
+
+    for (const i of tagItemMetas) {
+        let valueCheck: TagItemTaggingValueCheckFn;
+        switch (i.type) {
+            case 0:
+                valueCheck = TAGGING_CHECK_FNS.createSingleChoiceValueCheck(
+                    i.choices!.map(x => x.internal)
+                );
+                break;
+            case 1:
+                valueCheck = TAGGING_CHECK_FNS.createMultipleChoiceValueCheck(
+                    i.choices!.map(x => x.internal),
+                    i.options
+                );
+                break;
+            case 2:
+                valueCheck = TAGGING_CHECK_FNS.createSingleElementCheck(i.options);
+                break;
+            case 3:
+                valueCheck = TAGGING_CHECK_FNS.createMultipleElementCheck(i.options);
+                break;
+            default:
+                valueCheck = (x: string[]) => ({ ok: false, msg: "标注项类型不受支持" });
+                break;
+        }
+
+        validation.push({
+            id: i.id,
+            valueCheck
+        });
+    }
+
+    return validation;
+}
+
+const getTagItemImportValidation = (tagItemMetas:TagItemMeta[]) => {
+    const validation: TagItemImportValidation = {
+        tagItemCount: tagItemMetas.length,
+        tagItemMetas: []
+    };
+
+    for (const i of tagItemMetas) {
+        let valueCheck: TagItemImportValueCheckFn;
+        switch (i.type) {
+            case 0:
+                valueCheck = IMPORT_CHECK_FNS.createSingleChoiceValueCheck(
+                    i.choices!.map(x => x.external)
+                );
+                break;
+            case 1:
+                valueCheck = IMPORT_CHECK_FNS.createMultipleChoiceValueCheck(
+                    i.choices!.map(x => x.external),
+                    i.options
+                );
+                break;
+            case 2:
+                valueCheck = IMPORT_CHECK_FNS.createSingleElementCheck(i.options);
+                break;
+            case 3:
+                valueCheck = IMPORT_CHECK_FNS.createMultipleElementCheck(i.options);
+                break;
+            default:
+                valueCheck = (x: any) => ({ ok: false, msg: "标注项类型不受支持" });
+                break;
+        }
+
+        validation.tagItemMetas.push({
+            name: i.name,
+            valueCheck
+        });
+    }
+
+    return validation;
 }
 
 class TaskData{
@@ -28,6 +127,13 @@ class TaskData{
     targetTagsPerText: number = 0;
     // 标注项信息
     tagItemMetas: TagItemMeta[] = [];
+
+    importValidation: TagItemImportValidation = {
+        tagItemCount: 0,
+        tagItemMetas: []
+    };
+
+    taggingValidations: SingleTagItemTaggingValidation[] = [];
 
     // 数据库统计信息
     datasetStats: SingleDatasetStat[] = [{
@@ -58,6 +164,8 @@ class TaskData{
 
     setTagItemMetas(tagItemMetas: TagItemMeta[]) {
         this.tagItemMetas = tagItemMetas;
+        this.importValidation = getTagItemImportValidation(this.tagItemMetas);
+        this.taggingValidations = getTagItemTaggingValidations(this.tagItemMetas);
     }
 
     updateDatasetStat(onStart:()=>void,onFinish:()=>void) {

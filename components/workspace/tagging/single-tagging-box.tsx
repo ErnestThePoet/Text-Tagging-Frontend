@@ -9,26 +9,54 @@ import styles from "../../../styles/workspace.module.scss";
 import { Text } from "../../../modules/objects/text";
 import { TagItemType } from "../../../modules/objects/task";
 import taskData from "../../../states/task-data";
+import taggingData from "../../../states/tagging-data";
 
-const SingleTaggingBox: React.FC<{ text: Text; }> =
-    observer((props: { text: Text; }) => {
-    
-    return (
-        <div className={styles.divSingleTaggingBox}>
-            <div className="div-tagging-box-text">
-                <span className="span-edit-icon">
-                    <FormOutlined />
-                </span>
-                {props.text.text}
+interface SingleTaggingBoxProps {
+    textIndex: number;
+}
+
+const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
+    observer((props: SingleTaggingBoxProps) => {
+
+        return (
+            <div className={styles.divSingleTaggingBox}>
+                <div className="div-tagging-box-text">
+                    <span className="span-edit-icon">
+                        <FormOutlined />
+                    </span>
+                    {taggingData.texts[props.textIndex].text}
+                </div>
+
+                <Divider />
+
+                <div className="div-tagging-box-tag-items-wrapper">
+                    {
+                        taskData.tagItemMetas.map((x, i) => {
+                            switch (x.type) {
+                                case 0:
+                                    return (
+                                        <SingleChoiceEditor
+                                            key={i}
+                                            textIndex={props.textIndex}
+                                            tagItemIndex={taggingData.texts[props.textIndex]
+                                            .tag.tagItems.findIndex(u=>u.id===x.id)}
+                                            tagItemMeta={x} />
+                                    );
+                                case 1:
+                                    return (
+                                        <MultipleChoiceEditor
+                                            key={i}
+                                            textIndex={props.textIndex}
+                                            tagItemIndex={taggingData.texts[props.textIndex]
+                                                .tag.tagItems.findIndex(u => u.id === x.id)}
+                                            tagItemMeta={x} />
+                                    );
+                            }
+                        })
+                    }
+                </div>
             </div>
-
-            <Divider/>
-
-            <div className="div-tagging-box-tag-items-wrapper">
-
-            </div>
-        </div>
-    );
-});
+        );
+    });
 
 export default SingleTaggingBox;

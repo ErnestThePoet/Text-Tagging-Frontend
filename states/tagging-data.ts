@@ -8,7 +8,7 @@ class TaggingData{
     constructor() {
         makeAutoObservable(this);
     }
-
+    
     texts: Array<Text> = [];
 
     hasUnsavedChanges: boolean = false;

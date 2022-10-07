@@ -1,15 +1,16 @@
-import type { TagItemImportValueCheckFn } from "../states/task-data";
+import type { TagItemTaggingValueCheckFn } from "../states/task-data";
 import type { TagItemMetaOption } from "./objects/task";
 
 // 生成单选（单个值，取值限定的标注项）标注项检查方法
 export const createSingleChoiceValueCheck:
-    (choices: any[]) => TagItemImportValueCheckFn
+    (choices: any[]) => TagItemTaggingValueCheckFn
     = (choices: any[]) => (
-        (x: any) => {
-            if (!choices.includes(x)) {
+        (x: string[]) => {
+            
+            if (x.some(u => !choices.includes(u))) {
                 return {
                     ok: false,
-                    msg: `不是[${choices}]之一`
+                    msg: "包含非法选项"
                 }
             }
 
@@ -22,20 +23,13 @@ export const createSingleChoiceValueCheck:
 
 // 生成多选（多个值，取值限定的标注项）标注项检查方法
 export const createMultipleChoiceValueCheck:
-    (choices: any[], options?: TagItemMetaOption) => TagItemImportValueCheckFn
+    (choices: any[], options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (choices: any[], options?: TagItemMetaOption) => (
-        (x: any) => {
-            if (!Array.isArray(x)) {
-                return {
-                    ok: false,
-                    msg: "不是数组类型"
-                }
-            }
-
+        (x: string[]) => {
             if (x.some(u => !choices.includes(u))) {
                 return {
                     ok: false,
-                    msg: `不是全部由[${choices}]中的选项组成`
+                    msg: "包含非法选项"
                 }
             }
 
@@ -43,7 +37,7 @@ export const createMultipleChoiceValueCheck:
                 && x.length < options.minCount) {
                 return {
                     ok: false,
-                    msg: "元素数量过少"
+                    msg: `至少选择${options.minCount}个`
                 }
             }
 
@@ -51,7 +45,7 @@ export const createMultipleChoiceValueCheck:
                 && x.length > options.maxCount) {
                 return {
                     ok: false,
-                    msg: "元素数量过多"
+                    msg: `至多选择${options.maxCount}个`
                 }
             }
 
@@ -72,17 +66,9 @@ export const createMultipleChoiceValueCheck:
 
 // 生成单元素（单个值，取值不限定的标注项）标注项检查方法
 export const createSingleElementCheck:
-    (options?: TagItemMetaOption) => TagItemImportValueCheckFn
+    (options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (options?: TagItemMetaOption) => (
-        (x: any) => {
-            if (options?.type !== undefined
-                && typeof (x) !== options.type[0]) {
-                return {
-                    ok: false,
-                    msg: "元素类型不是" + options.type[0]
-                }
-            }
-
+        (x: string[]) => {
             return {
                 ok: true,
                 msg: ""
@@ -92,21 +78,14 @@ export const createSingleElementCheck:
 
 // 生成多元素标注项检查方法
 export const createMultipleElementCheck:
-    (options?: TagItemMetaOption) => TagItemImportValueCheckFn
+    (options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (options?: TagItemMetaOption) => (
-        (x: any) => {
-            if (!Array.isArray(x)) {
-                return {
-                    ok: false,
-                    msg: "不是数组类型"
-                }
-            }
-
+        (x: string[]) => {
             if (options?.minCount !== undefined
                 && x.length < options.minCount) {
                 return {
                     ok: false,
-                    msg: "元素数量过少"
+                    msg: `至少选择${options.minCount}个`
                 }
             }
 
@@ -114,7 +93,7 @@ export const createMultipleElementCheck:
                 && x.length > options.maxCount) {
                 return {
                     ok: false,
-                    msg: "元素数量过多"
+                    msg: `至多选择${options.maxCount}个`
                 }
             }
 
@@ -123,18 +102,6 @@ export const createMultipleElementCheck:
                 return {
                     ok: false,
                     msg: "包含重复元素"
-                }
-            }
-
-            if (options?.type !== undefined) {
-                if ((options.type.length === 1
-                    && x.some(u => typeof (u) !== options.type![0]))
-                    || (options.type.length > 1
-                        && x.some((u, i) => typeof (u) !== options.type![i]))) {
-                    return {
-                        ok: false,
-                        msg: "元素类型不符合要求"
-                    }
                 }
             }
 

@@ -1,3 +1,5 @@
+import { makeAutoObservable } from "mobx";
+
 export interface TagItem {
     id: number;
     value: string[];
@@ -23,6 +25,9 @@ export interface IText{
 
 export class Text {
     constructor(text: IText) {
+        // 类必须额外调用makeAutoObservable，否则使用它们的可观察对象无法观察它们的变化
+        makeAutoObservable(this);
+        
         this.id = text.id;
         this.userId = text.userId;
         this.text = text.text;

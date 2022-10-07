@@ -10,7 +10,7 @@ import {
     CheckOutlined,
     CloseOutlined
 } from '@ant-design/icons';
-import { MenuProps, Spin } from 'antd';
+import { Tag, Spin } from 'antd';
 import { List, Space, Layout, Button, Modal, Input, Select,Switch } from 'antd';
 import WorkspaceNav from "../../components/workspace/workspace-nav";
 import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
@@ -56,7 +56,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
         confirm({
             title: "保存标注",
             icon: <ExclamationCircleOutlined />,
-            content: "是否保存所做标注？",
+            content: "存在尚未提交的标注。是否提交所做标注？",
             onOk() {
                 L.saveTaggingProgress(() => {
                     L.openGetTextsDialog(setIsGetTextsDialogOpen,
@@ -77,7 +77,8 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                             dataSource={taggingData.texts}
                             renderItem={(x,i) => (
                                 <List.Item className={styles.listItemText}>
-                                    {`【${i+1}】${x.getTextPreview()}`}
+                                    <Tag color="blue">{ i+1}</Tag>
+                                    {`${x.getTextPreview()}`}
                                     {
                                         x.isTagged() &&
                                         <CheckCircleTwoTone twoToneColor="#52c41a" />
@@ -99,7 +100,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
 
                             <Button block disabled={!taggingData.hasUnsavedChanges}
                                 onClick={() => L.saveTaggingProgress()}>
-                                保存标注进度
+                                提交标注进度
                             </Button>
                             <Button className={styles.btnGetTexts} type="primary" block
                                 onClick={() => {
@@ -118,8 +119,8 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                     <Layout className={styles.layoutContent}>
                         <Content className={styles.content}>
                             {
-                                taggingData.texts.map((x, i) => (
-                                    <SingleTaggingBox text={x} key={i}/>
+                                taggingData.texts.map((_, i) => (
+                                    <SingleTaggingBox textIndex={i} key={i}/>
                                 ))
                             }
                         </Content>
