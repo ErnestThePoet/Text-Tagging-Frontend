@@ -21,7 +21,8 @@ const APIS = {
     importDataset: "dataset/import",
     
     // Tagging
-    getTextsToTag:"text/get_texts_to_tag"
+    getTextsToTag: "text/get_texts_to_tag",
+    addTags: "text/add_tags"
 }
 
 for (let i in APIS) {

@@ -67,15 +67,6 @@ export const toImportTextsTags = (
         tags: []
     };
 
-    // 由标注项名称到标注项对象的映射表
-    const nameMetaMap: {
-        [_: string]: TagItemMeta;
-    } = {};
-
-    for (const i of taskData.tagItemMetas) {
-        nameMetaMap[i.name] = i;
-    }
-
     for (const i of uploadTexts) {
         result.texts.push({
             userId: i.id,
@@ -86,7 +77,7 @@ export const toImportTextsTags = (
         result.tags.push({
             taggerName,
             tagTime,
-            tagItems: i.tag.map(x => toImportTagItem(nameMetaMap[x.itemName],x))
+            tagItems: i.tag.map(x => toImportTagItem(taskData.nameMetaMap[x.itemName],x))
         });
     }
 

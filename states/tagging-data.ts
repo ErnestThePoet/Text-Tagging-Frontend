@@ -30,9 +30,10 @@ class TaggingData{
     }
 
     // 验证标注项是否合法，注意标注项为空是合法的
-    validateTagItem(textIndex: number, tagItemIndex: number|string): CheckResult{
-        const validation = taskData.taggingValidations.find(
-            x => x.id === this.texts[textIndex].tag.tagItems[tagItemIndex].id)!;
+    validateTagItem(textIndex: number|string, tagItemIndex: number|string): CheckResult{
+        const validation = taskData.idTaggingValidationMap[
+            this.texts[textIndex].tag.tagItems[tagItemIndex].id
+        ];
 
         return validation.valueCheck(
             this.texts[textIndex].tag.tagItems[tagItemIndex].value
@@ -42,7 +43,7 @@ class TaggingData{
     // 判定规则：验证失败则返回校验失败；
     // 否则若为空则返回标注未完成（单输入、多输入的空字符串均不算入）；
     // 否则返回标注完成
-    getTagItemStatus(textIndex: number, tagItemIndex: number): TagItemStatus{
+    getTagItemStatus(textIndex: number|string, tagItemIndex: number|string): TagItemStatus{
         const validationResult = this.validateTagItem(textIndex, tagItemIndex);
         // 验证失败
         if (!validationResult.ok) {
@@ -53,8 +54,7 @@ class TaggingData{
         }
 
         const currentTagItem = this.texts[textIndex].tag.tagItems[tagItemIndex];
-        const currentTagItemMeta = taskData.tagItemMetas
-            .find(x => x.id === currentTagItem.id)!;
+        const currentTagItemMeta = taskData.idMetaMap[currentTagItem.id];
         // 单选，多选为空
         if ((currentTagItemMeta.type === 0 || currentTagItemMeta.type === 1)
             && currentTagItem.value.length === 0) {
@@ -82,7 +82,7 @@ class TaggingData{
     // 判定规则：有任意一项验证失败则返回校验失败；
     // 否则任意一项为空则返回标注未完成（单输入、多输入的空字符串均不算入）；
     // 否则返回标注完成
-    getTextTagStatus(textIndex: number): TagStatus {
+    getTextTagStatus(textIndex: number|string): TagStatus {
         const tagItemStatuses = this.texts[textIndex].tag.tagItems.map(
             (_, i) => this.getTagItemStatus(textIndex, i)
         );
@@ -109,7 +109,7 @@ class TaggingData{
         this.texts = texts;
     }
 
-    markTagChange(textIndex: number) {
+    private markTagChange(textIndex: number) {
         this.texts[textIndex].tag.tagTime = getCurrentDateTimeStr();
         this.texts[textIndex].tag.taggerName = userData.name;
 

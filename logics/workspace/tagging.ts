@@ -1,9 +1,11 @@
 import { message } from "antd";
 import axios from "axios";
 import APIS from "../../modules/apis";
+import {cloneDeep} from "lodash-es";
 import taggingData from "../../states/tagging-data";
 import taskData from "../../states/task-data";
 import userData from "../../states/user-data";
+import type { Text } from "../../modules/objects/text";
 
 export const openGetTextsDialog =
     (setIsGetTextsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
@@ -51,4 +53,46 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     if (!taggingData.hasUnsavedChanges) {
         return;
     }
+
+    // 存在错误的标注项则不能继续操作
+    for (const i in taggingData.texts) {
+        if (taggingData.getTextTagStatus(i) === "ERROR") {
+            message.error(`第${parseInt(i) + 1}个文本有非法标注项，无法提交`);
+            return;
+        }
+    }
+
+    // 筛掉单输入和多输入标注项的空值
+    const textsCopy: Array<Text> = cloneDeep(taggingData.texts);
+
+    for (const i of textsCopy) {
+        for (const j of i.tag.tagItems) {
+            switch (taskData.idMetaMap[j.id].type) {
+                case 2:
+                case 3:
+                    j.value = j.value.filter(x => x !== "");
+                    break;
+            }
+        }
+    }
+    
+    axios.post(APIS.addTags, {
+        accessId: userData.accessId,
+        taskId: taskData.taskId,
+        texts: textsCopy
+    }).then(res => {
+        if (res.data.success) {
+            taggingData.setNoUnsavedChanges();
+            message.success("提交成功");
+            if (onSuccess !== undefined) {
+                onSuccess();
+            }
+        }
+        else {
+            message.error(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    });
 }

@@ -125,15 +125,23 @@ class TaskData{
     name: string = "";
     // 任务中每个文本的目标标注数量
     targetTagsPerText: number = 0;
-    // 标注项信息
+    // 标注项元数据
     tagItemMetas: TagItemMeta[] = [];
+    // 标注项ID-标注项元数据映射表
+    idMetaMap: { [id: number]: TagItemMeta } = {};
+    // 标注项名称-标注项元数据映射表
+    nameMetaMap: { [name: string]: TagItemMeta } = {};
 
+    // 导入标注项对象验证器列表
     importValidation: TagItemImportValidation = {
         tagItemCount: 0,
         tagItemMetas: []
     };
 
+    // 标注标注项对象验证器列表
     taggingValidations: SingleTagItemTaggingValidation[] = [];
+    // 标注项ID-标注项验证器映射表
+    idTaggingValidationMap: { [id: number]: SingleTagItemTaggingValidation } = {};
 
     // 数据库统计信息
     datasetStats: SingleDatasetStat[] = [{
@@ -166,6 +174,19 @@ class TaskData{
         this.tagItemMetas = tagItemMetas;
         this.importValidation = getTagItemImportValidation(this.tagItemMetas);
         this.taggingValidations = getTagItemTaggingValidations(this.tagItemMetas);
+
+        // 构建两种标注项元数据的映射表
+        this.nameMetaMap = {};
+        this.idMetaMap = {};
+        for (const i of this.tagItemMetas) {
+            this.nameMetaMap[i.name] = i;
+            this.idMetaMap[i.id] = i;
+        }
+
+        // 构建标注标注项映射表
+        for (const i of this.taggingValidations) {
+            this.idTaggingValidationMap[i.id] = i;
+        }
     }
 
     updateDatasetStat(onStart:()=>void,onSuccess:()=>void) {
