@@ -4,7 +4,6 @@ import APIS from "../../modules/apis";
 import taggingData from "../../states/tagging-data";
 import taskData from "../../states/task-data";
 import userData from "../../states/user-data";
-import type { ValidationResult } from "../../components/workspace/tagging/tag-item-editors/types";
 
 export const openGetTextsDialog =
     (setIsGetTextsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
@@ -51,27 +50,5 @@ export const getTextsToTag = (options:
 export const saveTaggingProgress = (onSuccess?:()=>void) => {
     if (!taggingData.hasUnsavedChanges) {
         return;
-    }
-}
-
-export const changeTagAndValidate=(
-    setValidationResult: React.Dispatch<React.SetStateAction<ValidationResult>>,
-    textIndex: number, tagItemIndex: number, value: string[]
-) => {
-    taggingData.changeTag(textIndex, tagItemIndex, value);
-
-    const validationResult = taggingData.validateTagItem(textIndex, tagItemIndex);
-
-    if (validationResult.ok) {
-        setValidationResult({
-            status: "OK",
-            msg: ""
-        });
-    }
-    else {
-        setValidationResult({
-            status: "ERROR",
-            msg: validationResult.msg
-        });
     }
 }

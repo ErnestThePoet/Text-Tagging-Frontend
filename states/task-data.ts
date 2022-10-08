@@ -168,7 +168,7 @@ class TaskData{
         this.taggingValidations = getTagItemTaggingValidations(this.tagItemMetas);
     }
 
-    updateDatasetStat(onStart:()=>void,onFinish:()=>void) {
+    updateDatasetStat(onStart:()=>void,onSuccess:()=>void) {
         if (!userData.isAdmin) {
             return;
         }
@@ -181,6 +181,7 @@ class TaskData{
         }).then(res => {
             if (res.data.success) {
                 this.datasetStats = res.data.stats;
+                onSuccess();
             }
             else {
                 message.error("获取数据库信息失败：" + res.data.msg);
@@ -188,7 +189,7 @@ class TaskData{
         }).catch(reason => {
             message.error("获取数据库信息失败：" + reason);
             console.log(reason);
-        }).finally(onFinish);
+        });
     }
 }
 

@@ -65,6 +65,7 @@ export const createMultipleChoiceValueCheck:
     );
 
 // 生成单元素（单个值，取值不限定的标注项）标注项检查方法，注意为空是合法的
+// 目前无校验规则
 export const createSingleElementCheck:
     (options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (options?: TagItemMetaOption) => (
@@ -81,6 +82,9 @@ export const createMultipleElementCheck:
     (options?: TagItemMetaOption) => TagItemTaggingValueCheckFn
     = (options?: TagItemMetaOption) => (
         (x: string[]) => {
+            // 多输入校验时，过滤掉空元素
+            x = x.filter(u => u !== "");
+            
             if (options?.minCount !== undefined
                 && x.length < options.minCount) {
                 return {

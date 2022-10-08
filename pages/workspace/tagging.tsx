@@ -80,7 +80,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                                     </span>
                                     
                                     {
-                                        taggingData.isTextTagged(i) &&
+                                        taggingData.getTextTagStatus(i)==="FINISHED" &&
                                         <CheckCircleTwoTone twoToneColor="#52c41a" />
                                     }
                                 </List.Item>
