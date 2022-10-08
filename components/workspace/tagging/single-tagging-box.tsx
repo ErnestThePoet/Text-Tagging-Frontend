@@ -25,15 +25,15 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
                     <Tag color="blue">{`${props.textIndex + 1}/${taggingData.texts.length}`}</Tag>
                     {
                         tagStatus==="FINISHED" &&
-                        <Tag color="green">标注完成</Tag>
+                        <Tag className={styles.fadeInTag} color="green">标注完成</Tag>
                     }
                     {
                         tagStatus === "UNFINISHED" &&
-                        <Tag color="gold">标注未完成</Tag>
+                        <Tag className={styles.fadeInTag} color="gold">标注未完成</Tag>
                     }
                     {
                         tagStatus === "ERROR" &&
-                        <Tag color="red">标注项非法</Tag>
+                        <Tag className={styles.fadeInTag} color="red">标注项非法</Tag>
                     }
                 </div>
                 

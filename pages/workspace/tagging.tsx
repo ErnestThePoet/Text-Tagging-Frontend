@@ -81,7 +81,8 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                                     
                                     {
                                         taggingData.getTextTagStatus(i)==="FINISHED" &&
-                                        <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                        <CheckCircleTwoTone twoToneColor="#52c41a"
+                                            className={styles.fadeInTag} />
                                     }
                                 </List.Item>
                             )}
