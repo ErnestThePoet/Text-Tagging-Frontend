@@ -1,6 +1,6 @@
 import React from "react";
 import { Divider, Tag } from "antd";
-import { EditTwoTone, CheckCircleTwoTone } from "@ant-design/icons"
+import { EditTwoTone } from "@ant-design/icons"
 import { observer } from "mobx-react-lite";
 import SingleChoiceEditor from "./tag-item-editors/single-choice";
 import MultipleChoiceEditor from "./tag-item-editors/multiple-choice";
@@ -9,6 +9,7 @@ import MultipleInputEditor from "./tag-item-editors/multiple-input";
 import styles from "../../../styles/workspace.module.scss";
 import taskData from "../../../states/task-data";
 import taggingData from "../../../states/tagging-data";
+import changeTextDialogState from "../../../states/component-states/change-text-dialog-state";
 
 interface SingleTaggingBoxProps {
     textIndex: number;
@@ -38,7 +39,12 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
                 </div>
                 
                 <div className="div-tagging-box-text">
-                    <span className="span-edit-icon">
+                    <span className="span-edit-icon"
+                        onClick={() => {
+                            changeTextDialogState.setSelectedTextIndex(props.textIndex);
+                            changeTextDialogState.setText(taggingData.texts[props.textIndex].text);
+                            changeTextDialogState.setIsChangeTextDialogOpen(true);
+                        }}>
                         <EditTwoTone />
                     </span>
                     

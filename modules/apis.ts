@@ -1,9 +1,9 @@
 const DEBUG: boolean = true;
 
-let urlPrefix = "/";
+let urlPrefix = "/api/";
 
 if (DEBUG) {
-    urlPrefix = "http://localhost:10621/";
+    urlPrefix = "http://localhost:11750/api/";
 }
 
 const APIS = {
@@ -22,7 +22,8 @@ const APIS = {
     
     // Tagging
     getTextsToTag: "text/get_texts_to_tag",
-    addTags: "text/add_tags"
+    addTags: "text/add_tags",
+    changeText: "text/change_text",
 }
 
 for (let i in APIS) {

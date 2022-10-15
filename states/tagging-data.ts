@@ -109,6 +109,11 @@ class TaggingData{
         this.texts = texts;
     }
 
+    // 修改文本
+    changeText(index: number, newText: string) {
+        this.texts[index].text = newText;
+    }
+
     private markTagChange(textIndex: number) {
         this.texts[textIndex].tag.tagTime = getCurrentDateTimeStr();
         this.texts[textIndex].tag.taggerName = userData.name;
@@ -116,22 +121,26 @@ class TaggingData{
         this.hasUnsavedChanges = true;
     }
 
+    // 设置标注项的整个值
     setTagItemValue(textIndex: number, tagItemIndex: number, value: string[]) {
         this.texts[textIndex].tag.tagItems[tagItemIndex].value = value;
         this.markTagChange(textIndex);
     }
 
+    // 设置标注项某个元素的值
     setTagItemValueElement(textIndex: number, tagItemIndex: number,
         elementIndex: number, element: string) {
         this.texts[textIndex].tag.tagItems[tagItemIndex].value[elementIndex]=element;
         this.markTagChange(textIndex);
     }
 
+    // 向标注项值添加一个元素
     addTagItemValueElement(textIndex: number, tagItemIndex: number, element: string) {
         this.texts[textIndex].tag.tagItems[tagItemIndex].value.push(element);
         this.markTagChange(textIndex);
     }
 
+    // 从标注项值中删除一个元素
     removeTagItemValueElement(textIndex: number, tagItemIndex: number, elementIndex: number) {
         this.texts[textIndex].tag.tagItems[tagItemIndex].value.splice(elementIndex, 1);
         this.markTagChange(textIndex);

@@ -5,37 +5,30 @@ import {cloneDeep} from "lodash-es";
 import taggingData from "../../states/tagging-data";
 import taskData from "../../states/task-data";
 import userData from "../../states/user-data";
+import getTextsDialogState from "../../states/component-states/get-texts-dialog-state";
+import changeTextDialogState from "../../states/component-states/change-text-dialog-state";
 import type { Text } from "../../modules/objects/text";
 
-export const openGetTextsDialog =
-    (setIsGetTextsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-        setIsDatasetStatLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-        setIsGetTextsDialogOpen(true);
-        taskData.updateDatasetStat(() => setIsDatasetStatLoading(true),
-            () => setIsDatasetStatLoading(false));
+export const openGetTextsDialog =() => {
+        getTextsDialogState.setIsGetTextsDialogOpen(true);
+    taskData.updateDatasetStat(() => getTextsDialogState.setIsDatasetStatLoading(true),
+        () => getTextsDialogState.setIsDatasetStatLoading(false));
 }
 
-export const getTextsToTag = (options:
-    {
-        targetTextCount: number;
-        targetFile: string;
-        moreTagsFirst: boolean;
-    },
-    setIsGetTextsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setIsGetTextsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const getTextsToTag = () => {
     
-    setIsGetTextsLoading(true);
+    getTextsDialogState.setIsGetTextsLoading(true);
 
     axios.postForm(APIS.getTextsToTag, {
         accessId: userData.accessId,
         taskId: taskData.taskId,
-        count: options.targetTextCount,
-        targetFile: options.targetFile,
-        moreTagsFirst: options.moreTagsFirst
+        count: getTextsDialogState.targetTextCount,
+        targetFile: getTextsDialogState.targetFile,
+        moreTagsFirst: getTextsDialogState.moreTagsFirst
     }).then(res => {
         if (res.data.success) {
             taggingData.setTexts(res.data.texts);
-            setIsGetTextsDialogOpen(false);
+            getTextsDialogState.setIsGetTextsDialogOpen(false);
             message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);
         }
         else {
@@ -45,7 +38,7 @@ export const getTextsToTag = (options:
         console.log(reason);
         message.error(reason.message);
     }).finally(() => {
-        setIsGetTextsLoading(false);
+        getTextsDialogState.setIsGetTextsLoading(false);
     });
 }
     
@@ -94,5 +87,36 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     }).catch(reason => {
         console.log(reason);
         message.error(reason.message);
+    });
+}
+
+export const changeText = () => {
+    if (changeTextDialogState.text === "") {
+        message.error("新文本不能为空");
+        return;
+    }
+
+    changeTextDialogState.setIsChangeTextLoading(true);
+
+    axios.postForm(APIS.changeText, {
+        accessId: userData.accessId,
+        taskId: taskData.taskId,
+        textId: taggingData.texts[changeTextDialogState.selectedTextIndex].id,
+        newText: changeTextDialogState.text
+    }).then(res => {
+        if (res.data.success) {
+            taggingData.changeText(changeTextDialogState.selectedTextIndex,
+                changeTextDialogState.text);
+            changeTextDialogState.setIsChangeTextDialogOpen(false);
+            message.success("修改成功");
+        }
+        else {
+            message.error(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        changeTextDialogState.setIsChangeTextLoading(false);
     });
 }
