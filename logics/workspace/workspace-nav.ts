@@ -1,6 +1,9 @@
+import { message } from "antd";
 import axios from "axios";
 import Router from "next/router";
 import APIS from "../../modules/apis";
+import { pbkdf2Hash } from "../../modules/utils/hash";
+import changePwDialogState from "../../states/component-states/change-pw-dialog-state";
 import userData from "../../states/user-data";
 
 export const onNavMenuItemClick = (key: string) => {
@@ -31,6 +34,9 @@ export const onAccountMenuItemClick = (key:string) => {
             //TODO:add guide
             break;
         case "1":
+            changePwDialogState.setIsOpen(true);
+            break;
+        case "2":
             logout();
             break;
     }
@@ -48,4 +54,33 @@ const logout = () => {
     userData.clear();
 
     Router.replace("/");
+}
+
+export const changePw = () => {
+    if (changePwDialogState.newPw !== changePwDialogState.newPwConfirm) {
+        return;
+    }
+
+    changePwDialogState.setIsConfirmLoading(true);
+
+    axios.postForm(APIS.changePw, {
+        account: userData.account,
+        pwHashed: pbkdf2Hash(changePwDialogState.oldPw),
+        newPwHashed:pbkdf2Hash(changePwDialogState.newPw)
+    }).then(res => {
+        if (res.data.success) {
+            message.success("修改密码成功，请重新登陆");
+            changePwDialogState.setIsOpen(false);
+            changePwDialogState.setResultMsg("");
+            logout();
+        }
+        else {
+            changePwDialogState.setResultMsg(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        changePwDialogState.setIsConfirmLoading(false);
+    });
 }

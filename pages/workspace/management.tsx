@@ -8,6 +8,7 @@ import type { MenuItem } from "../../modules/utils/menu-item";
 import WorkspaceNav from "../../components/workspace/workspace-nav";
 import DatasetContent from "../../components/workspace/management/dataset-content";
 import styles from "../../styles/workspace.module.scss";
+import ChangePwDialog from "../../components/workspace/change-pw-dialog";
 
 const { Content, Sider } = Layout;
 
@@ -47,6 +48,8 @@ const WorkspaceManagementPage: React.FC = observer(() => {
                 </Layout>
             </Layout>
         </Layout>
+
+        <ChangePwDialog/>
     </div>
     );
 });

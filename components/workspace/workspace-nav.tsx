@@ -37,6 +37,10 @@ const accountMenu = (
             },
             {
                 key: '1',
+                label: '修改密码'
+            },
+            {
+                key: '2',
                 danger: true,
                 label: '退出登录'
             }

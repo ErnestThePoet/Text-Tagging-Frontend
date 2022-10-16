@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import * as L from "../../logics/workspace/add-texts";
 import { CloseCircleTwoTone, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { List, Space, Layout, Button, Modal, Empty, Tag, Input, Divider } from 'antd';
+import { List, Space, Layout, Button, Empty, Tag, Input, Divider } from 'antd';
 import { checkIsLoggedIn } from "../../logics/router-checks";
 import styles from "../../styles/workspace.module.scss";
 import WorkspaceNav from "../../components/workspace/workspace-nav";
+import ChangePwDialog from "../../components/workspace/change-pw-dialog";
 import addTextsData from "../../states/add-texts-data";
 
 const { Content } = Layout;
@@ -116,6 +117,8 @@ const AddTexts: React.FC = observer(() => {
                     </Layout>
                 </Layout>
             </Layout>
+
+            <ChangePwDialog/>
         </div>
     );
 })

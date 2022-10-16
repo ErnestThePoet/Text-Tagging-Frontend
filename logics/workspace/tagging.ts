@@ -10,14 +10,14 @@ import changeTextDialogState from "../../states/component-states/change-text-dia
 import type { Text } from "../../modules/objects/text";
 
 export const openGetTextsDialog =() => {
-        getTextsDialogState.setIsGetTextsDialogOpen(true);
+    getTextsDialogState.setIsOpen(true);
     taskData.updateDatasetStat(() => getTextsDialogState.setIsDatasetStatLoading(true),
         () => getTextsDialogState.setIsDatasetStatLoading(false));
 }
 
 export const getTextsToTag = () => {
     
-    getTextsDialogState.setIsGetTextsLoading(true);
+    getTextsDialogState.setIsConfirmLoading(true);
 
     axios.postForm(APIS.getTextsToTag, {
         accessId: userData.accessId,
@@ -28,7 +28,7 @@ export const getTextsToTag = () => {
     }).then(res => {
         if (res.data.success) {
             taggingData.setTexts(res.data.texts);
-            getTextsDialogState.setIsGetTextsDialogOpen(false);
+            getTextsDialogState.setIsOpen(false);
             message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);
         }
         else {
@@ -38,7 +38,7 @@ export const getTextsToTag = () => {
         console.log(reason);
         message.error(reason.message);
     }).finally(() => {
-        getTextsDialogState.setIsGetTextsLoading(false);
+        getTextsDialogState.setIsConfirmLoading(false);
     });
 }
     
@@ -101,7 +101,7 @@ export const changeText = () => {
         return;
     }
 
-    changeTextDialogState.setIsChangeTextLoading(true);
+    changeTextDialogState.setIsConfirmLoading(true);
 
     axios.postForm(APIS.changeText, {
         accessId: userData.accessId,
@@ -112,7 +112,7 @@ export const changeText = () => {
         if (res.data.success) {
             taggingData.changeText(changeTextDialogState.selectedTextIndex,
                 changeTextDialogState.text);
-            changeTextDialogState.setIsChangeTextDialogOpen(false);
+            changeTextDialogState.setIsOpen(false);
             message.success("修改成功");
         }
         else {
@@ -122,6 +122,6 @@ export const changeText = () => {
         console.log(reason);
         message.error(reason.message);
     }).finally(() => {
-        changeTextDialogState.setIsChangeTextLoading(false);
+        changeTextDialogState.setIsConfirmLoading(false);
     });
 }

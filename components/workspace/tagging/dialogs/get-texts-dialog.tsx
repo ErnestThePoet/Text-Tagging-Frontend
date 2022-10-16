@@ -36,10 +36,10 @@ const GetTextsDialog: React.FC = observer(() => {
             title="选项"
             okText="确定"
             cancelText="取消"
-            open={getTextsDialogState.isGetTextsDialogOpen}
+            open={getTextsDialogState.isOpen}
             onOk={() => L.getTextsToTag()}
-            onCancel={() => getTextsDialogState.setIsGetTextsDialogOpen(false)}
-            confirmLoading={getTextsDialogState.isGetTextsLoading}
+            onCancel={() => getTextsDialogState.setIsOpen(false)}
+            confirmLoading={getTextsDialogState.isConfirmLoading}
         >
             {
                 getTextsDialogState.isDatasetStatLoading

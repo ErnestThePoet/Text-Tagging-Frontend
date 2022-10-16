@@ -5,9 +5,9 @@ class GetTextsDialogState {
         makeAutoObservable(this);
     }
 
-    isGetTextsDialogOpen: boolean = false;
-    setIsGetTextsDialogOpen(value: boolean) {
-        this.isGetTextsDialogOpen = value;
+    isOpen: boolean = false;
+    setIsOpen(value: boolean) {
+        this.isOpen = value;
     }
 
     isDatasetStatLoading: boolean = false;
@@ -15,9 +15,9 @@ class GetTextsDialogState {
         this.isDatasetStatLoading = value;
     }
 
-    isGetTextsLoading: boolean = false;
-    setIsGetTextsLoading(value: boolean) {
-        this.isGetTextsLoading = value;
+    isConfirmLoading: boolean = false;
+    setIsConfirmLoading(value: boolean) {
+        this.isConfirmLoading = value;
     }
 
     targetTextCount: number = 30;

@@ -13,6 +13,7 @@ import styles from "../../styles/workspace.module.scss";
 import taggingData from "../../states/tagging-data";
 import GetTextsDialog from "../../components/workspace/tagging/dialogs/get-texts-dialog";
 import ChangeTextDialog from "../../components/workspace/tagging/dialogs/change-text-dialog";
+import ChangePwDialog from "../../components/workspace/change-pw-dialog";
 
 const { Content } = Layout;
 const { confirm } = Modal;
@@ -110,7 +111,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
 
             <GetTextsDialog/>
             <ChangeTextDialog/>
-            
+            <ChangePwDialog/>
         </div>
     );
 });

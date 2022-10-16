@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import * as L from "../../logics/index";
+import * as RULES from "../../modules/form-rules";
 import styles from '../../styles/index.module.scss';
 
 const LoginForm: React.FC = () => {
@@ -20,24 +21,7 @@ const LoginForm: React.FC = () => {
         >
             <Form.Item
                 name="username"
-                rules={[
-                    {
-                        required: true,
-                        message: "请输入登录账号"
-                    },
-                    {
-                        min: 3,
-                        message: "登录账号长度在3-10之间"
-                    },
-                    {
-                        max: 10,
-                        message: "登录账号长度在3-10之间"
-                    },
-                    {
-                        pattern: /^[\da-zA-Z_-]+$/,
-                        message: "登录名只能包含字母/数字/下划线和'-'"
-                    }
-                ]}
+                rules={RULES.ACCOUNT_RULES}
             >
                 <Input prefix={<UserOutlined className="site-form-item-icon" />}
                     id="in-login-account"
@@ -46,20 +30,7 @@ const LoginForm: React.FC = () => {
 
             <Form.Item
                 name="password"
-                rules={[
-                    {
-                        required: true,
-                        message: "请输入密码"
-                    },
-                    {
-                        min: 5,
-                        message: "密码长度在5-15之间"
-                    },
-                    {
-                        max: 15,
-                        message: "登录账号长度在5-15之间"
-                    },
-                ]}
+                rules={RULES.PW_RULES}
             >
                 <Input
                     prefix={<LockOutlined className="site-form-item-icon" />}

@@ -43,7 +43,7 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
                         onClick={() => {
                             changeTextDialogState.setSelectedTextIndex(props.textIndex);
                             changeTextDialogState.setText(taggingData.texts[props.textIndex].text);
-                            changeTextDialogState.setIsChangeTextDialogOpen(true);
+                            changeTextDialogState.setIsOpen(true);
                         }}>
                         <EditTwoTone />
                     </span>

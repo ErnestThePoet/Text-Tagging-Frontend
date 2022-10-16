@@ -10,14 +10,14 @@ class ChangeTextDialogState {
         this.selectedTextIndex = value;
     }
 
-    isChangeTextDialogOpen: boolean = false;
-    setIsChangeTextDialogOpen(value: boolean) {
-        this.isChangeTextDialogOpen = value;
+    isOpen: boolean = false;
+    setIsOpen(value: boolean) {
+        this.isOpen = value;
     }
 
-    isChangeTextLoading: boolean = false;
-    setIsChangeTextLoading(value: boolean) {
-        this.isChangeTextLoading = value;
+    isConfirmLoading: boolean = false;
+    setIsConfirmLoading(value: boolean) {
+        this.isConfirmLoading = value;
     }
 
     text: string = "";

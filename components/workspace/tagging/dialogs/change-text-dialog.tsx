@@ -21,10 +21,10 @@ const ChangeTextDialog: React.FC = observer(() => {
             title="编辑文本内容"
             okText="确定"
             cancelText="取消"
-            open={changeTextDialogState.isChangeTextDialogOpen}
+            open={changeTextDialogState.isOpen}
             onOk={() => L.changeText()}
-            onCancel={() => changeTextDialogState.setIsChangeTextDialogOpen(false)}
-            confirmLoading={changeTextDialogState.isChangeTextLoading}
+            onCancel={() => changeTextDialogState.setIsOpen(false)}
+            confirmLoading={changeTextDialogState.isConfirmLoading}
         >
             <TextArea rows={4}
                 placeholder="请输入新文本内容"
