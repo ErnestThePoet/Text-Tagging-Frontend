@@ -107,6 +107,7 @@ class TaggingData{
 
     setTexts(texts: Array<Text>) {
         this.texts = texts;
+        this.hasUnsavedChanges = true;
     }
 
     // 修改文本

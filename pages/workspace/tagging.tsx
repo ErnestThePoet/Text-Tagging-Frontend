@@ -6,8 +6,7 @@ import {
     CheckCircleTwoTone,
     ExclamationCircleOutlined
 } from '@ant-design/icons';
-import { Tag } from 'antd';
-import { List, Space, Layout, Button, Modal, Empty } from 'antd';
+import { List, Space, Layout, Button, Modal, Empty, Tag } from 'antd';
 import WorkspaceNav from "../../components/workspace/workspace-nav";
 import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
 import styles from "../../styles/workspace.module.scss";
@@ -27,6 +26,8 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
     const showSaveDialog = () => {
         confirm({
             title: "保存标注",
+            okText: "提交并继续获取",
+            cancelText:"返回",
             icon: <ExclamationCircleOutlined />,
             content: "存在尚未提交的标注。是否提交所做标注？",
             onOk() {
@@ -70,8 +71,8 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                                 <label>{
                                     `${taggingData.taggedTextCount}`
                                         + `/${taggingData.texts.length} `
-                                        + `(${Math.round(taggingData.taggedTextCount
-                                            / taggingData.texts.length)}%)`}</label>
+                                        + `(${Math.round((taggingData.taggedTextCount
+                                            / taggingData.texts.length)*100)}%)`}</label>
                             }
 
                             <Button block disabled={!taggingData.hasUnsavedChanges}
@@ -94,10 +95,10 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                     <Layout className={styles.layoutContent}>
                         <Content className={styles.content}>
                             {
-                                taggingData.texts.length === 0 &&
+                                taggingData.texts.length === 0
+                                    ?
                                 <Empty description="快去获取一批待标注文本吧"/>
-                            }
-                            {
+                                    :
                                 taggingData.texts.map((_, i) => (
                                     <SingleTaggingBox textIndex={i} key={i} />
                                 ))

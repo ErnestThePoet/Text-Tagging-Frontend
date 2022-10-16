@@ -24,6 +24,9 @@ const APIS = {
     getTextsToTag: "text/get_texts_to_tag",
     addTags: "text/add_tags",
     changeText: "text/change_text",
+
+    // Adding texts
+    addTexts:"text/add_texts"
 }
 
 for (let i in APIS) {

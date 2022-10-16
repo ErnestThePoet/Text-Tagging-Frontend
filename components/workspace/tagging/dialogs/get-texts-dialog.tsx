@@ -77,7 +77,7 @@ const GetTextsDialog: React.FC = observer(() => {
                             <Switch
                                 checkedChildren={<CheckOutlined />}
                                 unCheckedChildren={<CloseOutlined />}
-                                defaultChecked
+                                checked={getTextsDialogState.moreTagsFirst}
                                 onChange={e => getTextsDialogState.setIsMoreTagsFirst(e)}
                             />
                         </div>

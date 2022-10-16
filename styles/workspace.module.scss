@@ -28,13 +28,17 @@
     justify-content: space-between;
 }
 
-.listTextList{
-    max-height: calc(100% - 120px);
+.listWorkspace{
     overflow-x: hidden;
     overflow-y: auto;
     border-right: 0;
 
     @include slim-scroll-bar;
+}
+
+.listTextList{
+    @extend .listWorkspace;
+    max-height: calc(100% - 120px);
 }
 
 .sider {
@@ -219,10 +223,6 @@
     width: 120px;
 }
 
-.btnAddValueElement{
-    width: 100%;
-}
-
 @keyframes tag-in {
     from {
         opacity: 0;
@@ -238,4 +238,23 @@
 .fadeInTag{
     animation-duration: 500ms;
     animation-name: tag-in;
+}
+
+.divAddTextBoxFirstRow{
+    display: flex;
+    gap:20px;
+}
+
+.btnAddTexts {
+    margin-bottom: 10px;
+}
+
+.listAddedTextList {
+    @extend .listWorkspace;
+    max-height: calc(100% - 95px);
+}
+
+.divAddedTextBoxFirstRow{
+    display: flex;
+    justify-content: space-between;
 }

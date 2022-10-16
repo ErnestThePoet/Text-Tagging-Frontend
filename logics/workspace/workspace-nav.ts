@@ -1,7 +1,6 @@
 import axios from "axios";
 import Router from "next/router";
 import APIS from "../../modules/apis";
-import LoginForm from "../../components/index/login-form";
 import userData from "../../states/user-data";
 
 export const onNavMenuItemClick = (key: string) => {
@@ -11,7 +10,7 @@ export const onNavMenuItemClick = (key: string) => {
             targetPath = "/workspace/tagging";
             break;
         case "1":
-            targetPath = "/workspace/add_texts";
+            targetPath = "/workspace/add-texts";
             break;
         case "2":
             targetPath = "/workspace/query";

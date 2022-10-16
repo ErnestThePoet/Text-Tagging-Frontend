@@ -46,7 +46,7 @@ const MultipleInputEditor: React.FC<TagItemEditorProps> = observer(
                                 ))
                         }
                         <Button
-                            className={styles.btnAddValueElement}
+                            block
                             type="dashed"
                             onClick={() => taggingData.addTagItemValueElement(
                                 props.textIndex,

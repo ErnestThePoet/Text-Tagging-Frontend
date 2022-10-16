@@ -76,7 +76,12 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     }).then(res => {
         if (res.data.success) {
             taggingData.setNoUnsavedChanges();
-            message.success("提交成功");
+            message.success("提交成功，辛苦啦~");
+            
+            for (let i = 0; i < taggingData.texts.length; i++){
+                taggingData.texts[i].tag.id = res.data.tagIds[i];
+            }
+            
             if (onSuccess !== undefined) {
                 onSuccess();
             }
