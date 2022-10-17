@@ -4,6 +4,7 @@ import userData from "./user-data";
 import { getCurrentDateTimeStr } from "../modules/utils/date-time";
 import type { CheckResult } from "./task-data";
 import taskData from "./task-data";
+import closeEventManager from "../modules/close-event-manager";
 
 type TagStatus = "FINISHED" | "UNFINISHED" | "ERROR";
 interface TagItemStatus{
@@ -108,18 +109,30 @@ class TaggingData{
     setTexts(texts: Array<Text>) {
         this.texts = texts;
         this.hasUnsavedChanges = true;
+        
     }
 
     // 修改文本
     changeText(index: number, newText: string) {
         this.texts[index].text = newText;
+        this.setHasUnsavedChanges();
+    }
+
+    setNoUnsavedChanges() {
+        this.hasUnsavedChanges = false;
+        closeEventManager.removeAlert();
+    }
+
+    private setHasUnsavedChanges() {
+        this.hasUnsavedChanges = true;
+        closeEventManager.setAlert();
     }
 
     private markTagChange(textIndex: number) {
         this.texts[textIndex].tag.tagTime = getCurrentDateTimeStr();
         this.texts[textIndex].tag.taggerName = userData.name;
 
-        this.hasUnsavedChanges = true;
+        this.setHasUnsavedChanges();
     }
 
     // 设置标注项的整个值
@@ -145,10 +158,6 @@ class TaggingData{
     removeTagItemValueElement(textIndex: number, tagItemIndex: number, elementIndex: number) {
         this.texts[textIndex].tag.tagItems[tagItemIndex].value.splice(elementIndex, 1);
         this.markTagChange(textIndex);
-    }
-
-    setNoUnsavedChanges() {
-        this.hasUnsavedChanges = false;
     }
 }
 

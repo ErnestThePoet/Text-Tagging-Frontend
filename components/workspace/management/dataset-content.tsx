@@ -15,26 +15,31 @@ const columns: ColumnsType<SingleDatasetStat> = [
         title: "数据集文件名",
         dataIndex: "fileName",
         width: "20%",
+        showSorterTooltip: false,
         sorter: (a, b) => stringCompare(a.fileName, b.fileName)
     },
     {
         title: "文本总数",
         dataIndex: "totalTextCount",
+        showSorterTooltip: false,
         sorter: (a, b) => a.totalTextCount - b.totalTextCount,
     },
     {
         title: "已标注文本总数",
         dataIndex: "taggedTextCount",
+        showSorterTooltip: false,
         sorter: (a, b) => a.taggedTextCount - b.taggedTextCount,
     },
     {
         title: "标注项总数",
         dataIndex: "totalTagItemCount",
+        showSorterTooltip: false,
         sorter: (a, b) => a.totalTagItemCount - b.totalTagItemCount,
     },
     {
         title: "标注进度(按已标注文本)",
         dataIndex: "taggedTextProgress",
+        showSorterTooltip: false,
         sorter: (a, b) => a.taggedTextProgress - b.taggedTextProgress,
         render: (x) => (
             <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(0)}%`} />
@@ -43,6 +48,7 @@ const columns: ColumnsType<SingleDatasetStat> = [
     {
         title: "标注进度(按标注项数量)",
         dataIndex: "totalTagItemProgress",
+        showSorterTooltip: false,
         sorter: (a, b) => a.totalTagItemProgress - b.totalTagItemProgress,
         render: (x) => (
             <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(0)}%`} />

@@ -50,18 +50,22 @@ const UserContent: React.FC = observer(() => {
             title: "登录名",
             dataIndex: "account",
             width: "20%",
+            showSorterTooltip:false,
             sorter: (a, b) => stringCompare(a.account, b.account)
         },
         {
             align: "center",
             title: "昵称",
             dataIndex: "name",
+            width: "20%",
+            showSorterTooltip: false,
             sorter: (a, b) => stringCompare(a.name, b.name),
         },
         {
             align: "center",
             title: "权限等级",
             dataIndex: "level",
+            showSorterTooltip: false,
             sorter: (a, b) => a.level - b.level,
             render: x => {
                 switch (x) {
@@ -78,6 +82,7 @@ const UserContent: React.FC = observer(() => {
             align: "center",
             title: "上次登陆时间",
             dataIndex: "lastLoginTime",
+            showSorterTooltip: false,
             sorter: (a, b) => stringNullCompare(a.lastLoginTime, b.lastLoginTime),
         },
         {
