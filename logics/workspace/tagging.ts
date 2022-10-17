@@ -27,9 +27,15 @@ export const getTextsToTag = () => {
         moreTagsFirst: getTextsDialogState.moreTagsFirst
     }).then(res => {
         if (res.data.success) {
-            taggingData.setTexts(res.data.texts);
+            if (res.data.texts.length === 0) {
+                message.info("未获取到任何文本");
+            }
+            else {
+                taggingData.setTexts(res.data.texts);
+                message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);
+            }
+            
             getTextsDialogState.setIsOpen(false);
-            message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);
         }
         else {
             message.error(res.data.msg);
