@@ -18,26 +18,25 @@ import ChangePwDialog from "../../components/workspace/change-pw-dialog";
 const { Content } = Layout;
 const { confirm } = Modal;
 
+const showSaveDialog = () => {
+    confirm({
+        title: "保存标注",
+        okText: "提交并继续获取",
+        cancelText: "返回",
+        icon: <ExclamationCircleOutlined />,
+        content: "存在尚未提交的标注。是否提交所做标注？",
+        onOk() {
+            L.saveTaggingProgress(() => {
+                L.openGetTextsDialog();
+            });
+        }
+    });
+};
 
 const WorkspaceTaggingPage: React.FC = observer(() => {
     useEffect(() => {
         checkIsLoggedIn();
     }, []);
-
-    const showSaveDialog = () => {
-        confirm({
-            title: "保存标注",
-            okText: "提交并继续获取",
-            cancelText:"返回",
-            icon: <ExclamationCircleOutlined />,
-            content: "存在尚未提交的标注。是否提交所做标注？",
-            onOk() {
-                L.saveTaggingProgress(() => {
-                    L.openGetTextsDialog();
-                });
-            }
-        });
-    };
 
     return (
         <div className={styles.divMainWrapper}>

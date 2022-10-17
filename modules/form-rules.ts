@@ -19,6 +19,21 @@ export const ACCOUNT_RULES: Rule[] = [
     }
 ]
 
+export const NAME_RULES: Rule[] = [
+    {
+        required: true,
+        message: "请输入昵称"
+    },
+    {
+        min: 1,
+        message: "昵称长度在1-10之间"
+    },
+    {
+        max: 10,
+        message: "昵称长度在1-10之间"
+    }
+]
+
 export const PW_RULES: Rule[] = [
     {
         required: true,

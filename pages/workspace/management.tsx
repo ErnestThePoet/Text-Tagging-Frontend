@@ -9,6 +9,7 @@ import WorkspaceNav from "../../components/workspace/workspace-nav";
 import DatasetContent from "../../components/workspace/management/dataset-content";
 import styles from "../../styles/workspace.module.scss";
 import ChangePwDialog from "../../components/workspace/change-pw-dialog";
+import UserContent from "../../components/workspace/management/user-content";
 
 const { Content, Sider } = Layout;
 
@@ -41,8 +42,14 @@ const WorkspaceManagementPage: React.FC = observer(() => {
                     <Content
                         className={styles.content}>
                         {
-                            selectedMenuKey === "0" &&
-                            <DatasetContent />
+                            (() => {
+                                switch (selectedMenuKey) {
+                                    case "0":
+                                        return <DatasetContent />;
+                                    case "1":
+                                        return <UserContent />;
+                                }
+                            })()
                         }
                     </Content>
                 </Layout>

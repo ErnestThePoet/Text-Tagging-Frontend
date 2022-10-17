@@ -13,6 +13,13 @@ const APIS = {
     logout:"user/logout",
     changePw: "user/change_pw",
 
+    // User Management
+    getUsersInfo: "user_management/get_users_info",
+    createUser: "user_management/create",
+    deleteUsers: "user_management/delete",
+    resetPassword: "user_management/reset_password",
+    changeLevel:"user_management/change_level",
+
     // Task general
     getTasks:"task/get_tasks",
     

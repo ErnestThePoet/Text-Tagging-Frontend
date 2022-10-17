@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import type { UserLevel } from "../modules/objects/types";
 
 class UserData{
     constructor() {
@@ -9,7 +10,8 @@ class UserData{
 
     account: string = "";
     name: string = "";
-    level: number = -1;
+    // 无任何权限
+    level: UserLevel = -1;
 
     accessId: string = "";
 
@@ -25,7 +27,7 @@ class UserData{
         this.name = name;
     }
 
-    setLevel(level: number) {
+    setLevel(level: UserLevel) {
         this.level = level;
     }
 
