@@ -26,6 +26,8 @@ const APIS = {
     // Task dataset
     getDatasetStat: "dataset/get_stat",
     importDataset: "dataset/import",
+    exportDataset: "dataset/export",
+    deleteDataset: "dataset/delete",
     
     // Tagging
     getTextsToTag: "text/get_texts_to_tag",

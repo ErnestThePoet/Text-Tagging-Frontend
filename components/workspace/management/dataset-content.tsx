@@ -1,10 +1,11 @@
 import React, { useState, useEffect, Key } from "react";
 import { observer } from "mobx-react-lite";
-import { Progress, Divider, Empty, Table, Spin, Space, Button, Upload } from "antd";
+import { Progress, Divider, Empty, Table, Spin, Space, Button, Upload, Modal, Form, Input } from "antd";
 import type { ColumnsType } from 'antd/es/table';
-import { ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined, PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import type { SingleDatasetStat } from "../../../states/task-data";
 import { stringCompare } from "../../../modules/utils/cmp";
+import * as RULES from "../../../modules/form-rules";
 import * as L from "../../../logics/workspace/management";
 import styles from "../../../styles/workspace.module.scss";
 import taskData from "../../../states/task-data";
@@ -62,6 +63,12 @@ const DatasetContent: React.FC = observer(() => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
+    const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] = useState(false);
+    const [isDeleteConfirmDialogConfirmLoading,
+        setIsDeleteConfirmDialogConfirmLoading] = useState(false);
+    const [enteredPassword, setEnteredPassword] = useState("");
+    const [deleteResultMsg, setDeleteResultMsg] = useState("");
+
     useEffect(() => {
         L.updateDatasetStat(setLoading);
     }, []);
@@ -79,7 +86,7 @@ const DatasetContent: React.FC = observer(() => {
                                 accept="application/json"
                                 maxCount={1}
                                 showUploadList={false}>
-                                <Button type="primary">
+                                <Button type="primary" icon={<PlusOutlined />}>
                                     导入第一个数据集
                                 </Button>
                             </Upload>
@@ -116,7 +123,13 @@ const DatasetContent: React.FC = observer(() => {
                                 <Button disabled={selectedRowKeys.length === 0}>
                                     导出所选
                                 </Button>
-                                <Button danger disabled={selectedRowKeys.length === 0}>
+
+                                <Button disabled={selectedRowKeys.length === 0}>
+                                    导出所选(仅标注完成的)
+                                </Button>
+
+                                <Button danger disabled={selectedRowKeys.length === 0}
+                                    onClick={() => setIsDeleteConfirmDialogOpen(true)}>
                                     删除所选
                                 </Button>
 
@@ -124,15 +137,16 @@ const DatasetContent: React.FC = observer(() => {
                                     accept="application/json"
                                     maxCount={1}
                                     showUploadList={false}>
-                                    <Button type="primary">
+                                    <Button type="primary" icon={<PlusOutlined />}>
                                         导入数据集
                                     </Button>
                                 </Upload>
                             </Space>
 
                             <Table columns={columns}
-                                dataSource={taskData.datasetStats.slice(1)
-                                    .map((x, i) => ({ ...x, key: i }))}
+                                dataSource={taskData.datasetStats
+                                    .map((x, i) => ({ ...x, key: i }))
+                                    .slice(1)}
                                 rowSelection={{
                                     onChange: (newSelectedRowKeys: Key[]) => {
                                         setSelectedRowKeys(newSelectedRowKeys);
@@ -142,6 +156,65 @@ const DatasetContent: React.FC = observer(() => {
                         </>
                 }
             </div>
+
+            <Modal title="确认删除所选数据集"
+                onCancel={() => setIsDeleteConfirmDialogOpen(false)}
+                open={isDeleteConfirmDialogOpen}
+                footer={null}>
+                <div className={styles.divDeleteDatasetConfirmWrapper}>
+                    <Space>
+                        <ExclamationCircleOutlined style={{ color: "#ff4d4f" }} />
+                        <span>
+                            您准备删除选中的数据集
+                            <b>
+                                {
+                                    selectedRowKeys.map(x => (
+                                        taskData.datasetStats[x].fileName
+                                    )).toString()
+                                }
+                            </b>
+                            ！
+                        </span>
+                    </Space>
+
+                    <span>为确保安全，请输入您的登录密码验证身份：</span>
+
+                    <Form
+                        name="delete_dataset_enter_password"
+                        onFinish={() => L.deleteDataset(
+                            selectedRowKeys as number[],
+                            enteredPassword,
+                            setIsDeleteConfirmDialogOpen,
+                            setIsDeleteConfirmDialogConfirmLoading,
+                            setDeleteResultMsg,
+                            setSelectedRowKeys
+                        )}
+                    >
+                        <Form.Item
+                            name="password"
+                            rules={RULES.PW_RULES}
+                        >
+                            <Input
+                                type="password"
+                                placeholder="请输入登录密码"
+                                value={enteredPassword}
+                                onChange={e=>setEnteredPassword(e.target.value)}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            validateStatus="error"
+                            help={deleteResultMsg}
+                        >
+                            <Button
+                                type="primary" htmlType="submit" danger
+                                disabled={isDeleteConfirmDialogConfirmLoading}>
+                                继续删除
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </Modal>
         </Spin>
     );
 });

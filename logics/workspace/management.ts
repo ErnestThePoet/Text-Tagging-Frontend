@@ -11,6 +11,7 @@ import userManagementData from "../../states/user-management-data";
 import { UserLevel } from "../../modules/objects/types";
 import { getUserLevelLabel } from "../../modules/utils/user-level-utils";
 import addUserDialogState from "../../states/component-states/add-user-dialog-state";
+import { pbkdf2Hash } from "../../modules/utils/hash";
 
 export const updateDatasetStat =
     (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -92,7 +93,7 @@ export const updateUsersInfo =
             message.error(reason.message);
         });
     }
-    
+
 export const createUser = () => {
     if (userManagementData.usersInfo.some(
         x => x.account === addUserDialogState.account)) {
@@ -112,7 +113,7 @@ export const createUser = () => {
             userManagementData.addUser(addUserDialogState.account,
                 addUserDialogState.name,
                 addUserDialogState.level);
-            
+
             addUserDialogState.setAccount("");
             addUserDialogState.setLevel(0);
             addUserDialogState.setName("");
@@ -149,7 +150,7 @@ export const deleteUsers = (indexes: number[]) => {
     });
 }
 
-export const resetPassword=(index: number)=>{
+export const resetPassword = (index: number) => {
     axios.postForm(APIS.resetPassword, {
         accessId: userData.accessId,
         account: userManagementData.usersInfo[index].account
@@ -194,6 +195,40 @@ export const changeUserLevel = (index: number, level: UserLevel,
         }
         else {
             message.error(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        setLoading(false);
+    });
+}
+
+export const deleteDataset = (indexes: number[],
+    enteredPassword: string,
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setDeleteResultMsg: React.Dispatch<React.SetStateAction<string>>,
+    setSelectedRowKeys: React.Dispatch<React.SetStateAction<React.Key[]>>) => {
+
+    setLoading(true);
+
+    axios.post(APIS.deleteDataset, {
+        accessId: userData.accessId,
+        taskId: taskData.taskId,
+        fileNames: indexes.map(x => taskData.datasetStats[x].fileName),
+        pwHashed: pbkdf2Hash(enteredPassword)
+    }).then(res => {
+        if (res.data.success) {
+            message.success("成功删除所选数据集");
+            setDeleteResultMsg("");
+            setIsOpen(false);
+            // 防止删除选中的数据集后，渲染列表出现read prop of undefined情况
+            setSelectedRowKeys([]);
+            taskData.updateDatasetStat(() => { }, () => { });
+        }
+        else {
+            setDeleteResultMsg(res.data.msg);
         }
     }).catch(reason => {
         console.log(reason);

@@ -46,11 +46,11 @@ const UserContent: React.FC = observer(() => {
 
     const columns: ColumnsType<UserInfo> = [
         {
-            align:"center",
+            align: "center",
             title: "登录名",
             dataIndex: "account",
             width: "20%",
-            showSorterTooltip:false,
+            showSorterTooltip: false,
             sorter: (a, b) => stringCompare(a.account, b.account)
         },
         {
@@ -157,13 +157,19 @@ const UserContent: React.FC = observer(() => {
                 onCancel={() => setIsChangeLevelDialogOpen(false)}
                 open={isChangeLevelDialogOpen}
                 confirmLoading={isChangeLevelDialogConfirmLoading}>
-                <Select value={newLevel} onChange={e => setNewLevel(e)}>
-                    {
-                        UserLevelValues.map((x, i) => (
-                            <Option key={i} value={x}>{getUserLevelLabel(x)}</Option>
-                        ))
-                    }
-                </Select>
+                <Space>
+                    <span>
+                        修改【{userManagementData.usersInfo[selectedUserIndex].name}】的权限为:
+                    </span>
+                    
+                    <Select value={newLevel} onChange={e => setNewLevel(e)}>
+                        {
+                            UserLevelValues.map((x, i) => (
+                                <Option key={i} value={x}>{getUserLevelLabel(x)}</Option>
+                            ))
+                        }
+                    </Select>
+                </Space>
             </Modal>
 
             <AddUserDialog />
