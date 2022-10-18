@@ -13,6 +13,7 @@ import { getUserLevelLabel } from "../../../modules/utils/user-level-utils";
 import addUserDialogState from "../../../states/component-states/add-user-dialog-state";
 import AddUserDialog from "./dialogs/add-user-dialog";
 import styles from "../../../styles/workspace.module.scss";
+import uiState from "../../../states/ui-state";
 
 const { confirm } = Modal;
 const { Option } = Select;
@@ -31,7 +32,6 @@ const showResetPwDialog = (index: number) => {
 };
 
 const UserContent: React.FC = observer(() => {
-    const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
     const [isChangeLevelDialogOpen, setIsChangeLevelDialogOpen] = useState(false);
@@ -41,7 +41,7 @@ const UserContent: React.FC = observer(() => {
     const [newLevel, setNewLevel] = useState<UserLevel>(0);
 
     useEffect(() => {
-        L.updateUsersInfo(setLoading);
+        userManagementData.updateUsersInfo();
     }, []);
 
     const columns: ColumnsType<UserInfo> = [
@@ -119,7 +119,7 @@ const UserContent: React.FC = observer(() => {
     };
 
     return (
-        <Spin spinning={loading}>
+        <Spin spinning={uiState.isUsersInfoLoading}>
             <div>
                 <Space className={styles.divUserContentActionWrapper}>
                     {`已选${selectedRowKeys.length}个账号`}

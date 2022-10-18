@@ -9,6 +9,7 @@ import * as RULES from "../../../modules/form-rules";
 import * as L from "../../../logics/workspace/management";
 import styles from "../../../styles/workspace.module.scss";
 import taskData from "../../../states/task-data";
+import uiState from "../../../states/ui-state";
 
 
 const columns: ColumnsType<SingleDatasetStat> = [
@@ -60,7 +61,6 @@ const columns: ColumnsType<SingleDatasetStat> = [
 
 
 const DatasetContent: React.FC = observer(() => {
-    const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
     // 导出数据接收未完成时，不允许点击导出和删除按钮
@@ -73,14 +73,14 @@ const DatasetContent: React.FC = observer(() => {
     const [deleteResultMsg, setDeleteResultMsg] = useState("");
 
     useEffect(() => {
-        L.updateDatasetStat(setLoading);
+        taskData.updateDatasetStat();
     }, []);
 
     return (
-        <Spin spinning={loading}>
+        <Spin spinning={uiState.isDatasetStatLoading}>
             <div className={styles.divDatasetContent}>
                 <ReloadOutlined className="reload-icon"
-                    onClick={() => L.updateDatasetStat(setLoading)} />
+                    onClick={() => taskData.updateDatasetStat()} />
                 {
                     taskData.datasetStats.length <= 1
                         ?

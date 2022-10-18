@@ -268,3 +268,8 @@
     flex-direction: column;
     gap: 10px;
 }
+
+.asideQueryOptions{
+    @extend .asideTextList;
+    padding: 20px;
+}

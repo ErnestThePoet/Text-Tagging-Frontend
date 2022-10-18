@@ -13,13 +13,6 @@ import { getUserLevelLabel } from "../../modules/utils/user-level-utils";
 import addUserDialogState from "../../states/component-states/add-user-dialog-state";
 import { pbkdf2Hash } from "../../modules/utils/hash";
 
-export const updateDatasetStat =
-    (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-        taskData.updateDatasetStat(
-            () => { setLoading(true); },
-            () => { setLoading(false); });
-    }
-
 export const uploadProps: UploadProps = {
     customRequest: options => {
         const reader = new FileReader();
@@ -56,7 +49,7 @@ export const uploadProps: UploadProps = {
                 ...convertedObj
             }).then(res => {
                 if (res.data.success) {
-                    taskData.updateDatasetStat(() => { }, () => { });
+                    taskData.updateDatasetStat();
                     message.success(`恭喜！成功上传` +
                         `${(<File>options.file).name}中的${(<any[]>importObj).length}个文本`);
                 }
@@ -72,27 +65,6 @@ export const uploadProps: UploadProps = {
         reader.readAsText(options.file as File);
     }
 };
-
-export const updateUsersInfo =
-    (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-
-        setLoading(true);
-
-        axios.postForm(APIS.getUsersInfo, {
-            accessId: userData.accessId
-        }).then(res => {
-            if (res.data.success) {
-                userManagementData.setUsersInfo(res.data.usersInfo);
-                setLoading(false);
-            }
-            else {
-                message.error(res.data.msg);
-            }
-        }).catch(reason => {
-            console.log(reason);
-            message.error(reason.message);
-        });
-    }
 
 export const createUser = () => {
     if (userManagementData.usersInfo.some(
@@ -254,7 +226,7 @@ export const deleteDataset = (indexes: number[],
             setIsOpen(false);
             // 防止删除选中的数据集后，渲染列表出现read prop of undefined情况
             setSelectedRowKeys([]);
-            taskData.updateDatasetStat(() => { }, () => { });
+            taskData.updateDatasetStat();
         }
         else {
             setDeleteResultMsg(res.data.msg);

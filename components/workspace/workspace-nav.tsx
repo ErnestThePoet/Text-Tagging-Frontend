@@ -15,7 +15,7 @@ interface WorkspaceNavProps{
 }
 
 const navItemsNormal: MenuProps['items']
-    = ['文本标注', '添加文本', '文本查询'].map((x, i) => ({
+    = ['文本标注', '添加文本'].map((x, i) => ({
     key: i,
     label: x
 }));

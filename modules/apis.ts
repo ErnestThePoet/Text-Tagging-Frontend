@@ -35,7 +35,12 @@ const APIS = {
     changeText: "text/change_text",
 
     // Adding texts
-    addTexts:"text/add_texts"
+    addTexts: "text/add_texts",
+    
+    // Text Query
+    queryTexts: "text/query",
+    changeTag: "text/change_tag",
+    deleteText:"text/delete_text"
 }
 
 for (let i in APIS) {

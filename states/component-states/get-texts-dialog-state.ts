@@ -10,11 +10,6 @@ class GetTextsDialogState {
         this.isOpen = value;
     }
 
-    isDatasetStatLoading: boolean = false;
-    setIsDatasetStatLoading(value: boolean) {
-        this.isDatasetStatLoading = value;
-    }
-
     isConfirmLoading: boolean = false;
     setIsConfirmLoading(value: boolean) {
         this.isConfirmLoading = value;

@@ -10,6 +10,7 @@ import { Modal, Input, Select, Switch } from 'antd';
 import styles from "../../../../styles/workspace.module.scss";
 import taskData from "../../../../states/task-data";
 import getTextsDialogState from "../../../../states/component-states/get-texts-dialog-state";
+import uiState from "../../../../states/ui-state";
 
 const { Option } = Select;
 
@@ -42,7 +43,7 @@ const GetTextsDialog: React.FC = observer(() => {
             confirmLoading={getTextsDialogState.isConfirmLoading}
         >
             {
-                getTextsDialogState.isDatasetStatLoading
+                uiState.isDatasetStatLoading
                     ?
                     <Spin />
                     :

@@ -1,5 +1,10 @@
 import { makeAutoObservable } from "mobx";
+import axios from "axios";
+import APIS from "../modules/apis";
+import { message } from "antd";
 import { UserLevel } from "../modules/objects/types";
+import uiState from "./ui-state";
+import userData from "./user-data";
 
 export interface UserInfo{
     account: string;
@@ -38,6 +43,30 @@ class UserManegementData{
 
     changeUserLevel(index: number, level: UserLevel) {
         this.usersInfo[index].level = level;
+    }
+
+    updateUsersInfo() {
+        if (!userData.isAdmin) {
+            return;
+        }
+
+        uiState.setIsUsersInfoLoading(true);
+
+        axios.postForm(APIS.getUsersInfo, {
+            accessId: userData.accessId
+        }).then(res => {
+            if (res.data.success) {
+                this.setUsersInfo(res.data.usersInfo);
+            }
+            else {
+                message.error(res.data.msg);
+            }
+        }).catch(reason => {
+            console.log(reason);
+            message.error(reason.message);
+        }).finally(() => {
+            uiState.setIsUsersInfoLoading(false);
+        });
     }
 }
 

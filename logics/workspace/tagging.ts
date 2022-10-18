@@ -11,8 +11,7 @@ import type { Text } from "../../modules/objects/text";
 
 export const openGetTextsDialog =() => {
     getTextsDialogState.setIsOpen(true);
-    taskData.updateDatasetStat(() => getTextsDialogState.setIsDatasetStatLoading(true),
-        () => getTextsDialogState.setIsDatasetStatLoading(false));
+    taskData.updateDatasetStat();
 }
 
 export const getTextsToTag = () => {

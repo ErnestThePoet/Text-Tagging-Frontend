@@ -6,6 +6,7 @@ import { message } from "antd";
 import type { TagItemMeta } from "../modules/objects/task";
 import * as IMPORT_CHECK_FNS from "../modules/import-check-fns";
 import * as TAGGING_CHECK_FNS from "../modules/tagging-check-fns";
+import uiState from "./ui-state";
 
 export interface SingleDatasetStat{
     fileName: string;
@@ -144,6 +145,7 @@ class TaskData{
     idTaggingValidationMap: { [id: number]: SingleTagItemTaggingValidation } = {};
 
     // 数据库统计信息
+    // 其中第一个元素为全库统计
     datasetStats: SingleDatasetStat[] = [{
         fileName: "",
         totalTextCount: 0,
@@ -189,12 +191,12 @@ class TaskData{
         }
     }
 
-    updateDatasetStat(onStart:()=>void,onSuccess:()=>void) {
+    updateDatasetStat() {
         if (!userData.isAdmin) {
             return;
         }
 
-        onStart();
+        uiState.setIsDatasetStatLoading(true);
 
         axios.postForm(APIS.getDatasetStat, {
             accessId: userData.accessId,
@@ -202,7 +204,6 @@ class TaskData{
         }).then(res => {
             if (res.data.success) {
                 this.datasetStats = res.data.stats;
-                onSuccess();
             }
             else {
                 message.error("获取数据库信息失败：" + res.data.msg);
@@ -210,6 +211,8 @@ class TaskData{
         }).catch(reason => {
             message.error("获取数据库信息失败：" + reason);
             console.log(reason);
+        }).finally(() => {
+            uiState.setIsDatasetStatLoading(false);
         });
     }
 }
