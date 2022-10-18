@@ -5,7 +5,6 @@ import { Checkbox, Space } from 'antd';
 import styles from "../../../../styles/workspace.module.scss";
 import type { TagItemEditorProps } from "./types";
 import taggingData from "../../../../states/tagging-data";
-import * as L from "../../../../logics/workspace/tagging";
 
 const MultipleChoiceEditor: React.FC<TagItemEditorProps> = observer(
     (props: TagItemEditorProps) => {

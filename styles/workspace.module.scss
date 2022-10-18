@@ -21,11 +21,15 @@
 .asideTextList {
     background: #fff;
     height: calc(100vh - $nav-height);
+    max-height: calc(100vh - $nav-height);
+    overflow-y: auto;
     width: $sider-width;
     
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    @include slim-scroll-bar;
 }
 
 .listWorkspace{
@@ -271,5 +275,6 @@
 
 .asideQueryOptions{
     @extend .asideTextList;
+    width: 300px;
     padding: 20px;
 }

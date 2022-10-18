@@ -6,6 +6,7 @@ import { pbkdf2Hash } from "../modules/utils/hash";
 import type { Task } from "../modules/objects/task";
 import taskData from "../states/task-data";
 import { message } from "antd";
+import queryData from "../states/query-data";
 
 export const tryAutoLogin = () => {
     const sessionId = localStorage.getItem("sessionId");
@@ -115,6 +116,7 @@ export const enterSystem = (tasks: Task[], selectedTaskIndex: number) => {
     taskData.setName(selectedTask.name);
     taskData.setTargetTagsPerText(selectedTask.targetTagsPerText);
     taskData.setTagItemMetas(selectedTask.tagItemMetas);
+    queryData.setTagItems(taskData.tagItemMetas.map(x => ({ id: x.id, value: [] })));
 
     Router.push("/workspace/tagging");
 }

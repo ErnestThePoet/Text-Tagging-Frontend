@@ -25,3 +25,7 @@ export function getExportTimeStr(): string {
         `${toTwoDigits(date.getSeconds())}-` +
         `${date.getMilliseconds()}`;
 }
+
+export const MOMENT_DATE_FORMAT = "YYYY-MM-DD";
+export const MOMENT_TIME_FORMAT = "HH:mm";
+export const MOMENT_DATETIME_FORMAT = MOMENT_DATE_FORMAT + " " + MOMENT_TIME_FORMAT;
