@@ -63,6 +63,9 @@ const DatasetContent: React.FC = observer(() => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
+    // 导出数据接收未完成时，不允许点击导出和删除按钮
+    const [isExportLoading, setIsExportLoading] = useState(false);
+
     const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] = useState(false);
     const [isDeleteConfirmDialogConfirmLoading,
         setIsDeleteConfirmDialogConfirmLoading] = useState(false);
@@ -120,15 +123,26 @@ const DatasetContent: React.FC = observer(() => {
                                 {`已选${selectedRowKeys.length}个数据集`}
 
                                 {/* TODO: logics */}
-                                <Button disabled={selectedRowKeys.length === 0}>
+                                <Button disabled={selectedRowKeys.length === 0
+                                    || isExportLoading}
+                                    onClick={() => L.exportDataset(
+                                        selectedRowKeys as number[],
+                                        false,
+                                        setIsExportLoading)}>
                                     导出所选
                                 </Button>
 
-                                <Button disabled={selectedRowKeys.length === 0}>
+                                <Button disabled={selectedRowKeys.length === 0
+                                    || isExportLoading}
+                                    onClick={() => L.exportDataset(
+                                        selectedRowKeys as number[],
+                                        true,
+                                        setIsExportLoading)}>
                                     导出所选(仅标注完成的)
                                 </Button>
 
-                                <Button danger disabled={selectedRowKeys.length === 0}
+                                <Button danger disabled={selectedRowKeys.length === 0
+                                    || isExportLoading}
                                     onClick={() => setIsDeleteConfirmDialogOpen(true)}>
                                     删除所选
                                 </Button>
@@ -163,7 +177,7 @@ const DatasetContent: React.FC = observer(() => {
                 footer={null}>
                 <div className={styles.divDeleteDatasetConfirmWrapper}>
                     <Space>
-                        <ExclamationCircleOutlined style={{ color: "#ff4d4f",fontSize:25 }} />
+                        <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 25 }} />
                         <span>
                             您准备删除选中的数据集
                             <b>
@@ -198,7 +212,7 @@ const DatasetContent: React.FC = observer(() => {
                                 type="password"
                                 placeholder="请输入登录密码"
                                 value={enteredPassword}
-                                onChange={e=>setEnteredPassword(e.target.value)}
+                                onChange={e => setEnteredPassword(e.target.value)}
                             />
                         </Form.Item>
 

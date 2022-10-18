@@ -75,8 +75,22 @@ export const createSingleElementCheck:
     (options?: TagItemMetaOption) => TagItemImportValueCheckFn
     = (options?: TagItemMetaOption) => (
         (x: any) => {
+            if (!Array.isArray(x)) {
+                return {
+                    ok: false,
+                    msg: "不是数组类型"
+                }
+            }
+
+            if (x.length !== 1) {
+                return {
+                    ok: false,
+                    msg: "数组长度不为1"
+                }
+            }
+
             if (options?.type !== undefined
-                && typeof (x) !== options.type[0]) {
+                && typeof (x[0]) !== options.type[0]) {
                 return {
                     ok: false,
                     msg: "元素类型不是" + options.type[0]

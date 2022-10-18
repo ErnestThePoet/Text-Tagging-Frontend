@@ -5,8 +5,8 @@ import APIS from "../../modules/apis";
 import userData from "../../states/user-data";
 import taskData from "../../states/task-data";
 import { checkImportDataset } from "../../modules/import-check";
-import { toImportTextsTags } from "../../modules/import-convert";
-import { getCurrentDateTimeStr } from "../../modules/utils/date-time";
+import { toImportTextsTags,toUploadTexts } from "../../modules/import-convert";
+import { getCurrentDateTimeStr,getExportTimeStr } from "../../modules/utils/date-time";
 import userManagementData from "../../states/user-management-data";
 import { UserLevel } from "../../modules/objects/types";
 import { getUserLevelLabel } from "../../modules/utils/user-level-utils";
@@ -201,6 +201,35 @@ export const changeUserLevel = (index: number, level: UserLevel,
         message.error(reason.message);
     }).finally(() => {
         setLoading(false);
+    });
+}
+
+export const exportDataset = (indexes: number[], isTaggedOnly: boolean,
+    setIsExportLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    
+    setIsExportLoading(true);
+
+    axios.post(APIS.exportDataset, {
+        accessId: userData.accessId,
+        taskId: taskData.taskId,
+        fileNames: indexes.map(x => taskData.datasetStats[x].fileName),
+        isTaggedOnly
+    }).then(res => {
+        if (res.data.success) {
+            const convertedTexts = toUploadTexts(res.data.texts, res.data.tags);
+            const downloadAnchor = document.createElement("a");
+            downloadAnchor.download = `export-${getExportTimeStr()}.json`;
+            downloadAnchor.href = URL.createObjectURL(new Blob([JSON.stringify(convertedTexts)]));
+            downloadAnchor.click();
+        }
+        else {
+            message.error(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        setIsExportLoading(false);
     });
 }
 

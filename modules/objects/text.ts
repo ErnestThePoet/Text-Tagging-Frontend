@@ -1,5 +1,3 @@
-import { makeAutoObservable } from "mobx";
-
 export interface TagItem {
     id: number;
     value: string[];

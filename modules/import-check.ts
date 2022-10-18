@@ -27,7 +27,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
         if (typeof (currentText) !== "object") {
             return {
                 ok: false,
-                msg: `第${i}个文本不是对象类型`
+                msg: `下标为${i}的文本不是对象类型`
             };
         }
 
@@ -36,7 +36,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             || currentText.id === "") {
             return {
                 ok: false,
-                msg: `第${i}个文本id属性不存在或不是非空字符串`
+                msg: `下标为${i}的文本id属性不存在或不是非空字符串`
             };
         }
 
@@ -45,7 +45,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             || currentText.text === "") {
             return {
                 ok: false,
-                msg: `第${i}个文本text属性不存在或不是非空字符串`
+                msg: `下标为${i}的文本text属性不存在或不是非空字符串`
             };
         }
 
@@ -53,7 +53,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             || !Array.isArray(currentText.tag)) {
             return {
                 ok: false,
-                msg: `第${i}个文本tag属性不存在或不是数组`
+                msg: `下标为${i}的文本tag属性不存在或不是数组`
             };
         }
 
@@ -62,7 +62,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
         if (currentText.tag.length !== validation.tagItemCount) {
             return {
                 ok: false,
-                msg: `第${i}个文本tag属性长度不是${validation.tagItemCount}`
+                msg: `下标为${i}的文本tag属性长度不是${validation.tagItemCount}`
             };
         }
 
@@ -71,7 +71,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             if (typeof (currentTag) !== "object") {
                 return {
                     ok: false,
-                    msg: `第${i}个文本的第${j}个标注项不是对象类型`
+                    msg: `下标为${i}的文本的第${j}个标注项不是对象类型`
                 };
             }
 
@@ -80,14 +80,14 @@ export function checkImportDataset(importTexts: any): CheckResult{
                 || currentTag.itemName === "") {
                 return {
                     ok: false,
-                    msg: `第${i}个文本的第${j}个标注项的itemName属性不存在或不是非空字符串`
+                    msg: `下标为${i}的文本的第${j}个标注项的itemName属性不存在或不是非空字符串`
                 };
             }
 
             if (!("value" in currentTag)) {
                 return {
                     ok: false,
-                    msg: `第${i}个文本的第${j}个标注项的value属性不存在`
+                    msg: `下标为${i}的文本的第${j}个标注项的value属性不存在`
                 };
             }
         }
@@ -97,7 +97,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             if (matchingTag === undefined) {
                 return {
                     ok: false,
-                    msg: `第${i}个文本没有包含标注项"${j.name}"`
+                    msg: `下标为${i}的文本没有包含标注项"${j.name}"`
                 };
             }
 
@@ -106,7 +106,7 @@ export function checkImportDataset(importTexts: any): CheckResult{
             if (!valueCheckResult.ok) {
                 return {
                     ok: false,
-                    msg: `第${i}个文本的标注项"${j.name}"取值非法：${valueCheckResult.msg}`
+                    msg: `下标为${i}的文本的标注项"${j.name}"取值非法：${valueCheckResult.msg}`
                 };
             }
         }

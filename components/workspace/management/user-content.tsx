@@ -159,7 +159,7 @@ const UserContent: React.FC = observer(() => {
                 confirmLoading={isChangeLevelDialogConfirmLoading}>
                 <Space>
                     <span>
-                        修改【{userManagementData.usersInfo[selectedUserIndex].name}】的权限为:
+                        修改【{userManagementData.usersInfo[selectedUserIndex]?.name}】的权限为:
                     </span>
                     
                     <Select value={newLevel} onChange={e => setNewLevel(e)}>
