@@ -163,7 +163,7 @@ const DatasetContent: React.FC = observer(() => {
                 footer={null}>
                 <div className={styles.divDeleteDatasetConfirmWrapper}>
                     <Space>
-                        <ExclamationCircleOutlined style={{ color: "#ff4d4f" }} />
+                        <ExclamationCircleOutlined style={{ color: "#ff4d4f",fontSize:25 }} />
                         <span>
                             您准备删除选中的数据集
                             <b>
@@ -173,7 +173,7 @@ const DatasetContent: React.FC = observer(() => {
                                     )).toString()
                                 }
                             </b>
-                            ！
+                            ！该数据集的所有文本和所有文本标注都将永久丢失。
                         </span>
                     </Space>
 
