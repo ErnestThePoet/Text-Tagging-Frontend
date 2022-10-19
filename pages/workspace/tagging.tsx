@@ -109,7 +109,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
             </Layout>
 
             <GetTextsDialog/>
-            <ChangeTextDialog/>
+            <ChangeTextDialog onOk={()=>L.changeText()}/>
             <ChangePwDialog/>
         </div>
     );

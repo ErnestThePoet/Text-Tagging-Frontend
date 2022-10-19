@@ -15,6 +15,8 @@ interface SingleTaggingBoxProps {
     textIndex: number;
     // 是否隐藏左上角的文本总数标签（用在修改标签对话框时，关闭）
     hideCount?: boolean;
+    // 是否隐藏文本编辑图标（用在修改标签对话框时，关闭）
+    hideEditText?: boolean;
 }
 
 const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
@@ -48,14 +50,17 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
                 </div>
                 
                 <div className="div-tagging-box-text">
-                    <span className="span-edit-icon"
-                        onClick={() => {
-                            changeTextDialogState.setSelectedTextIndex(props.textIndex);
-                            changeTextDialogState.setText(taggingData.texts[props.textIndex].text);
-                            changeTextDialogState.setIsOpen(true);
-                        }}>
-                        <EditTwoTone />
-                    </span>
+                    {
+                        !props.hideEditText &&
+                        <span className="span-edit-icon"
+                            onClick={() => {
+                                changeTextDialogState.setSelectedTextIndex(props.textIndex);
+                                changeTextDialogState.setText(taggingData.texts[props.textIndex].text);
+                                changeTextDialogState.setIsOpen(true);
+                            }}>
+                            <EditTwoTone />
+                        </span>
+                    }
                     
                     {taggingData.texts[props.textIndex].text}
                 </div>

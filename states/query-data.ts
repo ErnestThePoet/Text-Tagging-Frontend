@@ -132,6 +132,11 @@ class QueryData{
             this.texts.splice(indexesCopied[i], 1);
         }
     }
+
+    // 修改文本
+    changeText(index: number, newText: string) {
+        this.texts[index].text = newText;
+    }
 }
 
 export default new QueryData();

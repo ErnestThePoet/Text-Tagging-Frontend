@@ -1,20 +1,16 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import * as L from "../../../../logics/workspace/tagging";
-import {
-    CheckOutlined,
-    CloseOutlined
-} from '@ant-design/icons';
-import { Spin } from 'antd';
-import { Modal, Input, Select, Switch } from 'antd';
-import styles from "../../../../styles/workspace.module.scss";
-import taskData from "../../../../states/task-data";
-import getTextsDialogState from "../../../../states/component-states/get-texts-dialog-state";
+import { Modal, Input } from 'antd';
 import changeTextDialogState from "../../../../states/component-states/change-text-dialog-state";
 
 const { TextArea } = Input;
 
-const ChangeTextDialog: React.FC = observer(() => {
+interface ChangeTextDialogProps{
+    onOk: () => void;
+}
+
+const ChangeTextDialog: React.FC<ChangeTextDialogProps> =
+    observer((props: ChangeTextDialogProps) => {
 
     return (
         <Modal
@@ -22,7 +18,7 @@ const ChangeTextDialog: React.FC = observer(() => {
             okText="确定"
             cancelText="取消"
             open={changeTextDialogState.isOpen}
-            onOk={() => L.changeText()}
+            onOk={props.onOk}
             onCancel={() => changeTextDialogState.setIsOpen(false)}
             confirmLoading={changeTextDialogState.isConfirmLoading}
         >

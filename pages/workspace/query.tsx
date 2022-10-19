@@ -14,6 +14,8 @@ import taskData from "../../states/task-data";
 import queryData from "../../states/query-data";
 import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
 import taggingData from "../../states/tagging-data";
+import changeTextDialogState from "../../states/component-states/change-text-dialog-state";
+import ChangeTextDialog from "../../components/workspace/tagging/dialogs/change-text-dialog";
 
 const { Content } = Layout;
 
@@ -66,10 +68,15 @@ const Query: React.FC = observer(() => {
             dataIndex: "userId"
         },
         {
-            align: "center",
+            align: "left",
             title: "文本内容",
             dataIndex: "text",
-            width: "50%"
+            width: "65%",
+            render: x => (
+                <div style={{maxHeight:"250px",overflowY:"auto"}}>
+                    {x}
+                </div>
+            )
         },
         {
             align: "center",
@@ -109,10 +116,17 @@ const Query: React.FC = observer(() => {
             align: "center",
             title: "操作",
             render: x => (
-                <Space>
+                <Space direction="vertical">
+                    <Button type="link" onClick={() => {
+                        changeTextDialogState.setSelectedTextIndex(x.key);
+                        changeTextDialogState.setText(queryData.texts[x.key].text);
+                        changeTextDialogState.setIsOpen(true);
+                    }}>
+                        修改文本
+                    </Button>
                     <Button type="link" onClick={() => L.startChangeTag(x.key,
                             setIsChangeTagDialogOpen)}>
-                        修改
+                        修改标注
                     </Button>
                 </Space>
             )
@@ -226,8 +240,11 @@ const Query: React.FC = observer(() => {
                     setIsChangeTagDialogConfirmLoading)}
                 open={isChangeTagDialogOpen}
                 confirmLoading={isChangeTagDialogConfirmLoading}>
-                <SingleTaggingBox textIndex={taggingData.texts.length - 1} hideCount />
+                <SingleTaggingBox hideCount hideEditText
+                    textIndex={taggingData.texts.length - 1} />
             </Modal>
+
+            <ChangeTextDialog onOk={()=>L.changeText()}/>
         </div>
     );
 })

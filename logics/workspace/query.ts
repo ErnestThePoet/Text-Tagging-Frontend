@@ -9,6 +9,7 @@ import { pbkdf2Hash } from "../../modules/utils/hash";
 import { cloneDeep } from "lodash-es";
 import type { Text } from "../../modules/objects/text";
 import taggingData from "../../states/tagging-data";
+import changeTextDialogState from "../../states/component-states/change-text-dialog-state";
 
 export const quertTexts = (
     setIsQueryLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -152,5 +153,36 @@ export const endChangeTag = (
         message.error(reason.message);
     }).finally(() => {
         setLoading(false);
+    });
+}
+
+export const changeText = () => {
+    if (changeTextDialogState.text === "") {
+        message.error("新文本不能为空");
+        return;
+    }
+
+    changeTextDialogState.setIsConfirmLoading(true);
+
+    axios.postForm(APIS.changeText, {
+        accessId: userData.accessId,
+        taskId: taskData.taskId,
+        textId: queryData.texts[changeTextDialogState.selectedTextIndex].id,
+        newText: changeTextDialogState.text
+    }).then(res => {
+        if (res.data.success) {
+            queryData.changeText(changeTextDialogState.selectedTextIndex,
+                changeTextDialogState.text);
+            changeTextDialogState.setIsOpen(false);
+            message.success("修改成功");
+        }
+        else {
+            message.error(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        changeTextDialogState.setIsConfirmLoading(false);
     });
 }
