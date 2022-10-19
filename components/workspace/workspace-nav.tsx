@@ -30,11 +30,11 @@ const accountMenu = (
     <Menu
         onClick={e => L.onAccountMenuItemClick(e.key)}
         items={[
-            {
-                key: '0',
-                label: "使用指南",
-                icon: <QuestionCircleOutlined />
-            },
+            // {
+            //     key: '0',
+            //     label: "使用指南",
+            //     icon: <QuestionCircleOutlined />
+            // },
             {
                 key: '1',
                 label: '修改密码'
