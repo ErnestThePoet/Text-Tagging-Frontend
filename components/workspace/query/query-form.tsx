@@ -39,7 +39,7 @@ const QueryForm: React.FC = observer(() => {
             <Form
                 name="text_query"
                 layout="vertical"
-                onFinish={()=>L.quertTexts()}
+                onFinish={()=>L.quertTexts(setIsQueryLoading)}
             >
                 <Form.Item
                     name="text_query_filename"

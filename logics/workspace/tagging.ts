@@ -1,13 +1,13 @@
 import { message } from "antd";
 import axios from "axios";
 import APIS from "../../modules/apis";
-import {cloneDeep} from "lodash-es";
 import taggingData from "../../states/tagging-data";
 import taskData from "../../states/task-data";
 import userData from "../../states/user-data";
 import getTextsDialogState from "../../states/component-states/get-texts-dialog-state";
 import changeTextDialogState from "../../states/component-states/change-text-dialog-state";
 import type { Text } from "../../modules/objects/text";
+import { copyAndFilterEmptyInputValues } from "../../modules/utils/tagging";
 
 export const openGetTextsDialog =() => {
     getTextsDialogState.setIsOpen(true);
@@ -26,12 +26,12 @@ export const getTextsToTag = () => {
         moreTagsFirst: getTextsDialogState.moreTagsFirst
     }).then(res => {
         if (res.data.success) {
-            if (res.data.texts.length === 0) {
-                message.info("未获取到任何文本");
-            }
-            else {
+            if (res.data.texts.length > 0) {
                 taggingData.setTexts(res.data.texts);
                 message.success(`获取到${res.data.texts.length}条文本，标注愉快哦~`);
+            }
+            else {
+                message.info("未获取到任何文本");
             }
             
             getTextsDialogState.setIsOpen(false);
@@ -61,23 +61,12 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     }
 
     // 筛掉单输入和多输入标注项的空值
-    const textsCopy: Array<Text> = cloneDeep(taggingData.texts);
-
-    for (const i of textsCopy) {
-        for (const j of i.tag.tagItems) {
-            switch (taskData.idMetaMap[j.id].type) {
-                case 2:
-                case 3:
-                    j.value = j.value.filter(x => x !== "");
-                    break;
-            }
-        }
-    }
+    const texts: Array<Text> = copyAndFilterEmptyInputValues(taggingData.texts);
     
     axios.post(APIS.addTags, {
         accessId: userData.accessId,
         taskId: taskData.taskId,
-        texts: textsCopy
+        texts
     }).then(res => {
         if (res.data.success) {
             taggingData.setNoUnsavedChanges();
