@@ -5,11 +5,17 @@ import { getCurrentDateTimeStr } from "../modules/utils/date-time";
 import type { CheckResult } from "./task-data";
 import taskData from "./task-data";
 import closeEventManager from "../modules/close-event-manager";
+import { fetchInputSuggestions } from "../modules/input-suggestions";
 
 type TagStatus = "FINISHED" | "UNFINISHED" | "ERROR";
 interface TagItemStatus{
     status: TagStatus;
     msg: string;
+}
+
+// 每条文本都有一个此类型的对象
+export interface InputSuggestion{
+    [id: number]: Array<{ value: string }>;
 }
 
 class TaggingData{
@@ -23,6 +29,7 @@ class TaggingData{
     }
     
     texts: Array<Text> = [];
+    suggestions: Array<InputSuggestion> = [];
 
     hasUnsavedChanges: boolean = false;
 
@@ -109,8 +116,17 @@ class TaggingData{
     setTexts(texts: Array<Text>) {
         this.texts = texts;
         this.setHasUnsavedChanges();
+
+        this.suggestions = new Array(this.texts.length).fill({});
+        
+        fetchInputSuggestions();
+    }
+    
+    setSingleSuggestion(index: number, suggestion: InputSuggestion) {
+        this.suggestions[index] = suggestion;
     }
 
+    // 仅在修改标注对话框使用
     pushText(text: Text) {
         this.texts.push(text);
     }

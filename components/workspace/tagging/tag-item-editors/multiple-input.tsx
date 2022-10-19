@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { Space, Input,Button } from 'antd';
+import { Space, AutoComplete,Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import styles from "../../../../styles/workspace.module.scss";
 import type { TagItemEditorProps } from "./types";
@@ -26,13 +26,17 @@ const MultipleInputEditor: React.FC<TagItemEditorProps> = observer(
                                 .tag.tagItems[props.tagItemIndex].value
                                 .map((x, i) => (
                                     <Space key={i}>
-                                        <Input placeholder="请输入" value={x}
+                                        <AutoComplete placeholder="请输入" value={x}
+                                            options={
+                                                (taggingData.suggestions[props.textIndex] ?? {})[
+                                                props.tagItemMeta.id
+                                                ]??[]}
                                             className={styles.inTagItem}
                                             onChange={e => taggingData.setTagItemValueElement(
                                                 props.textIndex,
                                                 props.tagItemIndex,
                                                 i,
-                                                e.target.value
+                                                e
                                             )} />
                                         <MinusCircleOutlined
                                             className="dynamic-delete-button"

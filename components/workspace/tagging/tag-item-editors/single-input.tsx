@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { Input } from 'antd';
+import { AutoComplete } from 'antd';
 import styles from "../../../../styles/workspace.module.scss";
 import type { TagItemEditorProps } from "./types";
 import taggingData from "../../../../states/tagging-data";
@@ -19,14 +19,18 @@ const SingleInputEditor: React.FC<TagItemEditorProps> = observer(
                 <div className={classNames(styles.divTagItemEditor,
                     { [styles.divTagItemEditorError]: tagItemStatus.status === "ERROR" })}>
                     <label className="lbl-editor-title">{props.tagItemMeta.editorTitle}</label>
-                    <Input placeholder="请输入"
+                    <AutoComplete placeholder="请输入"
                         className={styles.inTagItem}
+                        options={
+                            (taggingData.suggestions[props.textIndex] ?? {})[
+                            props.tagItemMeta.id
+                            ] ?? []}
                         value={taggingData.texts[props.textIndex]
                             .tag.tagItems[props.tagItemIndex].value[0] ?? ""}
                         onChange={e => taggingData.setTagItemValueElement(
                             props.textIndex,
                             props.tagItemIndex,
-                            0, e.target.value)} />
+                            0, e)} />
                 </div>
             </div>
         )
