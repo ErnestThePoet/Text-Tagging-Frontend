@@ -7,7 +7,7 @@ import userData from "../../states/user-data";
 import getTextsDialogState from "../../states/component-states/get-texts-dialog-state";
 import changeTextDialogState from "../../states/component-states/change-text-dialog-state";
 import type { Text } from "../../modules/objects/text";
-import { copyAndFilterEmptyInputValues } from "../../modules/utils/tagging";
+import { copyAndFilterEmptyInputValuesInTexts } from "../../modules/utils/tagging";
 
 export const openGetTextsDialog =() => {
     getTextsDialogState.setIsOpen(true);
@@ -61,7 +61,7 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     }
 
     // 筛掉单输入和多输入标注项的空值
-    const texts: Array<Text> = copyAndFilterEmptyInputValues(taggingData.texts);
+    const texts: Array<Text> = copyAndFilterEmptyInputValuesInTexts(taggingData.texts);
     
     axios.post(APIS.addTags, {
         accessId: userData.accessId,

@@ -76,6 +76,11 @@ class QueryData{
     setResultMsg(value: string) {
         this.resultMsg = value;
     }
+    
+    isChangeTagTextPushed: boolean = false;
+    setIsChangeTagTextPushed(value: boolean) {
+        this.isChangeTagTextPushed = value;
+    }
 
     get isTagTimeValid():boolean {
         if (!this.shouldFilterTagTime) {

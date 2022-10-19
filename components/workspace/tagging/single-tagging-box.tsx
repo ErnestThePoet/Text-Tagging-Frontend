@@ -13,17 +13,26 @@ import changeTextDialogState from "../../../states/component-states/change-text-
 
 interface SingleTaggingBoxProps {
     textIndex: number;
+    // 是否隐藏左上角的文本总数标签（用在修改标签对话框时，关闭）
+    hideCount?: boolean;
 }
 
 const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
     observer((props: SingleTaggingBoxProps) => {
+        // 防止修改标注对话框关闭时出现read prop of undefined问题
+        if (props.textIndex >= taggingData.texts.length) {
+            return <div />;
+        }
 
         const tagStatus = taggingData.getTextTagStatus(props.textIndex);
 
         return (
             <div className={styles.divSingleTaggingBox}>
                 <div>
-                    <Tag color="blue">{`${props.textIndex + 1}/${taggingData.texts.length}`}</Tag>
+                    {
+                        !props.hideCount&&
+                        <Tag color="blue">{`${props.textIndex + 1}/${taggingData.texts.length}`}</Tag>
+                    }
                     {
                         tagStatus==="FINISHED" &&
                         <Tag className={styles.fadeInTag} color="green">标注完成</Tag>

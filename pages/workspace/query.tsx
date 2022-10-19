@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Key } from "react";
 import { observer } from "mobx-react-lite";
 import * as L from "../../logics/workspace/query";
-import { Table, Space, Layout, Button, Empty, Tag,Modal,Form,Input } from 'antd';
+import { Table, Space, Layout, Button, Empty, Tag, Modal, Form, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { checkIsLoggedIn } from "../../logics/router-checks";
@@ -12,6 +12,8 @@ import * as T from "../../modules/objects/text";
 import * as RULES from "../../modules/form-rules";
 import taskData from "../../states/task-data";
 import queryData from "../../states/query-data";
+import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
+import taggingData from "../../states/tagging-data";
 
 const { Content } = Layout;
 
@@ -40,65 +42,6 @@ function getTagItemDisplayStr(item: T.TagItem): string {
     }
 }
 
-const columns: ColumnsType<T.Text> = [
-    {
-        align: "center",
-        title: "ID",
-        dataIndex: "userId"
-    },
-    {
-        align: "center",
-        title: "文本内容",
-        dataIndex: "text",
-        width: "50%"
-    },
-    {
-        align: "center",
-        title: "标注",
-        dataIndex: "tag",
-        render: (x: T.Tag) => (
-            x.id === null ?
-                <Tag>无任何标注</Tag>
-                :
-                <Space direction="vertical" align="start">
-                    <Tag color="orange">
-                        <b>标注者:</b>
-                        <span>{x.taggerName}</span>
-                    </Tag>
-
-                    <Tag color="green">
-                        <b>标注时间:</b>
-                        <span>{x.tagTime}</span>
-                    </Tag>
-
-                    <Tag color="blue">
-                        <Space direction="vertical" align="start" size={0}>
-                            {
-                                x.tagItems.map((x, i) => (
-                                    <Space key={i}>
-                                        <b>{taskData.idMetaMap[x.id].editorTitle}:</b>
-                                        <span>{getTagItemDisplayStr(x)}</span>
-                                    </Space>
-                                ))
-                            }
-                        </Space>
-                    </Tag>
-                </Space>
-        )
-    },
-    {
-        align: "center",
-        title: "操作",
-        render: x => (
-            <Space>
-                <Button type="link" onClick={() => { }}>
-                    修改
-                </Button>
-            </Space>
-        )
-    },
-];
-
 const Query: React.FC = observer(() => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
@@ -108,9 +51,73 @@ const Query: React.FC = observer(() => {
     const [enteredPassword, setEnteredPassword] = useState("");
     const [deleteResultMsg, setDeleteResultMsg] = useState("");
 
+    const [isChangeTagDialogOpen, setIsChangeTagDialogOpen] = useState(false);
+    const [isChangeTagDialogConfirmLoading,
+        setIsChangeTagDialogConfirmLoading] = useState(false);
+
     useEffect(() => {
         checkIsLoggedIn();
     }, []);
+
+    const columns: ColumnsType<T.Text> = [
+        {
+            align: "center",
+            title: "ID",
+            dataIndex: "userId"
+        },
+        {
+            align: "center",
+            title: "文本内容",
+            dataIndex: "text",
+            width: "50%"
+        },
+        {
+            align: "center",
+            title: "标注",
+            dataIndex: "tag",
+            render: (x: T.Tag) => (
+                x.id === null ?
+                    <Tag>无任何标注</Tag>
+                    :
+                    <Space direction="vertical" align="start">
+                        <Tag color="orange">
+                            <b>标注者:</b>
+                            <span>{x.taggerName}</span>
+                        </Tag>
+
+                        <Tag color="green">
+                            <b>标注时间:</b>
+                            <span>{x.tagTime}</span>
+                        </Tag>
+
+                        <Tag color="blue">
+                            <Space direction="vertical" align="start" size={0}>
+                                {
+                                    x.tagItems.map((x, i) => (
+                                        <Space key={i}>
+                                            <b>{taskData.idMetaMap[x.id].editorTitle}:</b>
+                                            <span>{getTagItemDisplayStr(x)}</span>
+                                        </Space>
+                                    ))
+                                }
+                            </Space>
+                        </Tag>
+                    </Space>
+            )
+        },
+        {
+            align: "center",
+            title: "操作",
+            render: x => (
+                <Space>
+                    <Button type="link" onClick={() => L.startChangeTag(x.key,
+                            setIsChangeTagDialogOpen)}>
+                        修改
+                    </Button>
+                </Space>
+            )
+        },
+    ];
 
     return (
         <div className={styles.divMainWrapper}>
@@ -133,14 +140,14 @@ const Query: React.FC = observer(() => {
                                                 + `已选${selectedRowKeys.length}条`}
                                             <Button danger
                                                 disabled={selectedRowKeys.length === 0}
-                                                onClick={()=>setIsDeleteConfirmDialogOpen(true)}>
+                                                onClick={() => setIsDeleteConfirmDialogOpen(true)}>
                                                 删除所选文本
                                             </Button>
                                         </Space>
 
                                         <Table columns={columns}
                                             dataSource={queryData.texts
-                                                .map((x, i) => ({ ...x, key: i })) }
+                                                .map((x, i) => ({ ...x, key: i }))}
                                             rowSelection={{
                                                 onChange: (newSelectedRowKeys: Key[]) => {
                                                     setSelectedRowKeys(newSelectedRowKeys);
@@ -161,7 +168,7 @@ const Query: React.FC = observer(() => {
                     <Space>
                         <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 25 }} />
                         <span>
-                            您准备删除选中的{selectedRowKeys.length }条文本！该文本和其标注都将永久丢失。
+                            您准备删除选中的{selectedRowKeys.length}条文本！该文本和其标注都将永久丢失。
                         </span>
                     </Space>
 
@@ -202,6 +209,24 @@ const Query: React.FC = observer(() => {
                         </Form.Item>
                     </Form>
                 </div>
+            </Modal>
+
+            <Modal
+                title="修改标注"
+                okText="修改标注"
+                cancelText="放弃修改"
+                width={1000}
+                onOk={() => L.endChangeTag(
+                    true,
+                    setIsChangeTagDialogOpen,
+                    setIsChangeTagDialogConfirmLoading)}
+                onCancel={() => L.endChangeTag(
+                    false,
+                    setIsChangeTagDialogOpen,
+                    setIsChangeTagDialogConfirmLoading)}
+                open={isChangeTagDialogOpen}
+                confirmLoading={isChangeTagDialogConfirmLoading}>
+                <SingleTaggingBox textIndex={taggingData.texts.length - 1} hideCount />
             </Modal>
         </div>
     );

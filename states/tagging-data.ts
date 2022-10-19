@@ -83,7 +83,7 @@ class TaggingData{
     // 判定规则：有任意一项验证失败则返回校验失败；
     // 否则任意一项为空则返回标注未完成（单输入、多输入的空字符串均不算入）；
     // 否则返回标注完成
-    getTextTagStatus(textIndex: number|string): TagStatus {
+    getTextTagStatus(textIndex: number | string): TagStatus {
         const tagItemStatuses = this.texts[textIndex].tag.tagItems.map(
             (_, i) => this.getTagItemStatus(textIndex, i)
         );
@@ -109,6 +109,14 @@ class TaggingData{
     setTexts(texts: Array<Text>) {
         this.texts = texts;
         this.setHasUnsavedChanges();
+    }
+
+    pushText(text: Text) {
+        this.texts.push(text);
+    }
+
+    popText() {
+        this.texts.pop();
     }
 
     // 修改文本
