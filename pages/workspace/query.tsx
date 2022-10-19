@@ -1,13 +1,15 @@
 import React, { useState, useEffect, Key } from "react";
 import { observer } from "mobx-react-lite";
 import * as L from "../../logics/workspace/query";
-import { Table, Space, Layout, Button, Empty, Tag } from 'antd';
+import { Table, Space, Layout, Button, Empty, Tag,Modal,Form,Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { checkIsLoggedIn } from "../../logics/router-checks";
 import styles from "../../styles/workspace.module.scss";
 import WorkspaceNav from "../../components/workspace/workspace-nav";
 import QueryForm from "../../components/workspace/query/query-form";
 import * as T from "../../modules/objects/text";
+import * as RULES from "../../modules/form-rules";
 import taskData from "../../states/task-data";
 import queryData from "../../states/query-data";
 
@@ -100,6 +102,12 @@ const columns: ColumnsType<T.Text> = [
 const Query: React.FC = observer(() => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
+    const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] = useState(false);
+    const [isDeleteConfirmDialogConfirmLoading,
+        setIsDeleteConfirmDialogConfirmLoading] = useState(false);
+    const [enteredPassword, setEnteredPassword] = useState("");
+    const [deleteResultMsg, setDeleteResultMsg] = useState("");
+
     useEffect(() => {
         checkIsLoggedIn();
     }, []);
@@ -125,7 +133,7 @@ const Query: React.FC = observer(() => {
                                                 + `已选${selectedRowKeys.length}条`}
                                             <Button danger
                                                 disabled={selectedRowKeys.length === 0}
-                                                onClick={() => {}}>
+                                                onClick={()=>setIsDeleteConfirmDialogOpen(true)}>
                                                 删除所选文本
                                             </Button>
                                         </Space>
@@ -144,6 +152,57 @@ const Query: React.FC = observer(() => {
                     </Layout>
                 </Layout>
             </Layout>
+
+            <Modal title="确认删除所选文本"
+                onCancel={() => setIsDeleteConfirmDialogOpen(false)}
+                open={isDeleteConfirmDialogOpen}
+                footer={null}>
+                <div className={styles.divDeleteDatasetConfirmWrapper}>
+                    <Space>
+                        <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 25 }} />
+                        <span>
+                            您准备删除选中的{selectedRowKeys.length }条文本！该文本和其标注都将永久丢失。
+                        </span>
+                    </Space>
+
+                    <span>为确保安全，请输入您的登录密码验证身份：</span>
+
+                    <Form
+                        name="delete_dataset_enter_password"
+                        onFinish={() => L.deleteTexts(
+                            selectedRowKeys as number[],
+                            enteredPassword,
+                            setIsDeleteConfirmDialogOpen,
+                            setIsDeleteConfirmDialogConfirmLoading,
+                            setDeleteResultMsg,
+                            setSelectedRowKeys
+                        )}
+                    >
+                        <Form.Item
+                            name="password"
+                            rules={RULES.PW_RULES}
+                        >
+                            <Input
+                                type="password"
+                                placeholder="请输入登录密码"
+                                value={enteredPassword}
+                                onChange={e => setEnteredPassword(e.target.value)}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            validateStatus="error"
+                            help={deleteResultMsg}
+                        >
+                            <Button
+                                type="primary" htmlType="submit" danger
+                                disabled={isDeleteConfirmDialogConfirmLoading}>
+                                继续删除
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </Modal>
         </div>
     );
 })

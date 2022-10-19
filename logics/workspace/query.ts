@@ -5,6 +5,7 @@ import queryData from "../../states/query-data";
 import taskData from "../../states/task-data";
 import userData from "../../states/user-data";
 import { copyAndFilterEmptyInputValues } from "../../modules/utils/tagging";
+import { pbkdf2Hash } from "../../modules/utils/hash";
 
 export const quertTexts = (
     setIsQueryLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -49,3 +50,38 @@ export const quertTexts = (
         setIsQueryLoading(false);
     });
 }
+
+export const deleteTexts = (indexes: number[],
+    enteredPassword: string,
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setDeleteResultMsg: React.Dispatch<React.SetStateAction<string>>,
+    setSelectedRowKeys: React.Dispatch<React.SetStateAction<React.Key[]>>) => {
+    
+    setLoading(true);
+
+    axios.post(APIS.deleteTexts, {
+        accessId: userData.accessId,
+        pwHashed: pbkdf2Hash(enteredPassword),
+        taskId: taskData.taskId,
+        textIds:indexes.map(x=>queryData.texts[x].id)
+    }).then(res => {
+        if (res.data.success) {
+            message.success("成功删除所选文本");
+            setDeleteResultMsg("");
+            setIsOpen(false);
+            // 防止删除选中的数据集后，渲染列表出现read prop of undefined情况
+            setSelectedRowKeys([]);
+            queryData.removeTexts(indexes);
+        }
+        else {
+            setDeleteResultMsg(res.data.msg);
+        }
+    }).catch(reason => {
+        console.log(reason);
+        message.error(reason.message);
+    }).finally(() => {
+        setLoading(false);
+    });
+    
+    }

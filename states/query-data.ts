@@ -119,6 +119,14 @@ class QueryData{
     removeTagItemValueElement(tagItemIndex: number, elementIndex: number) {
         this.tagItems[tagItemIndex].value.splice(elementIndex, 1);
     }
+
+    removeTexts(indexes: number[]) {
+        const indexesCopied = [...indexes];
+        indexesCopied.sort((a, b) => b - a);
+        for (const i in indexesCopied) {
+            this.texts.splice(indexesCopied[i], 1);
+        }
+    }
 }
 
 export default new QueryData();

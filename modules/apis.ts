@@ -40,7 +40,7 @@ const APIS = {
     // Text Query
     queryTexts: "text/query",
     changeTag: "text/change_tag",
-    deleteText:"text/delete_text"
+    deleteTexts:"text/delete_texts"
 }
 
 for (let i in APIS) {
