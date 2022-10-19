@@ -15,8 +15,8 @@ const Home: React.FC = observer(() => {
   return (
     <div className={styles.divMainWrapper}>
       <Head>
-        <title>文本价值观标注系统</title>
-        <meta name="description" content="HITNLP文本价值观标注系统" />
+        <title>文本标注系统</title>
+        <meta name="description" content="HITNLP文本标注系统" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -24,7 +24,7 @@ const Home: React.FC = observer(() => {
         <section>
           HITNLP
           <br />
-          文本价值观标注系统
+          文本标注系统
         </section>
 
         {

@@ -77,6 +77,7 @@ const QueryForm: React.FC = observer(() => {
                     label="文本包含:"
                 >
                     <Input placeholder="部分文本，为空表示不限"
+                        allowClear
                         value={queryData.textPart}
                         onChange={e => queryData.setTextPart(e.target.value)} />
                 </Form.Item>
