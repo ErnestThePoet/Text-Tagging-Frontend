@@ -44,6 +44,7 @@ const QueryForm: React.FC = observer(() => {
                 <Form.Item
                     name="text_query_filename"
                     label="限定文件:"
+                    initialValue={queryData.fileNames}
                 >
                     <Select
                         mode="multiple"
@@ -63,6 +64,7 @@ const QueryForm: React.FC = observer(() => {
                 <Form.Item
                     name="text_query_tag_status"
                     label="标注状态:"
+                    initialValue={queryData.tagStatus}
                 >
                     <Radio.Group value={queryData.tagStatus}
                     onChange={e=>queryData.setTagStatus(e.target.value)}>
@@ -75,6 +77,7 @@ const QueryForm: React.FC = observer(() => {
                 <Form.Item
                     name="text_query_text_part"
                     label="文本包含:"
+                    initialValue={queryData.textPart}
                 >
                     <Input placeholder="部分文本，为空表示不限"
                         allowClear
@@ -85,6 +88,7 @@ const QueryForm: React.FC = observer(() => {
                 <Form.Item
                     name="text_query_tagger"
                     label="限定标注者:"
+                    initialValue={queryData.taggerNames}
                 >
                     <Select
                         mode="multiple"
@@ -103,6 +107,7 @@ const QueryForm: React.FC = observer(() => {
 
                 <Form.Item
                     name="text_query_should_filter_tagtime"
+                    initialValue={queryData.shouldFilterTagTime}
                 >
                     <Checkbox
                         value={queryData.shouldFilterTagTime}
