@@ -89,7 +89,8 @@ const DatasetContent: React.FC = observer(() => {
                                 accept="application/json"
                                 maxCount={1}
                                 showUploadList={false}>
-                                <Button type="primary" icon={<PlusOutlined />}>
+                                <Button type="primary" icon={<PlusOutlined />}
+                                    disabled={uiState.isImportDatasetLoading}>
                                     导入第一个数据集
                                 </Button>
                             </Upload>

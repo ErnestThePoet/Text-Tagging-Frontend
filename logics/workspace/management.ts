@@ -60,7 +60,7 @@ export const uploadProps: UploadProps = {
                 if (res.data.success) {
                     taskData.updateDatasetStat();
                     message.success(`恭喜！成功上传` +
-                        `${(<File>options.file).name}中的${(<any[]>importObj).length}个文本`);
+                        `【${(<File>options.file).name}】中的${(<any[]>importObj).length}个文本`);
                 }
                 else {
                     message.error(res.data.msg);
@@ -205,6 +205,7 @@ export const exportDataset = (indexes: number[], isTaggedOnly: boolean,
                 `导出文本${isTaggedOnly ? "(仅标注完成的)" : ""}-${getExportTimeStr()}.json`;
             downloadAnchor.href = URL.createObjectURL(new Blob([JSON.stringify(convertedTexts)]));
             downloadAnchor.click();
+            message.success("导出成功");
         }
         else {
             message.error(res.data.msg);
