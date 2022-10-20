@@ -79,7 +79,7 @@ const Query: React.FC = observer(() => {
             )
         },
         {
-            align: "center",
+            align: "left",
             title: "标注",
             dataIndex: "tag",
             render: (x: T.Tag) => (
