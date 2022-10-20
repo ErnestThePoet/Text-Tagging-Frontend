@@ -1,8 +1,25 @@
 import React, { useState, useEffect, Key } from "react";
 import { observer } from "mobx-react-lite";
-import { Progress, Divider, Empty, Table, Spin, Space, Button, Upload, Modal, Form, Input } from "antd";
+import {
+    Progress,
+    Divider,
+    Empty,
+    Table,
+    Spin,
+    Space,
+    Button,
+    Upload,
+    Modal,
+    Form,
+    Input
+} from "antd";
 import type { ColumnsType } from 'antd/es/table';
-import { ReloadOutlined, PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+    ReloadOutlined,
+    PlusOutlined,
+    ExclamationCircleOutlined,
+    LoadingOutlined
+} from '@ant-design/icons';
 import type { SingleDatasetStat } from "../../../states/task-data";
 import { stringCompare } from "../../../modules/utils/cmp";
 import * as RULES from "../../../modules/form-rules";
@@ -89,7 +106,11 @@ const DatasetContent: React.FC = observer(() => {
                                 accept="application/json"
                                 maxCount={1}
                                 showUploadList={false}>
-                                <Button type="primary" icon={<PlusOutlined />}
+                                <Button type="primary" icon={
+                                    uiState.isImportDatasetLoading
+                                        ? <LoadingOutlined />
+                                        : <PlusOutlined />
+                                }
                                     disabled={uiState.isImportDatasetLoading}>
                                     导入第一个数据集
                                 </Button>
@@ -152,8 +173,12 @@ const DatasetContent: React.FC = observer(() => {
                                     accept="application/json"
                                     maxCount={1}
                                     showUploadList={false}>
-                                    <Button type="primary" icon={<PlusOutlined />}
-                                    disabled={uiState.isImportDatasetLoading}>
+                                    <Button type="primary" icon={
+                                        uiState.isImportDatasetLoading
+                                            ? <LoadingOutlined />
+                                            : <PlusOutlined />
+                                    }
+                                        disabled={uiState.isImportDatasetLoading}>
                                         导入数据集
                                     </Button>
                                 </Upload>
@@ -183,12 +208,13 @@ const DatasetContent: React.FC = observer(() => {
                         <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 25 }} />
                         <span>
                             您准备删除选中的数据集
-                            <b>
+                            <b>【
                                 {
                                     selectedRowKeys.map(x => (
                                         taskData.datasetStats[x].fileName
                                     )).toString()
                                 }
+                                】
                             </b>
                             ！该数据集的所有文本和所有文本标注都将永久丢失。
                         </span>
