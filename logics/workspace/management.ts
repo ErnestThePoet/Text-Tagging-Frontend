@@ -18,6 +18,11 @@ export const uploadProps: UploadProps = {
         const reader = new FileReader();
 
         reader.onload = () => {
+            if (taskData.datasetStats.some(x => x.fileName === (<File>options.file).name)) {
+                message.warn("已存在相同文件名");
+                return;
+            }
+
             let importObj: any;
 
             try {
