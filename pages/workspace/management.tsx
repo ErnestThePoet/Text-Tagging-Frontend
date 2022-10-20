@@ -28,7 +28,7 @@ const WorkspaceManagementPage: React.FC = observer(() => {
     return (
         <div className={styles.divMainWrapper}>
             <Head>
-                <title>文本标注系统-系统管理</title>
+                <title>文本标注系统 - 系统管理</title>
             </Head>
             <Layout>
                 <WorkspaceNav defaultSelectedKey="3" />

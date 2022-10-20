@@ -42,7 +42,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
     return (
         <div className={styles.divMainWrapper}>
             <Head>
-                <title>文本标注系统-文本标注</title>
+                <title>文本标注系统 - 文本标注</title>
             </Head>
 
             <Layout>
