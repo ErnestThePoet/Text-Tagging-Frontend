@@ -190,7 +190,8 @@ export const exportDataset = (indexes: number[], isTaggedOnly: boolean,
         if (res.data.success) {
             const convertedTexts = toUploadTexts(res.data.texts, res.data.tags);
             const downloadAnchor = document.createElement("a");
-            downloadAnchor.download = `export-${getExportTimeStr()}.json`;
+            downloadAnchor.download =
+                `导出文本${isTaggedOnly ? "(仅标注完成的)" : ""}-${getExportTimeStr()}.json`;
             downloadAnchor.href = URL.createObjectURL(new Blob([JSON.stringify(convertedTexts)]));
             downloadAnchor.click();
         }
