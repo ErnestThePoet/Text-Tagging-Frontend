@@ -75,7 +75,7 @@ const GetTextsDialog: React.FC = observer(() => {
                         </div>
 
                         <div>
-                            <label>标注多的文本优先</label>
+                            <label>标注项多的文本优先</label>
                             <Switch
                                 checkedChildren={<CheckOutlined />}
                                 unCheckedChildren={<CloseOutlined />}
