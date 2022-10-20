@@ -89,14 +89,15 @@ export const deleteTexts = (indexes: number[],
     });
 }
 
-export const startChangeTag = (index: number,
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const startChangeTag =
+    (setIsOpen: React.Dispatch<React.SetStateAction<boolean>>) => {
     if (queryData.isChangeTagTextPushed) {
         message.warn("修改标注未退出");
         return;
     }
 
-    taggingData.pushText(queryData.texts[index]);
+    // 克隆一份，确保修改过程不影响原始文本
+    taggingData.pushText(cloneDeep(queryData.texts[queryData.changeTagTextIndex]));
     queryData.setIsChangeTagTextPushed(true);
     setIsOpen(true);
 }
@@ -142,6 +143,9 @@ export const endChangeTag = (
         if (res.data.success) {
             message.success("成功修改标注");
             setIsOpen(false);
+            queryData.changeTextTag(
+                queryData.changeTagTextIndex,
+                taggingData.texts[taggingData.texts.length - 1].tag);
             popTaggingDataTexts();
             taggingData.setNoUnsavedChanges();
         }

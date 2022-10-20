@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import type { Text, TagItem } from "../modules/objects/text";
+import type { Text, TagItem, Tag } from "../modules/objects/text";
 import moment from "moment";
 import type { Moment } from 'moment';
 import {
@@ -19,6 +19,11 @@ class QueryData{
 
     setTexts(texts: Array<Text>) {
         this.texts = texts;
+    }
+
+    changeTagTextIndex: number = 0;
+    setChangeTagTextIndex(value: number) {
+        this.changeTagTextIndex = value;
     }
 
     fileNames: string[] = [];
@@ -136,6 +141,11 @@ class QueryData{
     // 修改文本
     changeText(index: number, newText: string) {
         this.texts[index].text = newText;
+    }
+
+    // 修改标注
+    changeTextTag(index: number, newTag: Tag) {
+        this.texts[index].tag = newTag;
     }
 }
 

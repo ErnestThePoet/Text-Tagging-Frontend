@@ -5,6 +5,8 @@ class ChangeTextDialogState {
         makeAutoObservable(this);
     }
 
+    // 在文本标注中修改文本则为taggingData.texts的下标，
+    // 在文本查询中修改文本则为queryData.texts的下标
     selectedTextIndex: number = 0;
     setSelectedTextIndex(value: number) {
         this.selectedTextIndex = value;

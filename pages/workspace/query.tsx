@@ -125,8 +125,10 @@ const Query: React.FC = observer(() => {
                     }}>
                         修改文本
                     </Button>
-                    <Button type="link" onClick={() => L.startChangeTag(x.key,
-                            setIsChangeTagDialogOpen)}>
+                    <Button type="link" onClick={() => {
+                        queryData.setChangeTagTextIndex(x.key);
+                        L.startChangeTag(setIsChangeTagDialogOpen);
+                    }}>
                         修改标注
                     </Button>
                 </Space>
