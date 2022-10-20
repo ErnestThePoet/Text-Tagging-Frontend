@@ -14,6 +14,11 @@ class UiState{
     setIsUsersInfoLoading(value: boolean) {
         this.isUsersInfoLoading = value;
     }
+
+    isImportDatasetLoading: boolean = false;
+    setIsImportDatasetLoading(value: boolean) {
+        this.isImportDatasetLoading = value;
+    }
 }
 
 export default new UiState();

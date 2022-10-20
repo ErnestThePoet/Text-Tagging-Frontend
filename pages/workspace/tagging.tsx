@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Head from 'next/head';
 import { observer } from "mobx-react-lite";
 import * as L from "../../logics/workspace/tagging";
 import { checkIsLoggedIn } from "../../logics/router-checks";
@@ -40,6 +41,10 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
 
     return (
         <div className={styles.divMainWrapper}>
+            <Head>
+                <title>文本标注系统-文本标注</title>
+            </Head>
+
             <Layout>
                 <WorkspaceNav defaultSelectedKey="0" />
                 <Layout hasSider>

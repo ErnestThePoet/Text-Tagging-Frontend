@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Head from 'next/head';
 import { observer } from "mobx-react-lite";
 import * as L from "../../logics/workspace/add-texts";
 import { CloseCircleTwoTone, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -19,6 +20,9 @@ const AddTexts: React.FC = observer(() => {
 
     return (
         <div className={styles.divMainWrapper}>
+            <Head>
+                <title>文本标注系统-添加文本</title>
+            </Head>
             <Layout>
                 <WorkspaceNav defaultSelectedKey="1" />
                 <Layout hasSider>

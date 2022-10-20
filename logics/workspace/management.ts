@@ -12,6 +12,7 @@ import { UserLevel } from "../../modules/objects/types";
 import { getUserLevelLabel } from "../../modules/utils/user-level-utils";
 import addUserDialogState from "../../states/component-states/add-user-dialog-state";
 import { pbkdf2Hash } from "../../modules/utils/hash";
+import uiState from "../../states/ui-state";
 
 export const uploadProps: UploadProps = {
     customRequest: options => {
@@ -34,10 +35,13 @@ export const uploadProps: UploadProps = {
                 return;
             }
 
+            uiState.setIsImportDatasetLoading(true);
+
             const checkResult = checkImportDataset(importObj);
 
             if (!checkResult.ok) {
                 message.error("JSON不符合导入要求：" + checkResult.msg, 10);
+                uiState.setIsImportDatasetLoading(false);
                 return;
             }
 
@@ -64,6 +68,8 @@ export const uploadProps: UploadProps = {
             }).catch(reason => {
                 console.log(reason);
                 message.error(reason.message);
+            }).finally(() => {
+                uiState.setIsImportDatasetLoading(false);
             });
         }
 

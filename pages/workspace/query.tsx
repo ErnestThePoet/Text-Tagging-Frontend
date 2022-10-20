@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Key } from "react";
+import Head from 'next/head';
 import { observer } from "mobx-react-lite";
 import * as L from "../../logics/workspace/query";
 import { Table, Space, Layout, Button, Empty, Tag, Modal, Form, Input } from 'antd';
@@ -135,6 +136,10 @@ const Query: React.FC = observer(() => {
 
     return (
         <div className={styles.divMainWrapper}>
+            <Head>
+                <title>文本标注系统-文本查询</title>
+            </Head>
+
             <Layout>
                 <WorkspaceNav defaultSelectedKey="2" />
                 <Layout hasSider>
