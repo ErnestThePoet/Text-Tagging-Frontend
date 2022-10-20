@@ -56,7 +56,7 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                                 <List.Item className={styles.listItemText}>
                                     <span>
                                         <Tag color="geekblue">{i + 1}</Tag>
-                                        {`${taggingData.getTextPreview(i)}`}
+                                        {taggingData.getTextPreview(i)}
                                     </span>
                                     
                                     {
