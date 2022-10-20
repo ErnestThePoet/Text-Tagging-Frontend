@@ -171,7 +171,8 @@ const DatasetContent: React.FC = observer(() => {
                 }
             </div>
 
-            <Modal title="确认删除所选数据集"
+            <Modal destroyOnClose
+                title="确认删除所选数据集"
                 onCancel={() => setIsDeleteConfirmDialogOpen(false)}
                 open={isDeleteConfirmDialogOpen}
                 footer={null}>

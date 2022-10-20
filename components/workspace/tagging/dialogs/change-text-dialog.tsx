@@ -14,6 +14,7 @@ const ChangeTextDialog: React.FC<ChangeTextDialogProps> =
 
     return (
         <Modal
+            destroyOnClose
             title="编辑文本内容"
             okText="确定"
             cancelText="取消"

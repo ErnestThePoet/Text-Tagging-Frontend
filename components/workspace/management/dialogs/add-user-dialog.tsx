@@ -4,7 +4,7 @@ import * as L from "../../../../logics/workspace/management";
 import * as RULES from "../../../../modules/form-rules";
 import { Button, Form, Input, Modal,Select } from 'antd';
 import addUserDialogState from "../../../../states/component-states/add-user-dialog-state";
-import { UserLevel, UserLevelValues } from "../../../../modules/objects/types";
+import { UserLevelValues } from "../../../../modules/objects/types";
 import { getUserLevelLabel } from "../../../../modules/utils/user-level-utils";
 
 const { Option } = Select;
@@ -12,7 +12,9 @@ const { Option } = Select;
 const AddUserDialog: React.FC = observer(() => {
 
     return (
+        // 吃一堑长一智，Modal必须设置destroyOnClose，否则内部元素不会响应状态变化
         <Modal
+            destroyOnClose
             title="添加账号"
             open={addUserDialogState.isOpen}
             onCancel={() => addUserDialogState.setIsOpen(false)}
@@ -28,6 +30,7 @@ const AddUserDialog: React.FC = observer(() => {
                     labelAlign="left"
                     labelCol={{ span: 4 }}
                     rules={RULES.ACCOUNT_RULES}
+                    initialValue={addUserDialogState.account}
                 >
                     <Input
                         placeholder="请输入登录名"
@@ -42,6 +45,7 @@ const AddUserDialog: React.FC = observer(() => {
                     labelAlign="left"
                     labelCol={{ span: 4 }}
                     rules={RULES.NAME_RULES}
+                    initialValue={addUserDialogState.name}
                 >
                     <Input
                         placeholder="请输入昵称"
@@ -55,7 +59,7 @@ const AddUserDialog: React.FC = observer(() => {
                     label="权限:"
                     labelAlign="left"
                     labelCol={{ span: 4 }}
-                    initialValue={0}
+                    initialValue={addUserDialogState.level}
                     rules={[
                         {
                             required: true,

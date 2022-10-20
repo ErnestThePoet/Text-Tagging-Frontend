@@ -9,6 +9,7 @@ const ChangePwDialog: React.FC = observer(() => {
 
     return (
         <Modal
+            destroyOnClose
             title="修改密码"
             open={changePwDialogState.isOpen}
             onCancel={() => changePwDialogState.setIsOpen(false)}

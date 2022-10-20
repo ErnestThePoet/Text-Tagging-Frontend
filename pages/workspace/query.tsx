@@ -174,7 +174,8 @@ const Query: React.FC = observer(() => {
                 </Layout>
             </Layout>
 
-            <Modal title="确认删除所选文本"
+            <Modal destroyOnClose
+                title="确认删除所选文本"
                 onCancel={() => setIsDeleteConfirmDialogOpen(false)}
                 open={isDeleteConfirmDialogOpen}
                 footer={null}>
@@ -226,6 +227,7 @@ const Query: React.FC = observer(() => {
             </Modal>
 
             <Modal
+                destroyOnClose
                 title="修改标注"
                 okText="修改标注"
                 cancelText="放弃修改"

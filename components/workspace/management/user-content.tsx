@@ -147,7 +147,8 @@ const UserContent: React.FC = observer(() => {
                     }} />
             </div>
 
-            <Modal title="修改权限"
+            <Modal destroyOnClose
+                title="修改权限"
                 okText="确定"
                 cancelText="取消"
                 onOk={() => L.changeUserLevel(selectedUserIndex,

@@ -34,6 +34,7 @@ const GetTextsDialog: React.FC = observer(() => {
     
     return (
         <Modal
+            destroyOnClose
             title="选项"
             okText="确定"
             cancelText="取消"
