@@ -207,7 +207,7 @@ const DatasetContent: React.FC = observer(() => {
                     <Space>
                         <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 25 }} />
                         <span>
-                            您准备删除选中的数据集
+                            您准备删除选中的{selectedRowKeys.length}个数据集
                             <b>【
                                 {
                                     selectedRowKeys.map(x => (
