@@ -225,7 +225,7 @@ const Query: React.FC = observer(() => {
                         >
                             <Button
                                 type="primary" htmlType="submit" danger
-                                disabled={isDeleteConfirmDialogConfirmLoading}>
+                                loading={isDeleteConfirmDialogConfirmLoading}>
                                 继续删除
                             </Button>
                         </Form.Item>

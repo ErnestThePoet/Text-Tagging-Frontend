@@ -59,7 +59,7 @@ const AddTexts: React.FC = observer(() => {
                                 block
                                 disabled={addTextsData.texts.length === 0}
                                 onClick={() => L.addTexts()}>
-                                保存到数据库
+                                添加到数据库
                             </Button>
                         </Space>
                     </aside>

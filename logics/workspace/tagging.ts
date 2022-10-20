@@ -47,7 +47,9 @@ export const getTextsToTag = () => {
     });
 }
     
-export const saveTaggingProgress = (onSuccess?:()=>void) => {
+export const saveTaggingProgress = (
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    onSuccess?: () => void) => {
     if (!taggingData.hasUnsavedChanges) {
         return;
     }
@@ -62,6 +64,8 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
 
     // 筛掉单输入和多输入标注项的空值
     const texts: Array<Text> = copyAndFilterEmptyInputValuesInTexts(taggingData.texts);
+
+    setLoading(true);
     
     axios.post(APIS.addTags, {
         accessId: userData.accessId,
@@ -72,7 +76,7 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
             taggingData.setNoUnsavedChanges();
             message.success("提交成功，辛苦啦~");
             
-            for (let i = 0; i < taggingData.texts.length; i++){
+            for (let i = 0; i < taggingData.texts.length; i++) {
                 taggingData.texts[i].tag.id = res.data.tagIds[i];
             }
             
@@ -86,6 +90,8 @@ export const saveTaggingProgress = (onSuccess?:()=>void) => {
     }).catch(reason => {
         console.log(reason);
         message.error(reason.message);
+    }).finally(() => {
+        setLoading(false);
     });
 }
 

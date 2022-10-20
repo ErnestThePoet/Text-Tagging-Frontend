@@ -69,7 +69,7 @@ const ChangePwDialog: React.FC = observer(() => {
                 >
                     <Button
                         type="primary" htmlType="submit" block
-                        disabled={changePwDialogState.isConfirmLoading}>
+                        loading={changePwDialogState.isConfirmLoading}>
                         修改密码
                     </Button>
                 </Form.Item>

@@ -17,8 +17,7 @@ import type { ColumnsType } from 'antd/es/table';
 import {
     ReloadOutlined,
     PlusOutlined,
-    ExclamationCircleOutlined,
-    LoadingOutlined
+    ExclamationCircleOutlined
 } from '@ant-design/icons';
 import type { SingleDatasetStat } from "../../../states/task-data";
 import { stringCompare } from "../../../modules/utils/cmp";
@@ -106,12 +105,8 @@ const DatasetContent: React.FC = observer(() => {
                                 accept="application/json"
                                 maxCount={1}
                                 showUploadList={false}>
-                                <Button type="primary" icon={
-                                    uiState.isImportDatasetLoading
-                                        ? <LoadingOutlined />
-                                        : <PlusOutlined />
-                                }
-                                    disabled={uiState.isImportDatasetLoading}>
+                                <Button type="primary" icon={<PlusOutlined />}
+                                    loading={uiState.isImportDatasetLoading}>
                                     导入第一个数据集
                                 </Button>
                             </Upload>
@@ -173,12 +168,8 @@ const DatasetContent: React.FC = observer(() => {
                                     accept="application/json"
                                     maxCount={1}
                                     showUploadList={false}>
-                                    <Button type="primary" icon={
-                                        uiState.isImportDatasetLoading
-                                            ? <LoadingOutlined />
-                                            : <PlusOutlined />
-                                    }
-                                        disabled={uiState.isImportDatasetLoading}>
+                                    <Button type="primary" icon={<PlusOutlined />}
+                                        loading={uiState.isImportDatasetLoading}>
                                         导入数据集
                                     </Button>
                                 </Upload>
@@ -255,7 +246,7 @@ const DatasetContent: React.FC = observer(() => {
                         >
                             <Button
                                 type="primary" htmlType="submit" danger
-                                disabled={isDeleteConfirmDialogConfirmLoading}>
+                                loading={isDeleteConfirmDialogConfirmLoading}>
                                 继续删除
                             </Button>
                         </Form.Item>

@@ -52,7 +52,7 @@ const LoginForm: React.FC = () => {
             >
                 <Button className={styles.btnLogin}
                     type="primary" htmlType="submit" block
-                    disabled={isLoggingIn}>
+                    loading={isLoggingIn}>
                     登录系统
                 </Button>
             </Form.Item>

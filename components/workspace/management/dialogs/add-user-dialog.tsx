@@ -84,7 +84,7 @@ const AddUserDialog: React.FC = observer(() => {
                 >
                     <Button
                         type="primary" htmlType="submit" block
-                        disabled={addUserDialogState.isConfirmLoading}>
+                        loading={addUserDialogState.isConfirmLoading}>
                         添加账号
                     </Button>
                 </Form.Item>
