@@ -24,13 +24,23 @@
     }
 }
 
-@keyframes form-in {
+@keyframes form-in-scale {
     from {
         transform: scale(0.9);
     }
 
     to {
         transform: scale(1);
+    }
+}
+
+@keyframes form-in-opacity {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1;
     }
 }
 
@@ -96,11 +106,6 @@
     border-radius: 25px;
 
     box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.50);
-
-    transition-duration: 0.7s;
-
-    animation-duration: 1s;
-    animation-name: form-in;
 }
 
 .sectionSelectTask{
@@ -112,6 +117,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+
+    animation-duration: 0.7s;
+    animation-name: form-in-opacity;
 }
 
 .divTaskList{
@@ -142,6 +150,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+    animation-duration: 1s;
+    animation-name: form-in-scale;
 }
 
 .btnLogin{
