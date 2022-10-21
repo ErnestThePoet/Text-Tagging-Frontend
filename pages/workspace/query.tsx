@@ -74,7 +74,7 @@ const Query: React.FC = observer(() => {
             dataIndex: "text",
             width: "65%",
             render: x => (
-                <div style={{maxHeight:"250px",overflowY:"auto"}}>
+                <div style={{ maxHeight: "250px", overflowY: "auto" }}>
                     {x}
                 </div>
             )
@@ -83,26 +83,37 @@ const Query: React.FC = observer(() => {
             align: "left",
             title: "标注",
             dataIndex: "tag",
-            render: (x: T.Tag) => (
-                x.id === null ?
+            render: (tag: T.Tag, text) => (
+                tag.id === null ?
                     <Tag>无任何标注</Tag>
                     :
                     <Space direction="vertical" align="start">
+                        <Tag color="magenta">
+                            <Space size={5}>
+                                <b>文件:</b>
+                                <span>{text.fileName}</span>
+                            </Space>
+                        </Tag>
+
                         <Tag color="orange">
-                            <b>标注者:</b>
-                            <span>{x.taggerName}</span>
+                            <Space size={5}>
+                                <b>标注者:</b>
+                                <span>{tag.taggerName}</span>
+                            </Space>
                         </Tag>
 
                         <Tag color="green">
-                            <b>标注时间:</b>
-                            <span>{x.tagTime}</span>
+                            <Space size={5}>
+                                <b>标注时间:</b>
+                                <span>{tag.tagTime}</span>
+                            </Space>
                         </Tag>
 
                         <Tag color="blue">
                             <Space direction="vertical" align="start" size={0}>
                                 {
-                                    x.tagItems.map((x, i) => (
-                                        <Space key={i}>
+                                    tag.tagItems.map((x, i) => (
+                                        <Space key={i} size={5}>
                                             <b>{taskData.idMetaMap[x.id].editorTitle}:</b>
                                             <span>{getTagItemDisplayStr(x)}</span>
                                         </Space>
@@ -253,7 +264,7 @@ const Query: React.FC = observer(() => {
                     textIndex={taggingData.texts.length - 1} />
             </Modal>
 
-            <ChangeTextDialog onOk={()=>L.changeText()}/>
+            <ChangeTextDialog onOk={() => L.changeText()} />
         </div>
     );
 })

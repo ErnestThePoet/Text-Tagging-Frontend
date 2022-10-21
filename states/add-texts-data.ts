@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 interface AddedText{
     userId: string;
+    fileName: string;
     text: string;
 }
 
@@ -19,7 +20,8 @@ class AddTextsData{
 
     add() {
         this.texts.push({
-            userId: (this.texts.length+1).toString(),
+            userId: (this.texts.length + 1).toString(),
+            fileName:"自添加文本",
             text:""
         });
     }

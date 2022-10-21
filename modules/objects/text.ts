@@ -17,6 +17,7 @@ export interface Tag {
 export interface Text{
     id: number;
     userId: string;
+    fileName: string;
     text: string;
     tag: Tag;
 }
