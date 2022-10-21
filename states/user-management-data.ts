@@ -29,7 +29,7 @@ class UserManegementData{
             account,
             name,
             level,
-            lastLoginTime:null
+            lastLoginTime:"N/A"
         });
     }
 
