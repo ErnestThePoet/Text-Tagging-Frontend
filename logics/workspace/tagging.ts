@@ -29,7 +29,7 @@ export const getTextsToTag = () => {
             if (res.data.texts.length > 0) {
                 taggingData.setTexts(res.data.texts);
                 message.success(
-                    `获取到${res.data.texts.length}条文本，标注愉快哦~请尽量在5小时内提交进度`);
+                    `获取到${res.data.texts.length}条文本，标注愉快~请尽量在5小时内提交进度哦`);
             }
             else {
                 message.info("未获取到任何文本");

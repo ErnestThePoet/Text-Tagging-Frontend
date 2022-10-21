@@ -7,7 +7,7 @@ export function fetchInputSuggestions() {
     switch (taskData.taskId) {
         // 文本价值观标注任务
         case 1: {
-            task1FetchInputSuggestions(0);
+            //task1FetchInputSuggestions(0);
             break;
         }
     }
