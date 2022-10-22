@@ -199,7 +199,7 @@ const QueryForm: React.FC = observer(() => {
                         type="primary" htmlType="submit" block
                         icon={<SearchOutlined />}
                         loading={isQueryLoading}>
-                        提交查询
+                        查询
                     </Button>
                 </Form.Item>
             </Form>
