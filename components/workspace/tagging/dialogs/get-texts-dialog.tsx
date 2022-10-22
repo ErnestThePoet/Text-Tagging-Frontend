@@ -14,13 +14,14 @@ import uiState from "../../../../states/ui-state";
 import {
     MIN_TARGET_TEXT_COUNT,
     MAX_TARGET_TEXT_COUNT,
-    DEFAULT_TARGET_TEXT_COUNT
-} from "../../../../modules/get-text-rules";
+    DEFAULT_TARGET_TEXT_COUNT,
+    EMPTY_TARGET_TEXT_COUNT
+} from "../../../../modules/get-text-configs";
 
 const { Option } = Select;
 
 const handleTargetTextCountChange = (value: string) => {
-    let count: number = 0;
+    let count: number = EMPTY_TARGET_TEXT_COUNT;
 
     if (value !== "") {
         count = parseInt(value);
@@ -67,11 +68,12 @@ const GetTextsDialog: React.FC = observer(() => {
                                 defaultValue={DEFAULT_TARGET_TEXT_COUNT}
                                 type="number"
                                 status={
-                                    getTextsDialogState.targetTextCount < MIN_TARGET_TEXT_COUNT
+                                    getTextsDialogState.targetTextCount === EMPTY_TARGET_TEXT_COUNT
+                                        || getTextsDialogState.targetTextCount < MIN_TARGET_TEXT_COUNT
                                         || getTextsDialogState.targetTextCount > MAX_TARGET_TEXT_COUNT
                                         ? "error" : ""
                                 }
-                                value={getTextsDialogState.targetTextCount === 0
+                                value={getTextsDialogState.targetTextCount === EMPTY_TARGET_TEXT_COUNT
                                     ? ""
                                     : getTextsDialogState.targetTextCount}
                                 onChange={e => handleTargetTextCountChange(e.target.value)} />

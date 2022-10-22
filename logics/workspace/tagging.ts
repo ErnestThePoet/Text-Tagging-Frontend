@@ -10,20 +10,22 @@ import type { Text } from "../../modules/objects/text";
 import { copyAndFilterEmptyInputValuesInTexts } from "../../modules/utils/tagging";
 import {
     MIN_TARGET_TEXT_COUNT,
-    MAX_TARGET_TEXT_COUNT
-} from "../../modules/get-text-rules";
+    MAX_TARGET_TEXT_COUNT,
+    EMPTY_TARGET_TEXT_COUNT
+} from "../../modules/get-text-configs";
 
-export const openGetTextsDialog =() => {
+export const openGetTextsDialog = () => {
     getTextsDialogState.setIsOpen(true);
     taskData.updateDatasetStat();
 }
 
 export const getTextsToTag = () => {
-    if (getTextsDialogState.targetTextCount < MIN_TARGET_TEXT_COUNT
+    if (getTextsDialogState.targetTextCount === EMPTY_TARGET_TEXT_COUNT
+        || getTextsDialogState.targetTextCount < MIN_TARGET_TEXT_COUNT
         || getTextsDialogState.targetTextCount > MAX_TARGET_TEXT_COUNT) {
         return;
-        }
-    
+    }
+
     getTextsDialogState.setIsConfirmLoading(true);
 
     axios.postForm(APIS.getTextsToTag, {
@@ -42,7 +44,7 @@ export const getTextsToTag = () => {
             else {
                 message.info("未获取到任何文本");
             }
-            
+
             getTextsDialogState.setIsOpen(false);
         }
         else {
@@ -55,7 +57,7 @@ export const getTextsToTag = () => {
         getTextsDialogState.setIsConfirmLoading(false);
     });
 }
-    
+
 export const saveTaggingProgress = (
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     onSuccess?: () => void) => {
@@ -75,7 +77,7 @@ export const saveTaggingProgress = (
     const texts: Array<Text> = copyAndFilterEmptyInputValuesInTexts(taggingData.texts);
 
     setLoading(true);
-    
+
     axios.post(APIS.addTags, {
         accessId: userData.accessId,
         taskId: taskData.taskId,
@@ -84,11 +86,11 @@ export const saveTaggingProgress = (
         if (res.data.success) {
             taggingData.setNoUnsavedChanges();
             message.success("提交成功，辛苦啦~");
-            
+
             for (let i = 0; i < taggingData.texts.length; i++) {
                 taggingData.texts[i].tag.id = res.data.tagIds[i];
             }
-            
+
             if (onSuccess !== undefined) {
                 onSuccess();
             }
