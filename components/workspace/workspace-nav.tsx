@@ -1,8 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import classNames from "classnames";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 import * as L from "../../logics/workspace/workspace-nav";
-import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space, Layout, Menu } from 'antd';
 import styles from "../../styles/workspace.module.scss";
@@ -50,7 +51,7 @@ const accountMenu = (
 
 const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props:WorkspaceNavProps) => (
     <Header className={styles.header}>
-        <i className={classNames(styles.iIcon, "fa-solid fa-book")}></i>
+        <FontAwesomeIcon className={styles.icon} icon={faBook} />
         <Menu theme="dark"
             mode="horizontal"
             defaultSelectedKeys={[props.defaultSelectedKey]}
