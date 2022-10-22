@@ -8,6 +8,10 @@ import getTextsDialogState from "../../states/component-states/get-texts-dialog-
 import changeTextDialogState from "../../states/component-states/change-text-dialog-state";
 import type { Text } from "../../modules/objects/text";
 import { copyAndFilterEmptyInputValuesInTexts } from "../../modules/utils/tagging";
+import {
+    MIN_TARGET_TEXT_COUNT,
+    MAX_TARGET_TEXT_COUNT
+} from "../../modules/get-text-rules";
 
 export const openGetTextsDialog =() => {
     getTextsDialogState.setIsOpen(true);
@@ -15,6 +19,10 @@ export const openGetTextsDialog =() => {
 }
 
 export const getTextsToTag = () => {
+    if (getTextsDialogState.targetTextCount < MIN_TARGET_TEXT_COUNT
+        || getTextsDialogState.targetTextCount > MAX_TARGET_TEXT_COUNT) {
+        return;
+        }
     
     getTextsDialogState.setIsConfirmLoading(true);
 

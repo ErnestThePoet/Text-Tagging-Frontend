@@ -1,0 +1,3 @@
+export const MIN_TARGET_TEXT_COUNT = 1;
+export const MAX_TARGET_TEXT_COUNT = 100;
+export const DEFAULT_TARGET_TEXT_COUNT = 100;

@@ -11,27 +11,38 @@ import styles from "../../../../styles/workspace.module.scss";
 import taskData from "../../../../states/task-data";
 import getTextsDialogState from "../../../../states/component-states/get-texts-dialog-state";
 import uiState from "../../../../states/ui-state";
+import {
+    MIN_TARGET_TEXT_COUNT,
+    MAX_TARGET_TEXT_COUNT,
+    DEFAULT_TARGET_TEXT_COUNT
+} from "../../../../modules/get-text-rules";
 
 const { Option } = Select;
 
-const trimTargetTextCount = (count: number) => {
-    if (isNaN(count)) {
-        count = 30;
+const handleTargetTextCountChange = (value: string) => {
+    let count: number = 0;
+
+    if (value !== "") {
+        count = parseInt(value);
+
+        if (isNaN(count)) {
+            count = DEFAULT_TARGET_TEXT_COUNT;
+        }
+
+        if (count < MIN_TARGET_TEXT_COUNT) {
+            count = MIN_TARGET_TEXT_COUNT;
+        }
+
+        if (count > MAX_TARGET_TEXT_COUNT) {
+            count = MAX_TARGET_TEXT_COUNT;
+        }
     }
 
-    if (count < 1) {
-        count = 1;
-    }
-
-    if (count > 100) {
-        count = 100;
-    }
-
-    getTextsDialogState.setTargetTextCount(Math.floor(count));
+    getTextsDialogState.setTargetTextCount(count);
 }
 
 const GetTextsDialog: React.FC = observer(() => {
-    
+
     return (
         <Modal
             destroyOnClose
@@ -51,10 +62,19 @@ const GetTextsDialog: React.FC = observer(() => {
                     <div className={styles.divGetTextsOptionsWrapper}>
                         <div>
                             <label>获取数量</label>
-                            <Input min={1} max={100} defaultValue={30}
+                            <Input min={MIN_TARGET_TEXT_COUNT}
+                                max={MAX_TARGET_TEXT_COUNT}
+                                defaultValue={DEFAULT_TARGET_TEXT_COUNT}
                                 type="number"
-                                value={getTextsDialogState.targetTextCount}
-                                onChange={e => trimTargetTextCount(e.target.valueAsNumber)} />
+                                status={
+                                    getTextsDialogState.targetTextCount < MIN_TARGET_TEXT_COUNT
+                                        || getTextsDialogState.targetTextCount > MAX_TARGET_TEXT_COUNT
+                                        ? "error" : ""
+                                }
+                                value={getTextsDialogState.targetTextCount === 0
+                                    ? ""
+                                    : getTextsDialogState.targetTextCount}
+                                onChange={e => handleTargetTextCountChange(e.target.value)} />
                         </div>
 
                         <div>
