@@ -138,7 +138,6 @@ class TaggingData{
     // 修改文本
     changeText(index: number, newText: string) {
         this.texts[index].text = newText;
-        this.setHasUnsavedChanges();
     }
 
     setNoUnsavedChanges() {
