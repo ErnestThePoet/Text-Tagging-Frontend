@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Tag } from "antd";
+import { Divider, Tag, Tooltip } from "antd";
 import { EditTwoTone } from "@ant-design/icons"
 import { observer } from "mobx-react-lite";
 import SingleChoiceEditor from "./tag-item-editors/single-choice";
@@ -32,11 +32,11 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
             <div className={styles.divSingleTaggingBox}>
                 <div>
                     {
-                        !props.hideCount&&
+                        !props.hideCount &&
                         <Tag color="blue">{`${props.textIndex + 1}/${taggingData.texts.length}`}</Tag>
                     }
                     {
-                        tagStatus==="FINISHED" &&
+                        tagStatus === "FINISHED" &&
                         <Tag className={styles.fadeInTag} color="green">标注完成</Tag>
                     }
                     {
@@ -48,22 +48,25 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
                         <Tag className={styles.fadeInTag} color="red">标注项非法</Tag>
                     }
                 </div>
-                
+
                 <div className="div-tagging-box-text">
-                    {
-                        !props.hideEditText &&
-                        <span className="span-edit-icon"
-                            onClick={() => {
-                                changeTextDialogState.setSelectedTextIndex(props.textIndex);
-                                changeTextDialogState.setText(taggingData.texts[props.textIndex].text);
-                                changeTextDialogState.setIsOpen(true);
-                            }}>
-                            <EditTwoTone />
-                        </span>
-                    }
-                    
                     {taggingData.texts[props.textIndex].text}
                 </div>
+
+                {
+                    !props.hideEditText &&
+
+                    <span className="span-edit-icon"
+                        onClick={() => {
+                            changeTextDialogState.setSelectedTextIndex(props.textIndex);
+                            changeTextDialogState.setText(taggingData.texts[props.textIndex].text);
+                            changeTextDialogState.setIsOpen(true);
+                        }}>
+                        <Tooltip title="修改文本">
+                            <EditTwoTone />
+                        </Tooltip>
+                    </span>
+                }
 
                 <Divider />
 
@@ -77,7 +80,7 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
                                             key={i}
                                             textIndex={props.textIndex}
                                             tagItemIndex={taggingData.texts[props.textIndex]
-                                            .tag.tagItems.findIndex(u=>u.id===x.id)}
+                                                .tag.tagItems.findIndex(u => u.id === x.id)}
                                             tagItemMeta={x} />
                                     );
                                 case 1:
