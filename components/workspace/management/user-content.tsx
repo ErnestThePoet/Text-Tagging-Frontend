@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Key } from "react";
 import { observer } from "mobx-react-lite";
-import { Modal, Table, Spin, Space, Button, Tag, Select } from "antd";
+import { Modal, Table, Spin, Space, Button, Tag, Select, Popconfirm } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { stringCompare, stringNullCompare } from "../../../modules/utils/cmp";
@@ -17,19 +17,6 @@ import uiState from "../../../states/ui-state";
 
 const { confirm } = Modal;
 const { Option } = Select;
-
-const showResetPwDialog = (index: number) => {
-    confirm({
-        title: "重置密码",
-        okText: "确定",
-        cancelText: "取消",
-        icon: <ExclamationCircleOutlined />,
-        content: `您将重置【${userManagementData.usersInfo[index].name}】的密码为"itnlp"。`,
-        onOk() {
-            L.resetPassword(index);
-        }
-    });
-};
 
 const UserContent: React.FC = observer(() => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
@@ -97,9 +84,19 @@ const UserContent: React.FC = observer(() => {
                     }}>
                         修改权限
                     </Button>
-                    <Button type="link" onClick={() => showResetPwDialog(x.key)}>
-                        重置密码
-                    </Button>
+
+                    <Popconfirm
+                        placement="topRight"
+                        title={`您将重置【${userManagementData.usersInfo[x.key].name}】`
+                            + `的密码为"itnlp"。`}
+                        onConfirm={() => L.resetPassword(x.key)}
+                        okText="确定"
+                        cancelText="取消"
+                    >
+                        <Button type="link">
+                            重置密码
+                        </Button>
+                    </Popconfirm>
                 </Space>
             )
         },
@@ -162,7 +159,7 @@ const UserContent: React.FC = observer(() => {
                     <span>
                         修改【{userManagementData.usersInfo[selectedUserIndex]?.name}】的权限为:
                     </span>
-                    
+
                     <Select value={newLevel} onChange={e => setNewLevel(e)}>
                         {
                             UserLevelValues.map((x, i) => (
