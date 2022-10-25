@@ -63,7 +63,7 @@ const QueryForm: React.FC = observer(() => {
 
                 <Form.Item
                     name="text_query_tag_status"
-                    label="标注状态:"
+                    label="限定标注状态:"
                     initialValue={queryData.tagStatus}
                 >
                     <Radio.Group value={queryData.tagStatus}
