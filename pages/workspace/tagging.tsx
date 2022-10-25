@@ -80,11 +80,10 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                                     <label>{
                                         `${taggingData.taggedTextCount}`
                                         + `/${taggingData.texts.length} `
-                                        + `(${Math.round(taggingData.taggingProgressPercent)}%)`}
+                                        + `(${taggingData.taggingProgressPercent.toFixed(1)}%)`}
                                     </label>
                                     <Progress
-                                            percent={
-                                                Math.round(taggingData.taggingProgressPercent)}
+                                            percent={taggingData.taggingProgressPercent}
                                             size="small"
                                             showInfo={false}/>
                                 </div>

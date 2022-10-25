@@ -60,7 +60,7 @@ const columns: ColumnsType<SingleDatasetStat> = [
         showSorterTooltip: false,
         sorter: (a, b) => a.taggedTextProgress - b.taggedTextProgress,
         render: (x) => (
-            <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(0)}%`} />
+            <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(1)}%`} />
         )
     },
     {
@@ -69,7 +69,7 @@ const columns: ColumnsType<SingleDatasetStat> = [
         showSorterTooltip: false,
         sorter: (a, b) => a.totalTagItemProgress - b.totalTagItemProgress,
         render: (x) => (
-            <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(0)}%`} />
+            <Progress percent={100 * x} size="small" format={x => `${x?.toFixed(1)}%`} />
         )
     },
 ];
@@ -120,7 +120,7 @@ const DatasetContent: React.FC = observer(() => {
                                         + `${taskData.datasetStats[0].totalTextCount}`}</label>
                                     <Progress type="circle"
                                         percent={taskData.datasetStats[0].taggedTextProgress * 100}
-                                        format={x => `${x?.toFixed(0)}%`} />
+                                        format={x => `${x?.toFixed(1)}%`} />
                                 </div>
 
                                 <div className="total-progress">
@@ -130,7 +130,7 @@ const DatasetContent: React.FC = observer(() => {
                                         + `${taskData.datasetStats[0].totalTextCount})`}</label>
                                     <Progress type="circle"
                                         percent={taskData.datasetStats[0].totalTagItemProgress * 100}
-                                        format={x => `${x?.toFixed(0)}%`} />
+                                        format={x => `${x?.toFixed(1)}%`} />
                                 </div>
                             </div>
 
@@ -139,7 +139,6 @@ const DatasetContent: React.FC = observer(() => {
                             <Space className="action-wrapper">
                                 {`已选${selectedRowKeys.length}个数据集`}
 
-                                {/* TODO: logics */}
                                 <Button disabled={selectedRowKeys.length === 0
                                     || isExportLoading}
                                     onClick={() => L.exportDataset(

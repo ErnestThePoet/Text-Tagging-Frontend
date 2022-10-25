@@ -30,9 +30,9 @@ export const onNavMenuItemClick = (key: string) => {
 
 export const onAccountMenuItemClick = (key:string) => {
     switch (key) {
-        case "0":
-            //TODO:add guide
-            break;
+        // case "0":
+        //     //TODO:add guide
+        //     break;
         case "1":
             changePwDialogState.setIsOpen(true);
             break;
