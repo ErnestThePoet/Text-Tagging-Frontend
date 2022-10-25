@@ -37,6 +37,11 @@ class TaggingData{
         return this.texts.filter((_,i) => this.getTextTagStatus(i)==="FINISHED").length;
     }
 
+    get taggingProgressPercent(): number{
+        return (this.taggedTextCount
+            / this.texts.length) * 100
+    }
+
     // 验证标注项是否合法，注意标注项为空是合法的
     validateTagItem(textIndex: number|string, tagItemIndex: number|string): CheckResult{
         const validation = taskData.idTaggingValidationMap[

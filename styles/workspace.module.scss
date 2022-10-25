@@ -42,7 +42,7 @@
 
 .listTextList{
     @extend .listWorkspace;
-    max-height: calc(100% - 120px);
+    max-height: calc(100% - 125px);
 }
 
 .sider {
@@ -255,7 +255,7 @@
 
 .listAddedTextList {
     @extend .listWorkspace;
-    max-height: calc(100% - 95px);
+    max-height: calc(100% - 85px);
 }
 
 .divAddedTextBoxFirstRow{

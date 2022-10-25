@@ -7,7 +7,7 @@ import {
     CheckCircleTwoTone,
     ExclamationCircleOutlined
 } from '@ant-design/icons';
-import { List, Space, Layout, Button, Modal, Empty, Tag } from 'antd';
+import { List, Space, Layout, Button, Modal, Empty, Tag, Progress } from 'antd';
 import WorkspaceNav from "../../components/workspace/workspace-nav";
 import SingleTaggingBox from "../../components/workspace/tagging/single-tagging-box";
 import styles from "../../styles/workspace.module.scss";
@@ -76,11 +76,18 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                             className={styles.spaceAsideBottomButtonWrapper}>
                             {
                                 taggingData.texts.length > 0 &&
-                                <label>{
-                                    `${taggingData.taggedTextCount}`
-                                    + `/${taggingData.texts.length} `
-                                    + `(${Math.round((taggingData.taggedTextCount
-                                        / taggingData.texts.length) * 100)}%)`}</label>
+                                <div style={{ lineHeight: 1 }} >
+                                    <label>{
+                                        `${taggingData.taggedTextCount}`
+                                        + `/${taggingData.texts.length} `
+                                        + `(${Math.round(taggingData.taggingProgressPercent)}%)`}
+                                    </label>
+                                    <Progress
+                                            percent={
+                                                Math.round(taggingData.taggingProgressPercent)}
+                                            size="small"
+                                            showInfo={false}/>
+                                </div>
                             }
 
                             <Button block disabled={!taggingData.hasUnsavedChanges}
