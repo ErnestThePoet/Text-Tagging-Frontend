@@ -140,3 +140,16 @@ export const changeText = () => {
         changeTextDialogState.setIsConfirmLoading(false);
     });
 }
+
+export const onListItemClick = (index: number) => {
+    const targetOffsetTop =
+        document.getElementById(`div-single-tagging-box-${index}`)?.offsetTop;
+
+    if (targetOffsetTop === undefined) {
+        return;
+    }
+
+    document.getElementById("content-tagging-boxes")?.scrollTo({
+        top: targetOffsetTop - 100
+    });
+}

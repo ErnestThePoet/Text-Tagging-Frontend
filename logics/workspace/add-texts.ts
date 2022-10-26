@@ -34,3 +34,16 @@ export const addTexts = () => {
         message.error(reason.message);
     });
 }
+
+export const onListItemClick = (index: number) => {
+    const targetOffsetTop =
+        document.getElementById(`space-single-added-text-${index}`)?.offsetTop;
+
+    if (targetOffsetTop === undefined) {
+        return;
+    }
+
+    document.getElementById("content-added-texts")?.scrollTo({
+        top: targetOffsetTop - 100
+    });
+}

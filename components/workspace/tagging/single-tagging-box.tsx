@@ -17,6 +17,8 @@ interface SingleTaggingBoxProps {
     hideCount?: boolean;
     // 是否隐藏文本编辑图标（用在修改标签对话框时，关闭）
     hideEditText?: boolean;
+    key?: string | number;
+    id?: string;
 }
 
 const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
@@ -29,7 +31,8 @@ const SingleTaggingBox: React.FC<SingleTaggingBoxProps> =
         const tagStatus = taggingData.getTextTagStatus(props.textIndex);
 
         return (
-            <div className={styles.divSingleTaggingBox}>
+            <div id={props.id}
+                className={styles.divSingleTaggingBox}>
                 <div>
                     {
                         !props.hideCount &&

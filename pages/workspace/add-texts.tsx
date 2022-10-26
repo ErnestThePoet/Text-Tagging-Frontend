@@ -31,7 +31,8 @@ const AddTexts: React.FC = observer(() => {
                             className={styles.listAddedTextList}
                             dataSource={addTextsData.texts}
                             renderItem={(_, i) => (
-                                <List.Item className={styles.listItemText}>
+                                <List.Item className={styles.listItemAddTexts}
+                                    onClick={() => L.onListItemClick(i)}>
                                     <span>
                                         <Tag color="purple">{i + 1}</Tag>
                                         {`${addTextsData.getTextPreview(i)}`}
@@ -64,7 +65,8 @@ const AddTexts: React.FC = observer(() => {
                         </Space>
                     </aside>
                     <Layout className={styles.layoutContent}>
-                        <Content className={styles.content}>
+                        <Content id="content-added-texts"
+                            className={styles.content}>
                             {
                                 addTextsData.texts.length === 0
                                     ?
@@ -78,7 +80,8 @@ const AddTexts: React.FC = observer(() => {
                                     <>
                                         {
                                             addTextsData.texts.map((x, i) => (
-                                                <Space key={i} direction="vertical">
+                                                <Space id={`space-single-added-text-${i}`}
+                                                    key={i} direction="vertical">
                                                     <div className={styles.divAddedTextBoxFirstRow}>
                                                         <Space>
                                                             <Tag color="blue">{i + 1}</Tag>
@@ -93,9 +96,9 @@ const AddTexts: React.FC = observer(() => {
                                                                     onChange={e => addTextsData.changeUserId(i, e.target.value)} />
                                                             </Space>
                                                         </Space>
-                                                        
+
                                                         <MinusCircleOutlined
-                                                        onClick={()=>addTextsData.remove(i)}/>
+                                                            onClick={() => addTextsData.remove(i)} />
                                                     </div>
 
                                                     <TextArea
@@ -122,7 +125,7 @@ const AddTexts: React.FC = observer(() => {
                 </Layout>
             </Layout>
 
-            <ChangePwDialog/>
+            <ChangePwDialog />
         </div>
     );
 })

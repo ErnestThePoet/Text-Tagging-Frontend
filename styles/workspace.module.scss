@@ -51,7 +51,7 @@
     //width: $sider-width;
 }
 
-.listItemText {
+.listItemTaggingAddTexts{
     cursor: pointer;
     user-select: none;
     padding-left: 20px;
@@ -59,6 +59,24 @@
 
     display: flex;
     justify-content: space-between;
+
+    transition-duration: 500ms;
+}
+
+.listItemTagging {
+    @extend .listItemTaggingAddTexts;
+
+    &:hover{
+        background-color: #e6f7ff;
+    }
+}
+
+.listItemAddTexts {
+    @extend .listItemTaggingAddTexts;
+
+    &:hover {
+        background-color: #f0f5ff;
+    }
 }
 
 .spaceAsideBottomButtonWrapper {

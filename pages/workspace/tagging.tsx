@@ -55,8 +55,9 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                         <List
                             className={styles.listTextList}
                             dataSource={taggingData.texts}
-                            renderItem={(x, i) => (
-                                <List.Item className={styles.listItemText}>
+                            renderItem={(_, i) => (
+                                <List.Item className={styles.listItemTagging}
+                                    onClick={() => L.onListItemClick(i)}>
                                     <span>
                                         <Tag color="geekblue">{i + 1}</Tag>
                                         {taggingData.getTextPreview(i)}
@@ -83,9 +84,9 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                                         + `(${taggingData.taggingProgressPercent.toFixed(1)}%)`}
                                     </label>
                                     <Progress
-                                            percent={taggingData.taggingProgressPercent}
-                                            size="small"
-                                            showInfo={false}/>
+                                        percent={taggingData.taggingProgressPercent}
+                                        size="small"
+                                        showInfo={false} />
                                 </div>
                             }
 
@@ -108,14 +109,18 @@ const WorkspaceTaggingPage: React.FC = observer(() => {
                         </Space>
                     </aside>
                     <Layout className={styles.layoutContent}>
-                        <Content className={styles.content}>
+                        <Content id="content-tagging-boxes"
+                            className={styles.content}>
                             {
                                 taggingData.texts.length === 0
                                     ?
                                     <Empty description="快去获取一批待标注文本吧" />
                                     :
                                     taggingData.texts.map((_, i) => (
-                                        <SingleTaggingBox textIndex={i} key={i} />
+                                        <SingleTaggingBox
+                                            id={`div-single-tagging-box-${i}`}
+                                            textIndex={i}
+                                            key={i} />
                                     ))
                             }
                         </Content>
