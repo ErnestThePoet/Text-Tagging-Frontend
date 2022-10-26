@@ -98,8 +98,8 @@ const QueryForm: React.FC = observer(() => {
                         onChange={e => queryData.setTaggerNames(e)}
                     >
                         {
-                            userManagementData.usersInfo.map((x, i) => (
-                                <Option value={x.name} key={i}>{x.name}</Option>
+                            taskData.datasetStats[0].taggerNames.map((x, i) => (
+                                <Option value={x} key={i}>{x}</Option>
                             ))
                         }
                     </Select>

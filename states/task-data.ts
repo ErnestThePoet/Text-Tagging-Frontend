@@ -10,6 +10,7 @@ import uiState from "./ui-state";
 
 export interface SingleDatasetStat {
     fileName: string;
+    taggerNames: string[];
     totalTextCount: number;
     totalTagItemCount: number;
     taggedTextCount: number;
@@ -148,6 +149,7 @@ class TaskData {
     // 其中第一个元素为全库统计
     datasetStats: SingleDatasetStat[] = [{
         fileName: "",
+        taggerNames: [],
         totalTextCount: 0,
         totalTagItemCount: 0,
         taggedTextCount: 0,
