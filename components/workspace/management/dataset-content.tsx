@@ -98,7 +98,7 @@ const showUploadFormatSpec = () => {
                             text: string，文本内容，要求不能为空;
                         </li>
                         <li>
-                            tag: Array，所有标注项组成的数组，每个元素都是具有itemName: string和value: any这两个属性的Object，具体为：
+                            tag: Array，所有标注项组成的数组，每个元素都是具有itemName: string和value: any这两个属性的Object，各元素具体为：
                             <ul>
                                 {
                                     L.getUploadFormatTagItemsSpec().map((x, i) => (

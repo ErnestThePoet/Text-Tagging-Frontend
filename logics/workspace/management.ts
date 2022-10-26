@@ -277,7 +277,7 @@ export const getUploadFormatTagItemsSpec = () => {
                 currentLine +=
                     `value为[${meta.choices!
                         .map(x => quoteString(x.external))
-                        .join(",")}]中的若干项构成的Array`
+                        .join(",")}]中的若干项组成的Array`
                     + `${meta.options?.minCount !== undefined
                         ? (`，最少${meta.options.minCount}项`)
                         : ""}`
@@ -301,7 +301,7 @@ export const getUploadFormatTagItemsSpec = () => {
                 }
                 else {
                     currentLine +=
-                        `value为包含若干元素的数组`;
+                        `value为包含若干元素的Array`;
 
                     currentLine +=
                         `${meta.options?.minCount !== undefined
