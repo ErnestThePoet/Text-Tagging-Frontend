@@ -48,6 +48,11 @@ export const changePw = () => {
         return;
     }
 
+    if (changePwDialogState.oldPw === changePwDialogState.newPw) {
+        changePwDialogState.setResultMsg("新密码和旧密码不能相同");
+        return;
+    }
+
     changePwDialogState.setIsConfirmLoading(true);
 
     axios.postForm(APIS.changePw, {
