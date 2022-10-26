@@ -5,8 +5,8 @@ import APIS from "../../modules/apis";
 import userData from "../../states/user-data";
 import taskData from "../../states/task-data";
 import { checkImportDataset } from "../../modules/import-check";
-import { toImportTextsTags,toUploadTexts } from "../../modules/import-convert";
-import { getCurrentDateTimeStr,getExportTimeStr } from "../../modules/utils/date-time";
+import { toImportTextsTags, toUploadTexts } from "../../modules/import-convert";
+import { getCurrentDateTimeStr, getExportTimeStr } from "../../modules/utils/date-time";
 import userManagementData from "../../states/user-management-data";
 import { UserLevel } from "../../modules/objects/types";
 import { getUserLevelLabel } from "../../modules/utils/user-level-utils";
@@ -189,7 +189,7 @@ export const changeUserLevel = (index: number, level: UserLevel,
 
 export const exportDataset = (indexes: number[], isTaggedOnly: boolean,
     setIsExportLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-    
+
     setIsExportLoading(true);
 
     axios.post(APIS.exportDataset, {
@@ -250,4 +250,94 @@ export const deleteDataset = (indexes: number[],
     }).finally(() => {
         setLoading(false);
     });
+}
+
+function quoteString(value: string | number) {
+    return typeof (value) === "string" ? `"${value}"` : value;
+}
+
+export const getUploadFormatTagItemsSpec = () => {
+    let specLines: string[] = [];
+
+    for (const i in taskData.tagItemMetas) {
+        const meta = taskData.tagItemMetas[i];
+        let currentLine = `tag[${i}]: itemName="${meta.name}"，`;
+
+        switch (meta.type) {
+            case 0:
+                currentLine +=
+                    `value为[${meta.choices!
+                        .map(x => quoteString(x.external))
+                        .join(",")}]之一`
+                    + `，其中${quoteString(meta.choices!
+                        .find(x => x.internal === undefined)!
+                        .external)}表示未标注`;
+                break;
+            case 1:
+                currentLine +=
+                    `value为[${meta.choices!
+                        .map(x => quoteString(x.external))
+                        .join(",")}]中的若干项构成的Array`
+                    + `${meta.options?.minCount !== undefined
+                        ? (`，最少${meta.options.minCount}项`)
+                        : ""}`
+                    + `${meta.options?.maxCount !== undefined
+                        ? (`，最多${meta.options.maxCount}项`)
+                        : ""}`
+                    + "，设为空数组表示未标注";
+                break;
+            case 2:
+                currentLine +=
+                    `value为一个只有一个元素的Array，其元素是${meta.options?.type !== undefined
+                        ? `一个${meta.options.type[0]}类型的值`
+                        : "标注值"}`
+                    + "，设为空数组表示未标注";
+                break;
+            case 3:
+                if (meta.options?.minCount !== undefined
+                    && meta.options?.maxCount !== undefined
+                    && meta.options.minCount === meta.options.maxCount) {
+                    currentLine += `value为包含${meta.options.minCount}个元素的数组`;
+                }
+                else {
+                    currentLine +=
+                        `value为包含若干元素的数组`;
+
+                    currentLine +=
+                        `${meta.options?.minCount !== undefined
+                            ? (`，最少${meta.options.minCount}项`)
+                            : ""}`
+                        + `${meta.options?.maxCount !== undefined
+                            ? (`，最多${meta.options.maxCount}项`)
+                            : ""}`;
+                }
+
+                if (meta.options?.type !== undefined) {
+                    if (meta.options.type.length === 1) {
+                        currentLine += `，所有元素都是${meta.options.type[0]}类型`;
+                    }
+                    else if (meta.options.type.length > 1) {
+                        currentLine +=
+                            `，各元素类型分别为：[${meta.options.type.map(
+                                (x, i) => `${i}:x`
+                            ).join(",")}]`;
+                    }
+                }
+
+                if (meta.options?.allowDuplicate === undefined
+                    || meta.options.allowDuplicate === false) {
+                    currentLine += "，不允许重复元素";
+                }
+
+                currentLine += "，设为空数组表示未标注";
+
+                break;
+        }
+
+        currentLine += "；";
+
+        specLines.push(currentLine);
+    }
+
+    return specLines;
 }

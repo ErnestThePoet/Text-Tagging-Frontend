@@ -9,7 +9,7 @@ export const createSingleChoiceValueCheck:
             if (!choices.includes(x)) {
                 return {
                     ok: false,
-                    msg: `不是[${choices}]之一`
+                    msg: `不是[${choices.join(",")}]之一`
                 }
             }
 
@@ -35,7 +35,7 @@ export const createMultipleChoiceValueCheck:
             if (x.some(u => !choices.includes(u))) {
                 return {
                     ok: false,
-                    msg: `不是全部由[${choices}]中的选项组成`
+                    msg: `不是全部由[${choices.join(",")}]中的选项组成`
                 }
             }
 

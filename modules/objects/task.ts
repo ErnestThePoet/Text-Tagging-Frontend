@@ -18,7 +18,7 @@ export interface TagItemMetaChoice {
 export interface TagItemMetaOption {
     allowDuplicate?: boolean; // 是否允许重复元素，默认不允许，仅对多输入有意义
     //hasSuggestions?: boolean; // 是否有提示列表，默认没有，仅对单输入/多输入有意义
-    minCount?: number;
+    minCount?: number; // minCount和maxCount仅对多选/多输入有意义
     maxCount?: number;
     // 仅对单输入/多输入有意义。长度为1时代表单输入元素需要为此类型，或多输入数组所有元素都需要为此类型，
     // 对于多输入，长度等于数组长度(minCount=== maxCount) 则数组对应下标处的元素需要为相应类型。

@@ -11,13 +11,16 @@ import {
     Upload,
     Modal,
     Form,
-    Input
+    Input,
+    Tooltip,
+    Typography
 } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import {
     ReloadOutlined,
     PlusOutlined,
-    ExclamationCircleOutlined
+    ExclamationCircleOutlined,
+    QuestionCircleTwoTone
 } from '@ant-design/icons';
 import type { SingleDatasetStat } from "../../../states/task-data";
 import { stringCompare } from "../../../modules/utils/cmp";
@@ -27,6 +30,7 @@ import styles from "../../../styles/workspace.module.scss";
 import taskData from "../../../states/task-data";
 import uiState from "../../../states/ui-state";
 
+const { Title, Paragraph, Text, Link } = Typography;
 
 const columns: ColumnsType<SingleDatasetStat> = [
     {
@@ -74,7 +78,46 @@ const columns: ColumnsType<SingleDatasetStat> = [
     },
 ];
 
+const showUploadFormatSpec = () => {
+    Modal.info({
+        title: `【${taskData.name}】数据集导入格式说明`,
+        width: 750,
+        okText: "确定",
+        content: (
+            <Typography>
+                <Paragraph>
+                    JSON文件为一个Array，每个元素都是具有下列属性的Object:
+                </Paragraph>
 
+                <Paragraph>
+                    <ul>
+                        <li>
+                            id: string，用户指定的标识符ID，如不需要设置可以设为空字符串;
+                        </li>
+                        <li>
+                            text: string，文本内容，要求不能为空;
+                        </li>
+                        <li>
+                            tag: Array，所有标注项组成的数组，每个元素都是具有itemName: string和value: any这两个属性的Object，具体为：
+                            <ul>
+                                {
+                                    L.getUploadFormatTagItemsSpec().map((x, i) => (
+                                        // eslint-disable-next-line react/no-unknown-property
+                                        <li key={i}>{x}</li>
+                                    ))
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </Paragraph>
+
+                <Paragraph>
+                    导入数据前，系统会自动对上传的文件进行格式检查。
+                </Paragraph>
+            </Typography>
+        )
+    });
+}
 
 const DatasetContent: React.FC = observer(() => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
@@ -101,15 +144,23 @@ const DatasetContent: React.FC = observer(() => {
                     taskData.datasetStats.length <= 1
                         ?
                         <Empty description="此标注任务还没有数据集">
-                            <Upload {...L.uploadProps}
-                                accept="application/json"
-                                maxCount={1}
-                                showUploadList={false}>
-                                <Button type="primary" icon={<PlusOutlined />}
-                                    loading={uiState.isImportDatasetLoading}>
-                                    导入第一个数据集
-                                </Button>
-                            </Upload>
+                            <Space>
+                                <Upload {...L.uploadProps}
+                                    accept="application/json"
+                                    maxCount={1}
+                                    showUploadList={false}>
+                                    <Button type="primary" icon={<PlusOutlined />}
+                                        loading={uiState.isImportDatasetLoading}>
+                                        导入第一个数据集
+                                    </Button>
+                                </Upload>
+
+                                <Tooltip title="导入格式说明">
+                                    <QuestionCircleTwoTone
+                                        className={styles.iconUploadFormatSpec}
+                                        onClick={() => showUploadFormatSpec()} />
+                                </Tooltip>
+                            </Space>
                         </Empty>
                         :
                         <>
@@ -172,6 +223,12 @@ const DatasetContent: React.FC = observer(() => {
                                         导入数据集
                                     </Button>
                                 </Upload>
+
+                                <Tooltip title="导入格式说明">
+                                    <QuestionCircleTwoTone
+                                        className={styles.iconUploadFormatSpec}
+                                        onClick={() => showUploadFormatSpec()} />
+                                </Tooltip>
                             </Space>
 
                             <Table columns={columns}

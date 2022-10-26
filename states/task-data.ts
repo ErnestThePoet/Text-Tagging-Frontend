@@ -8,7 +8,7 @@ import * as IMPORT_CHECK_FNS from "../modules/import-check-fns";
 import * as TAGGING_CHECK_FNS from "../modules/tagging-check-fns";
 import uiState from "./ui-state";
 
-export interface SingleDatasetStat{
+export interface SingleDatasetStat {
     fileName: string;
     totalTextCount: number;
     totalTagItemCount: number;
@@ -23,7 +23,7 @@ export interface CheckResult { ok: boolean; msg: string; }
 export type TagItemImportValueCheckFn = (x: any) => CheckResult;
 export type TagItemTaggingValueCheckFn = (x: string[]) => CheckResult;
 
-interface SingleTagItemTaggingValidation{
+interface SingleTagItemTaggingValidation {
     id: number;
     valueCheck: TagItemTaggingValueCheckFn;
 }
@@ -75,7 +75,7 @@ const getTagItemTaggingValidations = (tagItemMetas: TagItemMeta[]) => {
     return validation;
 }
 
-const getTagItemImportValidation = (tagItemMetas:TagItemMeta[]) => {
+const getTagItemImportValidation = (tagItemMetas: TagItemMeta[]) => {
     const validation: TagItemImportValidation = {
         tagItemCount: tagItemMetas.length,
         tagItemMetas: []
@@ -115,7 +115,7 @@ const getTagItemImportValidation = (tagItemMetas:TagItemMeta[]) => {
     return validation;
 }
 
-class TaskData{
+class TaskData {
     constructor() {
         makeAutoObservable(this);
     }
@@ -151,12 +151,12 @@ class TaskData{
         totalTextCount: 0,
         totalTagItemCount: 0,
         taggedTextCount: 0,
-            
+
         taggedTextProgress: 0,
         totalTagItemProgress: 0
     }];
 
-    get tagItemCount(): number{
+    get tagItemCount(): number {
         return this.tagItemMetas.length;
     }
 
