@@ -319,7 +319,7 @@ export const getUploadFormatTagItemsSpec = () => {
                     else if (meta.options.type.length > 1) {
                         currentLine +=
                             `，各元素类型分别为：[${meta.options.type.map(
-                                (x, i) => `${i}:x`
+                                (x, i) => `${i}:${x}`
                             ).join(",")}]`;
                     }
                 }
