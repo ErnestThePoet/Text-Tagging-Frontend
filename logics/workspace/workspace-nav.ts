@@ -4,6 +4,7 @@ import Router from "next/router";
 import APIS from "../../modules/apis";
 import { pbkdf2Hash } from "../../modules/utils/hash";
 import changePwDialogState from "../../states/component-states/change-pw-dialog-state";
+import taggingData from "../../states/tagging-data";
 import userData from "../../states/user-data";
 
 export const onNavMenuItemClick = (key: string) => {
@@ -28,21 +29,7 @@ export const onNavMenuItemClick = (key: string) => {
     }
 }
 
-export const onAccountMenuItemClick = (key:string) => {
-    switch (key) {
-        // case "0":
-        //     //TODO:add guide
-        //     break;
-        case "1":
-            changePwDialogState.setIsOpen(true);
-            break;
-        case "2":
-            logout();
-            break;
-    }
-}
-
-const logout = () => {
+export const logout = () => {
     const sessionId = localStorage.getItem("sessionId");
 
     if (sessionId !== null && sessionId.length > 25) {
@@ -51,9 +38,9 @@ const logout = () => {
 
     localStorage.removeItem("sessionId");
 
-    userData.clear();
+    taggingData.setNoUnsavedChanges();
 
-    Router.replace("/");
+    window.top?.location.replace("/");
 }
 
 export const changePw = () => {

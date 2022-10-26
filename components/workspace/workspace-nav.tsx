@@ -3,13 +3,16 @@ import { observer } from "mobx-react-lite";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import * as L from "../../logics/workspace/workspace-nav";
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Dropdown, Space, Layout, Menu } from 'antd';
+import { Dropdown, Space, Layout, Menu,Modal } from 'antd';
 import styles from "../../styles/workspace.module.scss";
 import userData from "../../states/user-data";
+import changePwDialogState from "../../states/component-states/change-pw-dialog-state";
+import taggingData from "../../states/tagging-data";
 
 const { Header } = Layout;
+const { confirm } = Modal;
 
 interface WorkspaceNavProps{
     defaultSelectedKey: string;
@@ -25,11 +28,48 @@ const navItemsAdmin: MenuProps['items']
     = ['文本标注', '添加文本', '文本查询', "系统管理"].map((x, i) => ({
     key: i,
     label: x
-}));
+    }));
+
+const showSaveDialog = (okText:string,onOk:()=>void) => {
+    confirm({
+        title: "保存标注",
+        okText,
+        cancelText: "返回",
+        icon: <ExclamationCircleOutlined />,
+        content: "存在尚未提交的标注。是否提交所做标注？",
+        onOk
+    });
+};
+
+const onAccountMenuItemClick = (key: string) => {
+    switch (key) {
+        // case "0":
+        //     //TODO:add guide
+        //     break;
+        case "1":
+            if (taggingData.hasUnsavedChanges) {
+                showSaveDialog("提交并修改密码",
+                    () => changePwDialogState.setIsOpen(true));
+            }
+            else {
+                changePwDialogState.setIsOpen(true);
+            }
+            break;
+        case "2":
+            if (taggingData.hasUnsavedChanges) {
+                showSaveDialog("提交并退出登录",
+                    () => L.logout());
+            }
+            else {
+                L.logout();
+            }
+            break;
+    }
+}
 
 const accountMenu = (
     <Menu
-        onClick={e => L.onAccountMenuItemClick(e.key)}
+        onClick={e => onAccountMenuItemClick(e.key)}
         items={[
             // {
             //     key: '0',
