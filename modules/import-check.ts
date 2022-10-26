@@ -32,11 +32,11 @@ export function checkImportDataset(importTexts: any): CheckResult{
         }
 
         if (!("id" in currentText)
-            || typeof (currentText.id) !== "string"
-            || currentText.id === "") {
+            || typeof (currentText.id) !== "string" // || currentText.id === ""
+        ) {
             return {
                 ok: false,
-                msg: `下标为${i}的文本id属性不存在或不是非空字符串`
+                msg: `下标为${i}的文本id属性不存在或不是字符串类型` // 或不是非空字符串
             };
         }
 

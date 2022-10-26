@@ -86,13 +86,13 @@ const showUploadFormatSpec = () => {
         content: (
             <Typography>
                 <Paragraph>
-                    JSON文件为一个Array，每个元素都是具有下列属性的Object:
+                    请导入UTF-8编码的JSON文件，其最外层为一个Array，每个元素都是具有下列属性的Object:
                 </Paragraph>
 
                 <Paragraph>
                     <ul>
                         <li>
-                            id: string，用户指定的标识符ID，如不需要设置可以设为空字符串;
+                            id: string，用户指定的文本ID，如不需要设置可以设为空字符串;
                         </li>
                         <li>
                             text: string，文本内容，要求不能为空;
