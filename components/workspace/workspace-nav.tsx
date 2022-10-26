@@ -2,10 +2,11 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from "@fortawesome/free-solid-svg-icons";
+import { saveTaggingProgress } from "../../logics/workspace/tagging";
 import * as L from "../../logics/workspace/workspace-nav";
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Dropdown, Space, Layout, Menu,Modal } from 'antd';
+import { Dropdown, Space, Layout, Menu, Modal } from 'antd';
 import styles from "../../styles/workspace.module.scss";
 import userData from "../../states/user-data";
 import changePwDialogState from "../../states/component-states/change-pw-dialog-state";
@@ -14,23 +15,23 @@ import taggingData from "../../states/tagging-data";
 const { Header } = Layout;
 const { confirm } = Modal;
 
-interface WorkspaceNavProps{
+interface WorkspaceNavProps {
     defaultSelectedKey: string;
 }
 
 const navItemsNormal: MenuProps['items']
     = ['文本标注', '添加文本'].map((x, i) => ({
-    key: i,
-    label: x
-}));
+        key: i,
+        label: x
+    }));
 
 const navItemsAdmin: MenuProps['items']
     = ['文本标注', '添加文本', '文本查询', "系统管理"].map((x, i) => ({
-    key: i,
-    label: x
+        key: i,
+        label: x
     }));
 
-const showSaveDialog = (okText:string,onOk:()=>void) => {
+const showSaveDialog = (okText: string, onOk: () => void) => {
     confirm({
         title: "保存标注",
         okText,
@@ -49,7 +50,8 @@ const onAccountMenuItemClick = (key: string) => {
         case "1":
             if (taggingData.hasUnsavedChanges) {
                 showSaveDialog("提交并修改密码",
-                    () => changePwDialogState.setIsOpen(true));
+                    () => saveTaggingProgress(undefined,
+                        () => changePwDialogState.setIsOpen(true)));
             }
             else {
                 changePwDialogState.setIsOpen(true);
@@ -58,7 +60,8 @@ const onAccountMenuItemClick = (key: string) => {
         case "2":
             if (taggingData.hasUnsavedChanges) {
                 showSaveDialog("提交并退出登录",
-                    () => L.logout());
+                    () => saveTaggingProgress(undefined,
+                        () => L.logout()));
             }
             else {
                 L.logout();
@@ -89,7 +92,7 @@ const accountMenu = (
     />
 );
 
-const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props:WorkspaceNavProps) => (
+const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props: WorkspaceNavProps) => (
     <Header className={styles.header}>
         <FontAwesomeIcon className={styles.icon} icon={faBook} />
         <Menu theme="dark"
@@ -108,7 +111,7 @@ const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props:WorkspaceNavPr
                         <span>
                             {userData.name}
                         </span>
-                            
+
                         {
                             userData.isAdmin &&
                             <span>
@@ -116,7 +119,7 @@ const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props:WorkspaceNavPr
                             </span>
                         }
                     </span>
-                        
+
                     <DownOutlined />
                 </Space>
             </a>
