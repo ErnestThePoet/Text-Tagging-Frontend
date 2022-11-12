@@ -116,9 +116,22 @@
     gap: 20px;
 }
 
-.dropdownAccount {
+.spaceAccount {
     color: white;
     margin-left: auto;
+
+    [class=task-name]{
+        font-size: 13px;
+        padding: 0.3em;
+        border: white 1px solid;
+        border-radius: 3px;
+        user-select: none;
+        cursor: default;
+    }
+}
+
+.dropdownAccount {
+    color: white;
 }
 
 .spanAccountName {

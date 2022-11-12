@@ -11,6 +11,7 @@ import styles from "../../styles/workspace.module.scss";
 import userData from "../../states/user-data";
 import changePwDialogState from "../../states/component-states/change-pw-dialog-state";
 import taggingData from "../../states/tagging-data";
+import taskData from "../../states/task-data";
 
 const { Header } = Layout;
 const { confirm } = Modal;
@@ -103,27 +104,33 @@ const WorkspaceNav: React.FC<WorkspaceNavProps> = observer((props: WorkspaceNavP
                 ? navItemsAdmin
                 : navItemsNormal} />
 
-        <Dropdown className={styles.dropdownAccount}
-            overlay={accountMenu}>
-            <a onClick={e => e.preventDefault()}>
-                <Space>
-                    <span className={styles.spanAccountName}>
-                        <span>
-                            {userData.name}
+        <Space className={styles.spaceAccount} size={30}>
+            <span className="task-name">{ taskData.name}</span>
+            <Dropdown
+                className={styles.dropdownAccount}
+                arrow={{ pointAtCenter: true }}
+                placement="bottom"
+                overlay={accountMenu}>
+                <a onClick={e => e.preventDefault()}>
+                    <Space>
+                        <span className={styles.spanAccountName}>
+                            <span>
+                                {userData.name}
+                            </span>
+
+                            {
+                                userData.isAdmin &&
+                                <span>
+                                    (管理员)
+                                </span>
+                            }
                         </span>
 
-                        {
-                            userData.isAdmin &&
-                            <span>
-                                (管理员)
-                            </span>
-                        }
-                    </span>
-
-                    <DownOutlined />
-                </Space>
-            </a>
-        </Dropdown>
+                        <DownOutlined />
+                    </Space>
+                </a>
+            </Dropdown>
+        </Space>
     </Header>
 ));
 
