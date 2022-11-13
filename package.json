@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build-std":"next build && xcopy /s /i /y \"./public\" \"./.next/standalone/public\" && xcopy /s /i /y \"./.next/static\" \"./.next/standalone/.next/static\"",
     "export": "next build && next export -o dist",
     "start": "next start -p 11850",
     "lint": "next lint"
