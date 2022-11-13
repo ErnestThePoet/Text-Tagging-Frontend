@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  // required for docker
+  // output: 'standalone'
 }
 
 module.exports = nextConfig
