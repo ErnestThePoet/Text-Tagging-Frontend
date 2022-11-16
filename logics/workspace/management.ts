@@ -203,7 +203,8 @@ export const exportDataset = (indexes: number[], isTaggedOnly: boolean,
             const downloadAnchor = document.createElement("a");
             downloadAnchor.download =
                 `导出文本${isTaggedOnly ? "(仅标注完成的)" : ""}-${getExportTimeStr()}.json`;
-            downloadAnchor.href = URL.createObjectURL(new Blob([JSON.stringify(convertedTexts)]));
+            downloadAnchor.href = URL.createObjectURL(
+                new Blob([JSON.stringify(convertedTexts,null,4)]));
             downloadAnchor.click();
             message.success("导出成功");
         }
