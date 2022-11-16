@@ -65,6 +65,13 @@ const AddTexts: React.FC = observer(() => {
                         </Space>
                     </aside>
                     <Layout className={styles.layoutContent}>
+                        <Space className={styles.spaceAddTextsTopColumn}>
+                            <Space>
+                                <label>添加文本ID前缀：</label>
+                                <Input value={addTextsData.textUserIdPrefix}
+                                    onChange={e=>addTextsData.setTextUserIdPrefix(e.target.value) } />
+                            </Space>
+                        </Space>
                         <Content id="content-added-texts"
                             className={styles.content}>
                             {

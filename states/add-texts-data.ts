@@ -9,6 +9,7 @@ interface AddedText{
 class AddTextsData{
     constructor() {
         makeAutoObservable(this, {
+            getTextUserId:false,
             getTextPreview: false,
             isTextValid: false,
             isUserIdValid: false,
@@ -18,9 +19,19 @@ class AddTextsData{
 
     texts: AddedText[] = [];
 
+    textUserIdPrefix: string = "";
+
+    setTextUserIdPrefix(textUserIdPrefix: string) {
+        this.textUserIdPrefix = textUserIdPrefix;
+    }
+
+    getTextUserId(index: number|string) {
+        return `${this.textUserIdPrefix}${index}`;
+    }
+
     add() {
         this.texts.push({
-            userId: (this.texts.length + 1).toString(),
+            userId: this.getTextUserId(this.texts.length + 1),
             fileName:"自添加文本",
             text:""
         });
@@ -38,8 +49,8 @@ class AddTextsData{
         this.texts.splice(index, 1);
         // 更新删除文本后方文本的用户ID，但只更新用户没有手动修改过的
         for (let i = index; i < this.texts.length; i++){
-            if (this.texts[i].userId === (i + 2).toString()) {
-                this.texts[i].userId = (i + 1).toString();
+            if (this.texts[i].userId === this.getTextUserId(i + 2)) {
+                this.texts[i].userId = this.getTextUserId(i + 1);
             }
         }
     }
