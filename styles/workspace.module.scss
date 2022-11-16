@@ -108,13 +108,19 @@
 .content {
     background: #fff;
     padding: 24px;
-    // -paddingV-(topColumnH+topColumnPaddingV+topColumnMarginBottom)
-    max-height: calc(100vh - $nav-height - 48px - 32px - 20px - 10px);
+
+    max-height: calc(100vh - $nav-height - 48px);
     overflow: auto;
 
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.contentAddTexts {
+    @extend .content;
+    // -paddingV-(topColumnH+topColumnPaddingV+topColumnMarginBottom)
+    max-height: calc(100vh - $nav-height - 48px - 32px - 20px - 10px);
 }
 
 .spaceAddTextsTopColumn{

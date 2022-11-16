@@ -73,7 +73,7 @@ const AddTexts: React.FC = observer(() => {
                             </Space>
                         </Space>
                         <Content id="content-added-texts"
-                            className={styles.content}>
+                            className={styles.contentAddTexts}>
                             {
                                 addTextsData.texts.length === 0
                                     ?
