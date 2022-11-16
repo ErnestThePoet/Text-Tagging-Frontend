@@ -44,6 +44,6 @@ export const onListItemClick = (index: number) => {
     }
 
     document.getElementById("content-added-texts")?.scrollTo({
-        top: targetOffsetTop - 100
+        top: targetOffsetTop - 162
     });
 }
