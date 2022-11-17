@@ -21,33 +21,35 @@ const Home: React.FC = observer(() => {
       </Head>
 
       <main className={styles.main}>
-        <section>
-          HITNLP
-          <br />
-          文本标注系统
-        </section>
+        <div className={styles.divContentWrapper}>
+          <section>
+            HITNLP
+            <br />
+            文本标注系统
+          </section>
 
-        {
-          userData.isLoggedIn
-            ?
-            <section className={styles.sectionSelectTask}>
-              <span className={styles.spanSelectTaskTitle}>
-                <b>{`欢迎您，${userData.name}~`}</b>
-                <br />
-                请选择标注任务以开始：
-              </span>
+          {
+            userData.isLoggedIn
+              ?
+              <section className={styles.sectionSelectTask}>
+                <span className={styles.spanSelectTaskTitle}>
+                  <b>{`欢迎您，${userData.name}~`}</b>
+                  <br />
+                  请选择标注任务以开始：
+                </span>
 
-              <TaskPicker />
-            </section>
-            :
-            <section className={styles.sectionLogin}>
-              <span className={styles.spanLoginTitle}>
-                登录标注系统
-              </span>
+                <TaskPicker />
+              </section>
+              :
+              <section className={styles.sectionLogin}>
+                <span className={styles.spanLoginTitle}>
+                  登录标注系统
+                </span>
 
-              <LoginForm />
-            </section>
-        }
+                <LoginForm />
+              </section>
+          }
+        </div>
       </main>
     </div>
   );

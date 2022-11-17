@@ -52,10 +52,6 @@
     width: 100vw;
     height: 100vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     overflow: auto;
 
     background: {
@@ -71,8 +67,17 @@
 }
 
 .main{
-    width: 80vw;
-    min-width: $min-width;
+    width: m#{a}x(100vw,$min-width);
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.divContentWrapper{
+    width: 80%;
     height: 70vh;
 
     display: flex;
@@ -80,7 +85,7 @@
     justify-content: space-between;
     align-items: center;
 
-    >section:nth-child(1){
+    >section:nth-child(1) {
         width: 50%;
 
         color: white;
@@ -98,6 +103,7 @@
 
 .section{
     width: 40%;
+    
     height: fit-content;
 
     font-size: 25px;

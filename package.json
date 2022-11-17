@@ -1,12 +1,12 @@
 {
   "name": "text-tagging",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build-std":"next build && xcopy /s /i /y \"./public\" \"./.next/standalone/public\" && xcopy /s /i /y \"./.next/static\" \"./.next/standalone/.next/static\" && cd .next && zip -r -q standalone.zip standalone",
-    "export": "next build && next export -o dist",
+    "build": "node ./debug-api-check.js && next build",
+    "build-std":"node ./debug-api-check.js && next build && xcopy /s /i /y \"./public\" \"./.next/standalone/public\" && xcopy /s /i /y \"./.next/static\" \"./.next/standalone/.next/static\" && cd .next && zip -r -q standalone.zip standalone",
+    "export": "node ./debug-api-check.js && next build && next export -o dist",
     "start": "next start -p 11850",
     "lint": "next lint"
   },
