@@ -71,6 +71,14 @@ const AddTexts: React.FC = observer(() => {
                                 <Input value={addTextsData.textUserIdPrefix}
                                     onChange={e=>addTextsData.setTextUserIdPrefix(e.target.value) } />
                             </Space>
+
+                            <Space>
+                                <label>添加文本起始ID：</label>
+                                <Input type="number"
+                                    value={addTextsData.textUserIdBaseIndex}
+                                    onChange={e => addTextsData.setTextUserIdBaseIndex(
+                                        e.target.valueAsNumber)} />
+                            </Space>
                         </Space>
                         <Content id="content-added-texts"
                             className={styles.contentAddTexts}>

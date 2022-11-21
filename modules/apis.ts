@@ -36,6 +36,7 @@ const APIS = {
 
     // Adding texts
     addTexts: "text/add_texts",
+    getAddedTextCount: "text/get_added_text_count",
     
     // Text Query
     queryTexts: "text/query",

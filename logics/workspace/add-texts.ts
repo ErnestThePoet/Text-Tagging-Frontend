@@ -25,6 +25,7 @@ export const addTexts = () => {
         if (res.data.success) {
             message.success(`成功添加${addTextsData.texts.length}条文本`);
             addTextsData.clear();
+            addTextsData.updateTextUserIdBaseIndex();
         }
         else {
             message.error(res.data.msg);

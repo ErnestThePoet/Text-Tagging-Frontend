@@ -3,6 +3,7 @@ import axios from "axios";
 import Router from "next/router";
 import APIS from "../../modules/apis";
 import { pbkdf2Hash } from "../../modules/utils/hash";
+import addTextsData from "../../states/add-texts-data";
 import changePwDialogState from "../../states/component-states/change-pw-dialog-state";
 import taggingData from "../../states/tagging-data";
 import userData from "../../states/user-data";
@@ -15,6 +16,7 @@ export const onNavMenuItemClick = (key: string) => {
             break;
         case "1":
             targetPath = "/workspace/add-texts";
+            addTextsData.updateTextUserIdBaseIndex();
             break;
         case "2":
             targetPath = "/workspace/query";
