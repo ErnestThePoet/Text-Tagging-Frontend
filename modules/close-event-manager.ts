@@ -7,7 +7,7 @@ class CloseEventManager{
 
     private handler = e => {
         e.preventDefault();
-        return e.returnValue = "确定离开吗？所有未提交的更改都会丢失。";
+        return e.returnValue = "确定离开吗？所有未提交的数据都会丢失。";
     };
 
     setAlert(demandIndex: DemandIndex) {
