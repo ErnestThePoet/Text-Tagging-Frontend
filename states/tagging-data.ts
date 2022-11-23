@@ -147,12 +147,12 @@ class TaggingData{
 
     setNoUnsavedChanges() {
         this.hasUnsavedChanges = false;
-        closeEventManager.removeAlert();
+        closeEventManager.removeAlert(0);
     }
 
     private setHasUnsavedChanges() {
         this.hasUnsavedChanges = true;
-        closeEventManager.setAlert();
+        closeEventManager.setAlert(0);
     }
 
     private markTagChange(textIndex: number) {

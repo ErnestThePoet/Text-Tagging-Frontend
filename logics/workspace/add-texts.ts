@@ -4,6 +4,7 @@ import addTextsData from "../../states/add-texts-data";
 import { message } from "antd";
 import userData from "../../states/user-data";
 import taskData from "../../states/task-data";
+import closeEventManager from "../../modules/close-event-manager";
 
 export const addTexts = () => {
     if (addTextsData.texts.length === 0) {
@@ -26,6 +27,7 @@ export const addTexts = () => {
             message.success(`成功添加${addTextsData.texts.length}条文本`);
             addTextsData.clear();
             addTextsData.updateTextUserIdBaseIndex();
+            closeEventManager.removeAlert(1);
         }
         else {
             message.error(res.data.msg);

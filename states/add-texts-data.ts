@@ -4,6 +4,7 @@ import APIS from "../modules/apis";
 import userData from "./user-data";
 import taskData from "./task-data";
 import { message } from "antd";
+import closeEventManager from "../modules/close-event-manager";
 
 interface AddedText{
     userId: string;
@@ -41,6 +42,8 @@ class AddTextsData{
             fileName:"自添加文本",
             text:""
         });
+
+        closeEventManager.setAlert(1);
     }
 
     changeText(index:number,text: string) {
@@ -58,6 +61,10 @@ class AddTextsData{
             if (this.texts[i].userId === this.getTextUserId(i + 1)) {
                 this.texts[i].userId = this.getTextUserId(i);
             }
+        }
+
+        if (this.texts.length === 0) {
+            closeEventManager.removeAlert(1);
         }
     }
 
